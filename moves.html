@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Golpes Pokémon RPG</title>
+
+<link rel="stylesheet" href="css/moves.css">
+
+<script src="js/utils.js" defer></script>
+<script src="js/moves.js" defer></script>
+
+</head>
+
+
+<body>
+<header>
+    <img src="assets/logo.png" class="logo">
+
+    <div class="title-container">
+        <h1 class="site-title">Instituto Serperior</h1>
+        <h2 class="site-subtitle">Registro de Golpes</h2>
+    </div>
+</header>
+
+
+<input placeholder="Pesquisar golpe"
+ oninput="searchMoves(this.value)">
+
+<select onchange="sortMoves(this.value)">
+  <option value="alpha">A–Z</option>
+  <option value="power">Maior poder</option>
+  <option value="tm">TM</option>
+  <option value="type">Tipo</option>
+  <option value="category">Categoria</option>
+</select>
+
+<div id="moves"></div>
+
+</body>
+</html>

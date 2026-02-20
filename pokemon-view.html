@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro Pokémon</title>
+
+  <link rel="stylesheet" href="css/pokemon.css">
+  <link rel="stylesheet" href="css/pokemon-view.css">
+  <link rel="icon" href="assets/icon.png">
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module" src="js/pokemon-view.js"></script>
+</head>
+
+<body>
+ <div class="nav-zone left" data-nav="prev"></div>
+ <button class="nav-btn left" data-nav="prev">◀</button>
+<header>
+  <img src="assets/logo.png" class="logo">
+
+  <div class="title-container">
+    <h1>Instituto Serperior</h1>
+    <h2>Registro Pokémon</h2>
+  </div>
+</header>
+
+<div class="dex-search">
+  <input
+    type="number"
+    id="dexNumberInput"
+    min="1"
+    placeholder="Nº Dex"
+  />
+
+  <input 
+    type="text" 
+    id="dexSearchInput" 
+    placeholder="Nome do Pokémon"
+  />
+
+  <button id="dexSearchBtn">Buscar</button>
+</div>
+<div id="search-preview" class="search-preview"></div>
+
+<div class="copy-buttons">
+  <button id="copyPokemonBtn" class="pixel-button">Copiar Pokémon</button>
+  <button id="copyMovesBtn" class="pixel-button">Copiar Golpes</button>
+</div>
+
+<div id="copyToast" class="copy-toast">
+  Copiado com sucesso!
+</div>
+
+<main class="pokemon-view">
+
+<div class="left-column">
+  <section class="image-panel">
+    <div class="dex-title">
+      <span id="dex"></span>
+      <span id="name"></span>
+    </div>
+
+<div class="art-wrapper">
+  <img id="official-art">
+  <div class="form-buttons" id="form-buttons"></div>
+</div>
+
+
+<div class="type-box">
+  <div class="types" id="types"></div>
+
+  <div class="type-dual-row">
+    <div class="type-panel weak">
+      <h3>Fraquezas</h3>
+      <div class="types" id="weaknesses"></div>
+    </div>
+
+    <div class="type-panel resist">
+      <h3>Resistências</h3>
+      <div class="types" id="resistances"></div>
+    </div>
+  </div>
+
+  <div class="type-panel immune">
+    <h3>Imunidades</h3>
+    <div class="types" id="immunities"></div>
+  </div>
+</div>
+
+</div>
+
+  <section class="info-panel">
+
+    <div class="block">
+      <h3>Habilidades</h3>
+      <div id="abilities"></div>
+    </div>
+ <div id="abilitiesContainer"></div>
+    <div class="block">
+      <h3>Proporções</h3>
+      <p id="size"></p>
+    </div>
+
+    <div class="block">
+      <h3>Acasalamento</h3>
+      <p id="gender"></p>
+      <p id="egg-group"></p>
+    </div>
+
+<div class="dex-section">
+
+<div id="dexToggleBtn" class="ability-item dex-toggle">
+  ◄ ENTRADA DA DEX
+</div>
+
+  <div id="dexContent" class="dex-content">
+    <div id="dex-entry"></div>
+
+    <button id="copyDexBtn" class="copy-dex-btn">
+      copiar dex
+    </button>
+  </div>
+
+</div>
+
+<div class="capacities-wrapper">
+  <div class="capacity">
+    <span class="capacity-title">INTELIGÊNCIA</span>
+    <span class="capacity-value" id="cap-int">0</span>
+    <span class="capacity-label" id="cap-int-label">Instintivo</span>
+  </div>
+
+  <div class="capacity">
+    <span class="capacity-title">FORÇA</span>
+    <span class="capacity-value" id="cap-str">1</span>
+    <span class="capacity-label" id="cap-str-label">Subdesenvolvida</span>
+  </div>
+
+  <div class="capacity">
+    <span class="capacity-title">DESLOCAMENTO</span>
+    <span class="capacity-value" id="cap-mov">1</span>
+    <span class="capacity-label" id="cap-mov-label">Lento</span>
+  </div>
+</div>
+
+    <div class="block">
+<section class="habitats-panel">
+  <h3>Habitat</h3>
+  <ul id="habitat-list"></ul>
+    </div>
+
+    <button class="cry-btn">Ouvir choro</button>
+  </section>
+
+
+
+  <section class="info-panel stats-panel">
+   <div class="tab-buttons">
+<button class="tab-btn active" data-tab="stats">Status</button>
+<button class="tab-btn" data-tab="contest">Concurso</button>
+  </div>
+
+  <div id="stats-tab" class="tab-content active">
+    <div class="stats-container">
+      <div class="radar-column">
+        <canvas id="statsRadar" width="220" height="220"></canvas>
+        <ul class="stats-list">
+          <li>Saúde: <strong id="stat-hp"></strong></li>
+          <li>Ataque: <strong id="stat-atk"></strong></li>
+          <li>Defesa: <strong id="stat-def"></strong></li>
+          <li>Ataque Esp.: <strong id="stat-spatk"></strong></li>
+          <li>Defesa Esp.: <strong id="stat-spdef"></strong></li>
+          <li>Velocidade: <strong id="stat-spd"></strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="contest-tab" class="tab-content">
+    <div class="radar-column">
+      <canvas id="contestRadar" width="220" height="220"></canvas>
+      <ul class="stats-list">
+        <li>Beleza: <strong id="contest-beauty"></strong></li>
+        <li>Fofura: <strong id="contest-cute"></strong></li>
+        <li>Estilo: <strong id="contest-style"></strong></li>
+        <li>Inteligência: <strong id="contest-smart"></strong></li>
+        <li>Vigor: <strong id="contest-tough"></strong></li>
+      </ul>
+    </div>
+  </div>
+  </section>
+
+</section>
+
+  <!-- DIREITA: GOLPES -->
+  <section class="info-panel move-tabs">
+      <div class="tab-buttons move-tab-buttons">
+      <button class="tab-btn active" data-movetab="level">Golpes (Level)</button>
+      <button class="tab-btn" data-movetab="other">TM / Tutor / Egg</button>
+    </div>
+
+    <div id="level-tab" class="tab-content active">
+      <table class="move-table">
+        <thead>
+          <tr>
+            <th>Nível</th>
+            <th>Golpe</th>
+            <th>Tipo</th>
+            <th>Categ.</th>
+            <th>Dano</th>
+            <th>Acerto</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody id="level-moves"></tbody>
+      </table>
+    </div>
+
+    <div id="other-tab" class="tab-content">
+      <table class="move-table">
+        <thead>
+          <tr>
+            <th>Método</th>
+            <th>Golpe</th>
+            <th>Tipo</th>
+            <th>Categ.</th>
+            <th>Dano</th>
+            <th>Acerto</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody id="other-moves"></tbody>
+      </table>
+    </div>
+
+  </section>
+
+</section>
+
+<section class="info-panel evolution-panel">
+  <h3>Linha Evolutiva</h3>
+  <div id="evolution-chain" class="evolution-chain"></div>
+</section>
+
+
+</main>
+
+<div class="nav-zone right" data-nav="next"></div>
+<button class="nav-btn right" data-nav="next">▶</button>
+</body>
+  
+</html>
+
