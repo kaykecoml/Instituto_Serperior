@@ -414,6 +414,21 @@ html, body {
   font-size: 12px;
 }
 
+.move-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.move-table-scroll::-webkit-scrollbar {
+  height: 7px;
+}
+
+.move-table-scroll::-webkit-scrollbar-thumb {
+  background: #2f6b44;
+  border-radius: 6px;
+}
+
+
 .move-table th {
   border-bottom: 2px solid #2f6b44;
   padding: 6px;
@@ -956,8 +971,8 @@ white-space: pre-line;
   .pokemon-view {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    padding: 15px;
-    gap: 20px;
+    padding: 14px;
+    gap: 16px;
   }
 
   .left-column,
@@ -968,57 +983,122 @@ white-space: pre-line;
     grid-column: auto !important;
     grid-row: auto !important;
     max-width: 100%;
+    width: 100%;
   }
 
-button,
-.tab-btn,
-.pixel-button,
-.form-base-btn {
-  min-height: 42px;
-}
+  .info-panel,
+  .stats-panel,
+  .move-tabs,
+  .evolution-panel,
+  .image-panel {
+    border-radius: 12px;
+    padding: 14px;
+  }
 
-  /* Imagem menor no mobile */
+  button,
+  .tab-btn,
+  .pixel-button,
+  .form-base-btn {
+    min-height: 42px;
+  }
+
+  .dex-search {
+    width: min(100% - 24px, 640px);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dex-search input,
+  .dex-search button {
+    width: 100%;
+  }
+
+  #dexNumberInput {
+    width: 100%;
+  }
+
   .image-panel img {
-    width: 220px;
+    width: min(100%, 250px);
+    height: auto;
   }
 
   .pokemon-image img {
-    width: 200px;
+    width: min(100%, 200px);
   }
 
-  /* Fraquezas e resistências viram coluna */
+  .types img,
+  #weaknesses img,
+  #resistances img,
+  #immunities img,
+  .type-panel img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+
   .type-dual-row {
     grid-template-columns: 1fr;
   }
 
-  /* Radar menor */
+  .type-panel.immune {
+    width: 100%;
+  }
+
+  .tab-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tab-btn {
+    flex: 1 1 46%;
+    min-width: 120px;
+    text-align: center;
+    padding: 8px 10px;
+  }
+
+  .move-tab-buttons .tab-btn {
+    flex: 1 1 100%;
+  }
+
   .stats-tabs canvas,
   .radar-column canvas {
     width: 180px !important;
     height: 180px !important;
+    max-width: 100%;
   }
 
-  /* Tabelas de golpes com scroll horizontal */
   .move-table {
+    min-width: 650px;
     font-size: 10px;
   }
 
-  .move-tabs {
-    overflow-x: auto;
+  .move-table th,
+  .move-table td {
+    white-space: nowrap;
   }
 
-  /* Botões de copiar */
   .copy-buttons {
     flex-direction: column;
     gap: 10px;
+    width: min(100% - 24px, 340px);
+    margin: 18px auto;
   }
 
   .pixel-button {
     width: 100%;
-    max-width: 280px;
+    max-width: none;
   }
 
-  /* Navegação lateral desativada no mobile */
+  .capacities-wrapper {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .capacity {
+    min-width: 78px;
+    flex: 1 1 30%;
+  }
+
   .nav-zone,
   .nav-btn {
     display: none;

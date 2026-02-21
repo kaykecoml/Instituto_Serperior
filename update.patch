@@ -1,0 +1,363 @@
+diff --git a/css/pokemon-view.css b/css/pokemon-view.css
+index d2e2e1705c2f13271bacc9c2e46afb399e54c266..f418f366df1c268a7afdb761a2cde05276323d93 100644
+--- a/css/pokemon-view.css
++++ b/css/pokemon-view.css
+@@ -392,50 +392,65 @@ html, body {
+   gap: 8px;
+   list-style: none;
+   padding: 0;
+ }
+ 
+ .habitat-item {
+   background: #1e293b;
+   border: 1px solid #334155;
+   padding: 6px 10px;
+   border-radius: 8px;
+   font-size: 0.9rem;
+ }
+ 
+ .move-tabs {
+   grid-column: 4 / 5;
+   grid-row: 2 / 4; /* ocupa status + evolução */
+ }
+ 
+ .move-table {
+   width: 100%;
+   border-collapse: collapse;
+   font-family: Pixel;
+   font-size: 12px;
+ }
+ 
++.move-table-scroll {
++  width: 100%;
++  overflow-x: auto;
++}
++
++.move-table-scroll::-webkit-scrollbar {
++  height: 7px;
++}
++
++.move-table-scroll::-webkit-scrollbar-thumb {
++  background: #2f6b44;
++  border-radius: 6px;
++}
++
++
+ .move-table th {
+   border-bottom: 2px solid #2f6b44;
+   padding: 6px;
+   color: #7bdc65;
+ }
+ 
+ .move-table td {
+   padding: 6px;
+   text-align: center;
+   border-bottom: 1px solid #163826;
+ }
+ 
+ .move-table img {
+   width: 26px;
+   height: 26px;
+ }
+ 
+ .move-table .status-icon {
+   width: 22px;
+   height: 22px;
+   opacity: 0.9;
+ }
+ 
+ .battle-section {
+   display: grid;
+@@ -934,95 +949,160 @@ white-space: pre-line;
+   border: 2px solid #7bdc65;
+   color: #eaffea;
+   font-family: Pixel, monospace;
+   cursor: pointer;
+ }
+ 
+ .copy-dex-btn:hover {
+   background: #1c573a;
+ }
+ 
+ .dex-toggle {
+   cursor: pointer;
+   user-select: none;
+ }
+ 
+ .dex-toggle.active {
+   background: #1c573a;
+ }
+ 
+ 
+ @media (max-width: 1024px) {
+ 
+   .pokemon-view {
+     grid-template-columns: 1fr;
+     grid-template-rows: auto;
+-    padding: 15px;
+-    gap: 20px;
++    padding: 14px;
++    gap: 16px;
+   }
+ 
+   .left-column,
+   .info-panel,
+   .stats-panel,
+   .move-tabs,
+   .evolution-panel {
+     grid-column: auto !important;
+     grid-row: auto !important;
+     max-width: 100%;
++    width: 100%;
+   }
+ 
+-button,
+-.tab-btn,
+-.pixel-button,
+-.form-base-btn {
+-  min-height: 42px;
+-}
++  .info-panel,
++  .stats-panel,
++  .move-tabs,
++  .evolution-panel,
++  .image-panel {
++    border-radius: 12px;
++    padding: 14px;
++  }
++
++  button,
++  .tab-btn,
++  .pixel-button,
++  .form-base-btn {
++    min-height: 42px;
++  }
++
++  .dex-search {
++    width: min(100% - 24px, 640px);
++    flex-wrap: wrap;
++    gap: 8px;
++  }
++
++  .dex-search input,
++  .dex-search button {
++    width: 100%;
++  }
++
++  #dexNumberInput {
++    width: 100%;
++  }
+ 
+-  /* Imagem menor no mobile */
+   .image-panel img {
+-    width: 220px;
++    width: min(100%, 250px);
++    height: auto;
+   }
+ 
+   .pokemon-image img {
+-    width: 200px;
++    width: min(100%, 200px);
++  }
++
++  .types img,
++  #weaknesses img,
++  #resistances img,
++  #immunities img,
++  .type-panel img {
++    width: 32px;
++    height: 32px;
++    object-fit: contain;
+   }
+ 
+-  /* Fraquezas e resistências viram coluna */
+   .type-dual-row {
+     grid-template-columns: 1fr;
+   }
+ 
+-  /* Radar menor */
++  .type-panel.immune {
++    width: 100%;
++  }
++
++  .tab-buttons {
++    flex-wrap: wrap;
++    gap: 8px;
++  }
++
++  .tab-btn {
++    flex: 1 1 46%;
++    min-width: 120px;
++    text-align: center;
++    padding: 8px 10px;
++  }
++
++  .move-tab-buttons .tab-btn {
++    flex: 1 1 100%;
++  }
++
+   .stats-tabs canvas,
+   .radar-column canvas {
+     width: 180px !important;
+     height: 180px !important;
++    max-width: 100%;
+   }
+ 
+-  /* Tabelas de golpes com scroll horizontal */
+   .move-table {
++    min-width: 650px;
+     font-size: 10px;
+   }
+ 
+-  .move-tabs {
+-    overflow-x: auto;
++  .move-table th,
++  .move-table td {
++    white-space: nowrap;
+   }
+ 
+-  /* Botões de copiar */
+   .copy-buttons {
+     flex-direction: column;
+     gap: 10px;
++    width: min(100% - 24px, 340px);
++    margin: 18px auto;
+   }
+ 
+   .pixel-button {
+     width: 100%;
+-    max-width: 280px;
++    max-width: none;
++  }
++
++  .capacities-wrapper {
++    gap: 8px;
++    flex-wrap: wrap;
++  }
++
++  .capacity {
++    min-width: 78px;
++    flex: 1 1 30%;
+   }
+ 
+-  /* Navegação lateral desativada no mobile */
+   .nav-zone,
+   .nav-btn {
+     display: none;
+   }
+ 
+ }
+ 
+diff --git a/pokemon-view.html b/pokemon-view.html
+index 4756eff8d03f8eaef0da6ddb4d517473985cda56..78fa18d22d1ba0e8235244738b641b529475ff72 100644
+--- a/pokemon-view.html
++++ b/pokemon-view.html
+@@ -182,76 +182,79 @@
+ 
+   <div id="contest-tab" class="tab-content">
+     <div class="radar-column">
+       <canvas id="contestRadar" width="220" height="220"></canvas>
+       <ul class="stats-list">
+         <li>Beleza: <strong id="contest-beauty"></strong></li>
+         <li>Fofura: <strong id="contest-cute"></strong></li>
+         <li>Estilo: <strong id="contest-style"></strong></li>
+         <li>Inteligência: <strong id="contest-smart"></strong></li>
+         <li>Vigor: <strong id="contest-tough"></strong></li>
+       </ul>
+     </div>
+   </div>
+   </section>
+ 
+ </section>
+ 
+   <!-- DIREITA: GOLPES -->
+   <section class="info-panel move-tabs">
+       <div class="tab-buttons move-tab-buttons">
+       <button class="tab-btn active" data-movetab="level">Golpes (Level)</button>
+       <button class="tab-btn" data-movetab="other">TM / Tutor / Egg</button>
+     </div>
+ 
+     <div id="level-tab" class="tab-content active">
+-      <table class="move-table">
+-        <thead>
+-          <tr>
+-            <th>Nível</th>
+-            <th>Golpe</th>
+-            <th>Tipo</th>
+-            <th>Categ.</th>
+-            <th>Dano</th>
+-            <th>Acerto</th>
+-            <th>Uso</th>
+-          </tr>
+-        </thead>
+-        <tbody id="level-moves"></tbody>
+-      </table>
++      <div class="move-table-scroll">
++        <table class="move-table">
++          <thead>
++            <tr>
++              <th>Nível</th>
++              <th>Golpe</th>
++              <th>Tipo</th>
++              <th>Categ.</th>
++              <th>Dano</th>
++              <th>Acerto</th>
++              <th>Uso</th>
++            </tr>
++          </thead>
++          <tbody id="level-moves"></tbody>
++        </table>
++      </div>
+     </div>
+ 
+     <div id="other-tab" class="tab-content">
+-      <table class="move-table">
+-        <thead>
+-          <tr>
+-            <th>Método</th>
+-            <th>Golpe</th>
+-            <th>Tipo</th>
+-            <th>Categ.</th>
+-            <th>Dano</th>
+-            <th>Acerto</th>
+-            <th>Uso</th>
+-          </tr>
+-        </thead>
+-        <tbody id="other-moves"></tbody>
+-      </table>
++      <div class="move-table-scroll">
++        <table class="move-table">
++          <thead>
++            <tr>
++              <th>Método</th>
++              <th>Golpe</th>
++              <th>Tipo</th>
++              <th>Categ.</th>
++              <th>Dano</th>
++              <th>Acerto</th>
++              <th>Uso</th>
++            </tr>
++          </thead>
++          <tbody id="other-moves"></tbody>
++        </table>
++      </div>
+     </div>
+ 
+   </section>
+ 
+ </section>
+ 
+ <section class="info-panel evolution-panel">
+   <h3>Linha Evolutiva</h3>
+   <div id="evolution-chain" class="evolution-chain"></div>
+ </section>
+ 
+ 
+ </main>
+ 
+ <div class="nav-zone right" data-nav="next"></div>
+ <button class="nav-btn right" data-nav="next">▶</button>
+ </body>
+   
+ </html>
+-
