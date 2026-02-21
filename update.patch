@@ -1,74 +1,130 @@
 diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index d2e2e1705c2f13271bacc9c2e46afb399e54c266..f418f366df1c268a7afdb761a2cde05276323d93 100644
+index f418f366df1c268a7afdb761a2cde05276323d93..339734f9c302f94171cb4e2d57c7ee673f3d4d42 100644
 --- a/css/pokemon-view.css
 +++ b/css/pokemon-view.css
-@@ -392,50 +392,65 @@ html, body {
-   gap: 8px;
-   list-style: none;
-   padding: 0;
+@@ -53,51 +53,53 @@ html, body {
+   margin-bottom: 4px;
  }
  
- .habitat-item {
-   background: #1e293b;
-   border: 1px solid #334155;
-   padding: 6px 10px;
-   border-radius: 8px;
-   font-size: 0.9rem;
- }
- 
- .move-tabs {
-   grid-column: 4 / 5;
-   grid-row: 2 / 4; /* ocupa status + evolução */
- }
- 
- .move-table {
+ .cry-btn {
+   margin-top: 16px;
    width: 100%;
-   border-collapse: collapse;
+   background: #2f6b44;
+   border: none;
+   padding: 10px;
+   border-radius: 10px;
    font-family: Pixel;
-   font-size: 12px;
+   cursor: pointer;
  }
  
-+.move-table-scroll {
-+  width: 100%;
-+  overflow-x: auto;
-+}
-+
-+.move-table-scroll::-webkit-scrollbar {
-+  height: 7px;
-+}
-+
-+.move-table-scroll::-webkit-scrollbar-thumb {
-+  background: #2f6b44;
-+  border-radius: 6px;
-+}
-+
-+
- .move-table th {
-   border-bottom: 2px solid #2f6b44;
-   padding: 6px;
-   color: #7bdc65;
- }
- 
- .move-table td {
-   padding: 6px;
+ .image-panel {
    text-align: center;
-   border-bottom: 1px solid #163826;
  }
  
- .move-table img {
-   width: 26px;
-   height: 26px;
+ .dex-title {
+   font-family: Pixel;
+   font-size: 18px;
+   margin-bottom: 10px;
  }
  
- .move-table .status-icon {
-   width: 22px;
-   height: 22px;
-   opacity: 0.9;
+ .image-panel img {
+-  width: 320px;
++  width: min(100%, 320px);
++  height: auto;
++  object-fit: contain;
  }
  
- .battle-section {
-   display: grid;
-@@ -934,95 +949,160 @@ white-space: pre-line;
+ .type-box {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   margin-top: 15px;
+ }
+ 
+ .type-row {
+   display: flex;
+   gap: 8px;
+   flex-wrap: wrap;
+ }
+ 
+ .type {
+   padding: 6px 10px;
+   border-radius: 6px;
+   font-size: 14px;
+ }
+ .types img {
+   width: 44px;
+   height: 44px;
+ }
+ 
+@@ -486,61 +488,61 @@ html, body {
+ #form-buttons::-webkit-scrollbar {
+   height: 6px;
+ }
+ 
+ #form-buttons::-webkit-scrollbar-track {
+   background: transparent;
+ }
+ 
+ #form-buttons::-webkit-scrollbar-thumb {
+   background: #7bdc65;
+   border-radius: 6px;
+ }
+ 
+ /* REMOVE qualquer botão padrão */
+ #form-buttons::-webkit-scrollbar-button {
+   display: none;
+ }
+ 
+ .form-buttons {
+   display: flex;
+   align-items: center;     
+   gap: 0px;                
+ }
+ 
+ .form-btn {
+-  width: 20px;
+-  height: 20px;
++  width: 24px;
++  height: 24px;
+   object-fit: contain;
+   cursor: pointer;
+   transition: transform 0.15s ease;
+ }
+ 
+ .form-base-btn,
+ .form-buttons .tab-btn,
+ .form-btn {
+-  height: 40px; 
++  height: 36px; 
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+ 
+ .form-btn:hover {
+   transform: scale(1.1);
+ }
+ 
+ /* botão base */
+ .form-base-btn {
+   background: #08120d;
+   border: 1px solid #2f6b44;
+   color: #7bdc65;
+   font-family: Pixel;
+   font-size: 10px;
+   padding: 3px 8px;
+   border-radius: 6px;
+   cursor: pointer;
+ }
+ 
+ /* formas regionais */
+ .form-buttons .tab-btn {
+   padding: 3px 6px;
+   font-size: 10px;
+@@ -947,162 +949,221 @@ white-space: pre-line;
+   padding: 6px 12px;
+   background: #133d2a;
    border: 2px solid #7bdc65;
    color: #eaffea;
    font-family: Pixel, monospace;
@@ -92,12 +148,13 @@ index d2e2e1705c2f13271bacc9c2e46afb399e54c266..f418f366df1c268a7afdb761a2cde052
  @media (max-width: 1024px) {
  
    .pokemon-view {
-     grid-template-columns: 1fr;
+-    grid-template-columns: 1fr;
++    grid-template-columns: minmax(0, 1fr);
      grid-template-rows: auto;
--    padding: 15px;
--    gap: 20px;
-+    padding: 14px;
-+    gap: 16px;
+-    padding: 14px;
+-    gap: 16px;
++    padding: clamp(10px, 3.5vw, 16px);
++    gap: clamp(12px, 3vw, 18px);
    }
  
    .left-column,
@@ -108,256 +165,411 @@ index d2e2e1705c2f13271bacc9c2e46afb399e54c266..f418f366df1c268a7afdb761a2cde052
      grid-column: auto !important;
      grid-row: auto !important;
      max-width: 100%;
-+    width: 100%;
+     width: 100%;
    }
  
--button,
--.tab-btn,
--.pixel-button,
--.form-base-btn {
--  min-height: 42px;
--}
-+  .info-panel,
-+  .stats-panel,
-+  .move-tabs,
-+  .evolution-panel,
+   .info-panel,
+   .stats-panel,
+   .move-tabs,
+   .evolution-panel,
+   .image-panel {
+     border-radius: 12px;
+-    padding: 14px;
++    padding: clamp(10px, 3vw, 14px);
+   }
+ 
+   button,
+   .tab-btn,
+   .pixel-button,
+   .form-base-btn {
+-    min-height: 42px;
++    min-height: 38px;
+   }
+ 
+   .dex-search {
+-    width: min(100% - 24px, 640px);
++    width: min(100% - 20px, 640px);
+     flex-wrap: wrap;
+     gap: 8px;
+   }
+ 
+   .dex-search input,
+   .dex-search button {
+     width: 100%;
+   }
+ 
+   #dexNumberInput {
+     width: 100%;
+   }
+ 
+-  .image-panel img {
+-    width: min(100%, 250px);
+-    height: auto;
++  .copy-buttons {
++    width: min(100% - 20px, 460px);
++    margin: 16px auto;
++    gap: 8px;
++    flex-direction: row;
++    flex-wrap: nowrap;
++  }
++
++  .pixel-button {
++    flex: 1 1 0;
++    padding: 6px 8px;
++    font-size: clamp(9px, 2.4vw, 11px);
++    min-width: 0;
++    white-space: nowrap;
++  }
++
 +  .image-panel {
-+    border-radius: 12px;
-+    padding: 14px;
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    justify-content: center;
 +  }
 +
-+  button,
-+  .tab-btn,
-+  .pixel-button,
-+  .form-base-btn {
-+    min-height: 42px;
-+  }
-+
-+  .dex-search {
-+    width: min(100% - 24px, 640px);
-+    flex-wrap: wrap;
++  .art-wrapper {
++    width: 100%;
++    min-height: clamp(210px, 44vw, 300px);
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    justify-content: center;
 +    gap: 8px;
 +  }
 +
-+  .dex-search input,
-+  .dex-search button {
-+    width: 100%;
-+  }
-+
-+  #dexNumberInput {
-+    width: 100%;
-+  }
- 
--  /* Imagem menor no mobile */
-   .image-panel img {
--    width: 220px;
-+    width: min(100%, 250px);
-+    height: auto;
++  #official-art {
++    width: clamp(200px, 58vw, 320px);
++    max-width: 100%;
++    max-height: 42vh;
++    object-fit: contain;
++    margin: 0 auto;
++    display: block;
    }
  
    .pokemon-image img {
--    width: 200px;
-+    width: min(100%, 200px);
-+  }
-+
-+  .types img,
-+  #weaknesses img,
-+  #resistances img,
-+  #immunities img,
-+  .type-panel img {
-+    width: 32px;
-+    height: 32px;
-+    object-fit: contain;
+-    width: min(100%, 200px);
++    width: clamp(160px, 48vw, 240px);
    }
  
--  /* Fraquezas e resistências viram coluna */
+   .types img,
+   #weaknesses img,
+   #resistances img,
+   #immunities img,
+   .type-panel img {
+-    width: 32px;
+-    height: 32px;
++    width: clamp(36px, 8.6vw, 46px);
++    height: clamp(36px, 8.6vw, 46px);
+     object-fit: contain;
+   }
+ 
    .type-dual-row {
      grid-template-columns: 1fr;
    }
  
--  /* Radar menor */
-+  .type-panel.immune {
-+    width: 100%;
-+  }
-+
-+  .tab-buttons {
-+    flex-wrap: wrap;
-+    gap: 8px;
-+  }
-+
-+  .tab-btn {
-+    flex: 1 1 46%;
-+    min-width: 120px;
-+    text-align: center;
-+    padding: 8px 10px;
-+  }
-+
-+  .move-tab-buttons .tab-btn {
-+    flex: 1 1 100%;
-+  }
-+
-   .stats-tabs canvas,
-   .radar-column canvas {
-     width: 180px !important;
-     height: 180px !important;
-+    max-width: 100%;
+   .type-panel.immune {
+     width: 100%;
    }
  
--  /* Tabelas de golpes com scroll horizontal */
-   .move-table {
-+    min-width: 650px;
-     font-size: 10px;
+   .tab-buttons {
+-    flex-wrap: wrap;
+-    gap: 8px;
++    flex-wrap: nowrap;
++    gap: 6px;
++    overflow-x: auto;
++    justify-content: flex-start;
++    padding-bottom: 8px;
    }
  
--  .move-tabs {
--    overflow-x: auto;
-+  .move-table th,
-+  .move-table td {
+   .tab-btn {
+-    flex: 1 1 46%;
+-    min-width: 120px;
++    flex: 1 1 auto;
++    min-width: clamp(110px, 35vw, 180px);
+     text-align: center;
+     padding: 8px 10px;
++    font-size: clamp(10px, 2.6vw, 12px);
 +    white-space: nowrap;
    }
  
--  /* Botões de copiar */
-   .copy-buttons {
-     flex-direction: column;
-     gap: 10px;
-+    width: min(100% - 24px, 340px);
-+    margin: 18px auto;
-   }
- 
-   .pixel-button {
-     width: 100%;
--    max-width: 280px;
-+    max-width: none;
+   .move-tab-buttons .tab-btn {
+-    flex: 1 1 100%;
++    min-width: clamp(130px, 44vw, 220px);
 +  }
 +
-+  .capacities-wrapper {
-+    gap: 8px;
-+    flex-wrap: wrap;
-+  }
-+
-+  .capacity {
-+    min-width: 78px;
-+    flex: 1 1 30%;
++  .tab-content {
++    width: 100%;
++    overflow: hidden;
    }
  
--  /* Navegação lateral desativada no mobile */
+   .stats-tabs canvas,
+   .radar-column canvas {
+-    width: 180px !important;
+-    height: 180px !important;
++    width: clamp(160px, 48vw, 220px) !important;
++    height: clamp(160px, 48vw, 220px) !important;
+     max-width: 100%;
+   }
+ 
++  .stats-list {
++    width: 100%;
++    font-size: clamp(10px, 2.8vw, 13px);
++  }
++
+   .move-table {
+-    min-width: 650px;
++    min-width: 620px;
+     font-size: 10px;
+   }
+ 
+   .move-table th,
+   .move-table td {
+     white-space: nowrap;
+   }
+ 
+-  .copy-buttons {
+-    flex-direction: column;
+-    gap: 10px;
+-    width: min(100% - 24px, 340px);
+-    margin: 18px auto;
+-  }
+-
+-  .pixel-button {
+-    width: 100%;
+-    max-width: none;
+-  }
+-
+   .capacities-wrapper {
+     gap: 8px;
+     flex-wrap: wrap;
+   }
+ 
+   .capacity {
+-    min-width: 78px;
++    min-width: 74px;
+     flex: 1 1 30%;
+   }
+ 
++  #form-buttons {
++    gap: 4px;
++  }
++
++  .form-base-btn,
++  .form-buttons .tab-btn {
++    height: 32px;
++    padding: 2px 6px;
++    font-size: 9px;
++  }
++
++  .form-btn {
++    width: 28px;
++    height: 28px;
++  }
++
++  .dex-content {
++    max-height: min(40vh, 280px);
++  }
++
    .nav-zone,
    .nav-btn {
      display: none;
    }
- 
+-
  }
  
+diff --git a/js/pokemon-view.js b/js/pokemon-view.js
+index f61686e9d7d39a12ccc71a33c967b28642f6e95e..8fe76115de5ab0e2167b489bad0f51f3ccd6c2f9 100644
+--- a/js/pokemon-view.js
++++ b/js/pokemon-view.js
+@@ -522,51 +522,53 @@ function renderForms(varieties, baseName) {
+   });
+ }
+ 
+ function loadForm(name) {
+   fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+     .then(res => res.json())
+     .then(pokemon => {
+ if (!pokemon.moves || pokemon.moves.length === 0) {
+   pokemon.moves = basePokemon?.moves || [];
+ }
+       applyPokemonData(pokemon);
+     });
+ }
+ 
+ async function applyPokemonData(p) {
+ const dexEntry = document.getElementById("dex-entry");
+ 
+ dexEntry.textContent = "Carregando biologia...";
+ 
+ const biologyText = await fetchBulbapediaBiology(p.name);
+ 
+ dexEntry.classList.remove("expanded");
+ dexEntry.textContent = biologyText;
+ 
+ document.getElementById("dexContent").classList.remove("open");
+-document.getElementById("dexToggleBtn").textContent = "▸ ENTRADA DA DEX";
++const dexToggleButton = document.getElementById("dexToggleBtn");
++dexToggleButton.classList.remove("active");
++dexToggleButton.textContent = "▸ ENTRADA DA DEX";
+ 
+   const species = await fetch(p.species.url)
+     .then(res => res.json());
+ 
+   const pokemonData = buildPokemonData(p, species);
+ 
+   const chainData = await fetch(species.evolution_chain.url)
+     .then(r => r.json());
+ 
+ function findNode(name, node) {
+   if (node.species.name === name) return node;
+ 
+   for (const next of node.evolves_to) {
+     const found = findNode(name, next);
+     if (found) return found;
+   }
+   return null;
+ }
+ 
+ 
+ let node = findNode(p.name, chainData.chain);
+ 
+ if (!node && p.name.includes("-")) {
+   const baseName = p.name.split("-")[0];
+   node = findNode(baseName, chainData.chain);
+@@ -1492,66 +1494,70 @@ function openTab(e, tab) {
+ 
+   document.getElementById(`${tab}-tab`).classList.add("active");
+   e.currentTarget.classList.add("active");
+ }
+ 
+ document.querySelectorAll(".stats-panel .tab-btn").forEach(btn => {
+   btn.addEventListener("click", e => {
+     const tab = btn.dataset.tab;
+ 
+     document
+       .querySelectorAll(".stats-panel .tab-content")
+       .forEach(t => t.classList.remove("active"));
+ 
+     document
+       .querySelectorAll(".stats-panel .tab-btn")
+       .forEach(b => b.classList.remove("active"));
+ 
+     document.getElementById(`${tab}-tab`).classList.add("active");
+     btn.classList.add("active");
+   });
+ });
+ 
+ const dexBtn = document.getElementById("dexToggleBtn");
+ const dexContent = document.getElementById("dexContent");
+ 
+-dexBtn.addEventListener("click", () => {
+-
++function toggleDexEntry() {
+   document.querySelectorAll(".dex-toggle")
+     .forEach(el => el.classList.remove("active"));
+ 
+   const isOpen = dexContent.classList.toggle("open");
+ 
+   if (isOpen) {
+     dexBtn.classList.add("active");
+     dexBtn.innerHTML = "◄ ENTRADA DA DEX";
+   } else {
+     dexBtn.classList.remove("active");
+-    dexBtn.innerHTML = "◄ ENTRADA DA DEX";
++    dexBtn.innerHTML = "▸ ENTRADA DA DEX";
+   }
++}
+ 
+-});
++dexBtn.addEventListener("click", toggleDexEntry);
++dexBtn.addEventListener("touchend", event => {
++  event.preventDefault();
++  toggleDexEntry();
++}, { passive: false });
+ 
+ const otherBtn = document.querySelector('[data-movetab="other"]');
+ const otherTab = document.getElementById("other-tab");
+ 
+ otherBtn?.addEventListener("click", () => {
+   otherTab.classList.toggle("active");
+   otherBtn.classList.toggle("active");
+ });
+ 
+ document.getElementById("copyDexBtn")
+   .addEventListener("click", () => {
+ 
+     const name = document.getElementById("name").textContent;
+     const dex = document.getElementById("dex").textContent;
+     const text = document.getElementById("dex-entry").textContent;
+ 
+     if (!text || text === "Carregando biologia...") return;
+ 
+     const formatted = `
+ ◄ 『${name}』【${dex}】
+ ╔═════════╡✠╞═════════╗
+ ${text}
+ 
+ ╚═════════╡✠╞═════════╝
+ `;
 diff --git a/pokemon-view.html b/pokemon-view.html
-index 4756eff8d03f8eaef0da6ddb4d517473985cda56..78fa18d22d1ba0e8235244738b641b529475ff72 100644
+index 78fa18d22d1ba0e8235244738b641b529475ff72..7f5cc11e27b64cd533dcf4a024734a291a954fc0 100644
 --- a/pokemon-view.html
 +++ b/pokemon-view.html
-@@ -182,76 +182,79 @@
- 
-   <div id="contest-tab" class="tab-content">
-     <div class="radar-column">
-       <canvas id="contestRadar" width="220" height="220"></canvas>
-       <ul class="stats-list">
-         <li>Beleza: <strong id="contest-beauty"></strong></li>
-         <li>Fofura: <strong id="contest-cute"></strong></li>
-         <li>Estilo: <strong id="contest-style"></strong></li>
-         <li>Inteligência: <strong id="contest-smart"></strong></li>
-         <li>Vigor: <strong id="contest-tough"></strong></li>
-       </ul>
-     </div>
+@@ -91,53 +91,53 @@
    </div>
-   </section>
+ </div>
  
- </section>
+ </div>
  
-   <!-- DIREITA: GOLPES -->
-   <section class="info-panel move-tabs">
-       <div class="tab-buttons move-tab-buttons">
-       <button class="tab-btn active" data-movetab="level">Golpes (Level)</button>
-       <button class="tab-btn" data-movetab="other">TM / Tutor / Egg</button>
+   <section class="info-panel">
+ 
+     <div class="block">
+       <h3>Habilidades</h3>
+       <div id="abilities"></div>
+     </div>
+  <div id="abilitiesContainer"></div>
+     <div class="block">
+       <h3>Proporções</h3>
+       <p id="size"></p>
      </div>
  
-     <div id="level-tab" class="tab-content active">
--      <table class="move-table">
--        <thead>
--          <tr>
--            <th>Nível</th>
--            <th>Golpe</th>
--            <th>Tipo</th>
--            <th>Categ.</th>
--            <th>Dano</th>
--            <th>Acerto</th>
--            <th>Uso</th>
--          </tr>
--        </thead>
--        <tbody id="level-moves"></tbody>
--      </table>
-+      <div class="move-table-scroll">
-+        <table class="move-table">
-+          <thead>
-+            <tr>
-+              <th>Nível</th>
-+              <th>Golpe</th>
-+              <th>Tipo</th>
-+              <th>Categ.</th>
-+              <th>Dano</th>
-+              <th>Acerto</th>
-+              <th>Uso</th>
-+            </tr>
-+          </thead>
-+          <tbody id="level-moves"></tbody>
-+        </table>
-+      </div>
+     <div class="block">
+       <h3>Acasalamento</h3>
+       <p id="gender"></p>
+       <p id="egg-group"></p>
      </div>
  
-     <div id="other-tab" class="tab-content">
--      <table class="move-table">
--        <thead>
--          <tr>
--            <th>Método</th>
--            <th>Golpe</th>
--            <th>Tipo</th>
--            <th>Categ.</th>
--            <th>Dano</th>
--            <th>Acerto</th>
--            <th>Uso</th>
--          </tr>
--        </thead>
--        <tbody id="other-moves"></tbody>
--      </table>
-+      <div class="move-table-scroll">
-+        <table class="move-table">
-+          <thead>
-+            <tr>
-+              <th>Método</th>
-+              <th>Golpe</th>
-+              <th>Tipo</th>
-+              <th>Categ.</th>
-+              <th>Dano</th>
-+              <th>Acerto</th>
-+              <th>Uso</th>
-+            </tr>
-+          </thead>
-+          <tbody id="other-moves"></tbody>
-+        </table>
-+      </div>
-     </div>
+ <div class="dex-section">
  
-   </section>
+-<div id="dexToggleBtn" class="ability-item dex-toggle">
+-  ◄ ENTRADA DA DEX
+-</div>
++<button id="dexToggleBtn" class="ability-item dex-toggle" type="button">
++  ▸ ENTRADA DA DEX
++</button>
  
- </section>
+   <div id="dexContent" class="dex-content">
+     <div id="dex-entry"></div>
  
- <section class="info-panel evolution-panel">
-   <h3>Linha Evolutiva</h3>
-   <div id="evolution-chain" class="evolution-chain"></div>
- </section>
+     <button id="copyDexBtn" class="copy-dex-btn">
+       copiar dex
+     </button>
+   </div>
  
+ </div>
  
- </main>
+ <div class="capacities-wrapper">
+   <div class="capacity">
+     <span class="capacity-title">INTELIGÊNCIA</span>
+     <span class="capacity-value" id="cap-int">0</span>
+     <span class="capacity-label" id="cap-int-label">Instintivo</span>
+   </div>
  
- <div class="nav-zone right" data-nav="next"></div>
- <button class="nav-btn right" data-nav="next">▶</button>
- </body>
-   
- </html>
--
+   <div class="capacity">
+     <span class="capacity-title">FORÇA</span>
+     <span class="capacity-value" id="cap-str">1</span>
+     <span class="capacity-label" id="cap-str-label">Subdesenvolvida</span>
+   </div>
+ 
+   <div class="capacity">

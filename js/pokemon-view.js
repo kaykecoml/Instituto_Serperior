@@ -544,7 +544,9 @@ dexEntry.classList.remove("expanded");
 dexEntry.textContent = biologyText;
 
 document.getElementById("dexContent").classList.remove("open");
-document.getElementById("dexToggleBtn").textContent = "▸ ENTRADA DA DEX";
+const dexToggleButton = document.getElementById("dexToggleBtn");
+dexToggleButton.classList.remove("active");
+dexToggleButton.textContent = "▸ ENTRADA DA DEX";
 
   const species = await fetch(p.species.url)
     .then(res => res.json());
@@ -1514,8 +1516,7 @@ document.querySelectorAll(".stats-panel .tab-btn").forEach(btn => {
 const dexBtn = document.getElementById("dexToggleBtn");
 const dexContent = document.getElementById("dexContent");
 
-dexBtn.addEventListener("click", () => {
-
+function toggleDexEntry() {
   document.querySelectorAll(".dex-toggle")
     .forEach(el => el.classList.remove("active"));
 
@@ -1526,10 +1527,15 @@ dexBtn.addEventListener("click", () => {
     dexBtn.innerHTML = "◄ ENTRADA DA DEX";
   } else {
     dexBtn.classList.remove("active");
-    dexBtn.innerHTML = "◄ ENTRADA DA DEX";
+    dexBtn.innerHTML = "▸ ENTRADA DA DEX";
   }
+}
 
-});
+dexBtn.addEventListener("click", toggleDexEntry);
+dexBtn.addEventListener("touchend", event => {
+  event.preventDefault();
+  toggleDexEntry();
+}, { passive: false });
 
 const otherBtn = document.querySelector('[data-movetab="other"]');
 const otherTab = document.getElementById("other-tab");
