@@ -370,6 +370,30 @@ async function getMoveDetails(url) {
 
 const bulbapediaCache = {};
 
+async function fetchJsonWithRetry(url, retries = 2) {
+  let lastError = null;
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      lastError = error;
+
+      if (attempt < retries) {
+        await new Promise((resolve) => setTimeout(resolve, 350 * (attempt + 1)));
+      }
+    }
+  }
+
+  throw lastError;
+}
+
 function getBulbapediaPageCandidates(pokemonName) {
   const cleanedName = pokemonName.trim().toLowerCase();
   const baseName = cleanedName.split("-")[0];
@@ -395,11 +419,9 @@ async function fetchBulbapediaBiology(pokemonName) {
     let sections = null;
 
     for (const candidate of pageCandidates) {
-      const sectionsResponse = await fetch(
-        `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${candidate}_(Pok%C3%A9mon)&prop=sections&format=json&origin=*`,
+      const sectionsData = await fetchJsonWithRetry(
+        `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${encodeURIComponent(candidate)}_(Pok%C3%A9mon)&prop=sections&format=json&origin=*`,
       );
-
-      const sectionsData = await sectionsResponse.json();
 
       if (sectionsData.parse?.sections?.length) {
         pageName = `${candidate}_(Pok%C3%A9mon)`;
@@ -411,19 +433,20 @@ async function fetchBulbapediaBiology(pokemonName) {
     if (!sections || !pageName) {
       return "Biologia não encontrada.";
     }
-    const biologySection = sections.find((s) =>
-      s.line.toLowerCase().includes("biology"),
-    );
+    const biologySection = sections.find((s) => {
+      const normalizedLine = s.line.toLowerCase();
+      return (
+        normalizedLine.includes("biology") || normalizedLine.includes("biologia")
+      );
+    });
 
     if (!biologySection) {
       return "Biologia não encontrada.";
     }
 
-    const sectionResponse = await fetch(
-      `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${pageName}&prop=text&section=${biologySection.index}&format=json&origin=*`,
+    const sectionData = await fetchJsonWithRetry(
+      `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${encodeURIComponent(pageName)}&prop=text&section=${biologySection.index}&format=json&origin=*`,
     );
-
-    const sectionData = await sectionResponse.json();
 
     if (!sectionData.parse?.text) {
       return "Descrição não encontrada.";
