@@ -1,575 +1,247 @@
-diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index f418f366df1c268a7afdb761a2cde05276323d93..339734f9c302f94171cb4e2d57c7ee673f3d4d42 100644
---- a/css/pokemon-view.css
-+++ b/css/pokemon-view.css
-@@ -53,51 +53,53 @@ html, body {
-   margin-bottom: 4px;
- }
- 
- .cry-btn {
-   margin-top: 16px;
-   width: 100%;
-   background: #2f6b44;
-   border: none;
-   padding: 10px;
-   border-radius: 10px;
-   font-family: Pixel;
-   cursor: pointer;
- }
- 
- .image-panel {
-   text-align: center;
- }
- 
- .dex-title {
-   font-family: Pixel;
-   font-size: 18px;
-   margin-bottom: 10px;
- }
- 
- .image-panel img {
--  width: 320px;
-+  width: min(100%, 320px);
-+  height: auto;
-+  object-fit: contain;
- }
- 
- .type-box {
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-   margin-top: 15px;
- }
- 
- .type-row {
-   display: flex;
-   gap: 8px;
-   flex-wrap: wrap;
- }
- 
- .type {
-   padding: 6px 10px;
-   border-radius: 6px;
-   font-size: 14px;
- }
- .types img {
-   width: 44px;
-   height: 44px;
- }
- 
-@@ -486,61 +488,61 @@ html, body {
- #form-buttons::-webkit-scrollbar {
-   height: 6px;
- }
- 
- #form-buttons::-webkit-scrollbar-track {
-   background: transparent;
- }
- 
- #form-buttons::-webkit-scrollbar-thumb {
-   background: #7bdc65;
-   border-radius: 6px;
- }
- 
- /* REMOVE qualquer botão padrão */
- #form-buttons::-webkit-scrollbar-button {
-   display: none;
- }
- 
- .form-buttons {
-   display: flex;
-   align-items: center;     
-   gap: 0px;                
- }
- 
- .form-btn {
--  width: 20px;
--  height: 20px;
-+  width: 24px;
-+  height: 24px;
-   object-fit: contain;
-   cursor: pointer;
-   transition: transform 0.15s ease;
- }
- 
- .form-base-btn,
- .form-buttons .tab-btn,
- .form-btn {
--  height: 40px; 
-+  height: 36px; 
-   display: flex;
-   align-items: center;
-   justify-content: center;
- }
- 
- .form-btn:hover {
-   transform: scale(1.1);
- }
- 
- /* botão base */
- .form-base-btn {
-   background: #08120d;
-   border: 1px solid #2f6b44;
-   color: #7bdc65;
-   font-family: Pixel;
-   font-size: 10px;
-   padding: 3px 8px;
-   border-radius: 6px;
-   cursor: pointer;
- }
- 
- /* formas regionais */
- .form-buttons .tab-btn {
-   padding: 3px 6px;
-   font-size: 10px;
-@@ -947,162 +949,221 @@ white-space: pre-line;
-   padding: 6px 12px;
-   background: #133d2a;
-   border: 2px solid #7bdc65;
-   color: #eaffea;
-   font-family: Pixel, monospace;
-   cursor: pointer;
- }
- 
- .copy-dex-btn:hover {
-   background: #1c573a;
- }
- 
- .dex-toggle {
-   cursor: pointer;
-   user-select: none;
- }
- 
- .dex-toggle.active {
-   background: #1c573a;
- }
- 
- 
- @media (max-width: 1024px) {
- 
-   .pokemon-view {
--    grid-template-columns: 1fr;
-+    grid-template-columns: minmax(0, 1fr);
-     grid-template-rows: auto;
--    padding: 14px;
--    gap: 16px;
-+    padding: clamp(10px, 3.5vw, 16px);
-+    gap: clamp(12px, 3vw, 18px);
-   }
- 
-   .left-column,
-   .info-panel,
-   .stats-panel,
-   .move-tabs,
-   .evolution-panel {
-     grid-column: auto !important;
-     grid-row: auto !important;
-     max-width: 100%;
-     width: 100%;
-   }
- 
-   .info-panel,
-   .stats-panel,
-   .move-tabs,
-   .evolution-panel,
-   .image-panel {
-     border-radius: 12px;
--    padding: 14px;
-+    padding: clamp(10px, 3vw, 14px);
-   }
- 
-   button,
-   .tab-btn,
-   .pixel-button,
-   .form-base-btn {
--    min-height: 42px;
-+    min-height: 38px;
-   }
- 
-   .dex-search {
--    width: min(100% - 24px, 640px);
-+    width: min(100% - 20px, 640px);
-     flex-wrap: wrap;
-     gap: 8px;
-   }
- 
-   .dex-search input,
-   .dex-search button {
-     width: 100%;
-   }
- 
-   #dexNumberInput {
-     width: 100%;
-   }
- 
--  .image-panel img {
--    width: min(100%, 250px);
--    height: auto;
-+  .copy-buttons {
-+    width: min(100% - 20px, 460px);
-+    margin: 16px auto;
-+    gap: 8px;
-+    flex-direction: row;
-+    flex-wrap: nowrap;
-+  }
-+
-+  .pixel-button {
-+    flex: 1 1 0;
-+    padding: 6px 8px;
-+    font-size: clamp(9px, 2.4vw, 11px);
-+    min-width: 0;
-+    white-space: nowrap;
-+  }
-+
-+  .image-panel {
-+    display: flex;
-+    flex-direction: column;
-+    align-items: center;
-+    justify-content: center;
-+  }
-+
-+  .art-wrapper {
-+    width: 100%;
-+    min-height: clamp(210px, 44vw, 300px);
-+    display: flex;
-+    flex-direction: column;
-+    align-items: center;
-+    justify-content: center;
-+    gap: 8px;
-+  }
-+
-+  #official-art {
-+    width: clamp(200px, 58vw, 320px);
-+    max-width: 100%;
-+    max-height: 42vh;
-+    object-fit: contain;
-+    margin: 0 auto;
-+    display: block;
-   }
- 
-   .pokemon-image img {
--    width: min(100%, 200px);
-+    width: clamp(160px, 48vw, 240px);
-   }
- 
-   .types img,
-   #weaknesses img,
-   #resistances img,
-   #immunities img,
-   .type-panel img {
--    width: 32px;
--    height: 32px;
-+    width: clamp(36px, 8.6vw, 46px);
-+    height: clamp(36px, 8.6vw, 46px);
-     object-fit: contain;
-   }
- 
-   .type-dual-row {
-     grid-template-columns: 1fr;
-   }
- 
-   .type-panel.immune {
-     width: 100%;
-   }
- 
-   .tab-buttons {
--    flex-wrap: wrap;
--    gap: 8px;
-+    flex-wrap: nowrap;
-+    gap: 6px;
-+    overflow-x: auto;
-+    justify-content: flex-start;
-+    padding-bottom: 8px;
-   }
- 
-   .tab-btn {
--    flex: 1 1 46%;
--    min-width: 120px;
-+    flex: 1 1 auto;
-+    min-width: clamp(110px, 35vw, 180px);
-     text-align: center;
-     padding: 8px 10px;
-+    font-size: clamp(10px, 2.6vw, 12px);
-+    white-space: nowrap;
-   }
- 
-   .move-tab-buttons .tab-btn {
--    flex: 1 1 100%;
-+    min-width: clamp(130px, 44vw, 220px);
-+  }
-+
-+  .tab-content {
-+    width: 100%;
-+    overflow: hidden;
-   }
- 
-   .stats-tabs canvas,
-   .radar-column canvas {
--    width: 180px !important;
--    height: 180px !important;
-+    width: clamp(160px, 48vw, 220px) !important;
-+    height: clamp(160px, 48vw, 220px) !important;
-     max-width: 100%;
-   }
- 
-+  .stats-list {
-+    width: 100%;
-+    font-size: clamp(10px, 2.8vw, 13px);
-+  }
-+
-   .move-table {
--    min-width: 650px;
-+    min-width: 620px;
-     font-size: 10px;
-   }
- 
-   .move-table th,
-   .move-table td {
-     white-space: nowrap;
-   }
- 
--  .copy-buttons {
--    flex-direction: column;
--    gap: 10px;
--    width: min(100% - 24px, 340px);
--    margin: 18px auto;
--  }
--
--  .pixel-button {
--    width: 100%;
--    max-width: none;
--  }
--
-   .capacities-wrapper {
-     gap: 8px;
-     flex-wrap: wrap;
-   }
- 
-   .capacity {
--    min-width: 78px;
-+    min-width: 74px;
-     flex: 1 1 30%;
-   }
- 
-+  #form-buttons {
-+    gap: 4px;
-+  }
-+
-+  .form-base-btn,
-+  .form-buttons .tab-btn {
-+    height: 32px;
-+    padding: 2px 6px;
-+    font-size: 9px;
-+  }
-+
-+  .form-btn {
-+    width: 28px;
-+    height: 28px;
-+  }
-+
-+  .dex-content {
-+    max-height: min(40vh, 280px);
-+  }
-+
-   .nav-zone,
-   .nav-btn {
-     display: none;
-   }
--
- }
- 
 diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index f61686e9d7d39a12ccc71a33c967b28642f6e95e..8fe76115de5ab0e2167b489bad0f51f3ccd6c2f9 100644
+index 8fe76115de5ab0e2167b489bad0f51f3ccd6c2f9..1dc417cc85672f06043f7e7c5a638f9fcf488e01 100644
 --- a/js/pokemon-view.js
 +++ b/js/pokemon-view.js
-@@ -522,51 +522,53 @@ function renderForms(varieties, baseName) {
-   });
+@@ -31,103 +31,92 @@ const MOV_LABELS = ["Estático", "Lento", "Ágil", "Atlético", "Veloz"];
+ let moveRenderToken = 0;
+ 
+ function convertStat(value) {
+   const base = Math.floor(value / 10);
+   return value % 10 >= 9 ? base + 1 : base;
  }
  
- function loadForm(name) {
-   fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-     .then(res => res.json())
-     .then(pokemon => {
- if (!pokemon.moves || pokemon.moves.length === 0) {
-   pokemon.moves = basePokemon?.moves || [];
- }
-       applyPokemonData(pokemon);
-     });
+ function half(v) {
+   return Math.floor(v / 2);
  }
  
- async function applyPokemonData(p) {
- const dexEntry = document.getElementById("dex-entry");
+ function getInitialPokemonId() {
+   const params = new URLSearchParams(window.location.search);
+   const id = params.get("id");
  
- dexEntry.textContent = "Carregando biologia...";
+   if (!id) return 1;
  
- const biologyText = await fetchBulbapediaBiology(p.name);
+   const num = Number(id);
+   if (isNaN(num) || num < 1) return 1;
  
- dexEntry.classList.remove("expanded");
- dexEntry.textContent = biologyText;
- 
- document.getElementById("dexContent").classList.remove("open");
--document.getElementById("dexToggleBtn").textContent = "▸ ENTRADA DA DEX";
-+const dexToggleButton = document.getElementById("dexToggleBtn");
-+dexToggleButton.classList.remove("active");
-+dexToggleButton.textContent = "▸ ENTRADA DA DEX";
- 
-   const species = await fetch(p.species.url)
-     .then(res => res.json());
- 
-   const pokemonData = buildPokemonData(p, species);
- 
-   const chainData = await fetch(species.evolution_chain.url)
-     .then(r => r.json());
- 
- function findNode(name, node) {
-   if (node.species.name === name) return node;
- 
-   for (const next of node.evolves_to) {
-     const found = findNode(name, next);
-     if (found) return found;
-   }
-   return null;
+   return num;
  }
  
+ let currentId = getInitialPokemonId();
  
- let node = findNode(p.name, chainData.chain);
+-let loreData = [];
+ const nameInput = document.getElementById("dexSearchInput");
+ const dexInput  = document.getElementById("dexNumberInput");
+ const btn       = document.getElementById("dexSearchBtn");
+ const preview   = document.getElementById("search-preview");
  
- if (!node && p.name.includes("-")) {
-   const baseName = p.name.split("-")[0];
-   node = findNode(baseName, chainData.chain);
-@@ -1492,66 +1494,70 @@ function openTab(e, tab) {
- 
-   document.getElementById(`${tab}-tab`).classList.add("active");
-   e.currentTarget.classList.add("active");
- }
- 
- document.querySelectorAll(".stats-panel .tab-btn").forEach(btn => {
-   btn.addEventListener("click", e => {
-     const tab = btn.dataset.tab;
- 
-     document
-       .querySelectorAll(".stats-panel .tab-content")
-       .forEach(t => t.classList.remove("active"));
- 
-     document
-       .querySelectorAll(".stats-panel .tab-btn")
-       .forEach(b => b.classList.remove("active"));
- 
-     document.getElementById(`${tab}-tab`).classList.add("active");
-     btn.classList.add("active");
-   });
- });
- 
- const dexBtn = document.getElementById("dexToggleBtn");
- const dexContent = document.getElementById("dexContent");
- 
--dexBtn.addEventListener("click", () => {
+ async function init() {
+-  const loreRes = await fetch("json/dex-lore.json");
+-  loreData = await loreRes.json();
 -
-+function toggleDexEntry() {
-   document.querySelectorAll(".dex-toggle")
-     .forEach(el => el.classList.remove("active"));
+   const id = getInitialPokemonId();
+   await loadPokemonById(id);
+ }
  
-   const isOpen = dexContent.classList.toggle("open");
+ init();
+ let isLegendary = false;
+ let basePokemon = null;
  
-   if (isOpen) {
-     dexBtn.classList.add("active");
-     dexBtn.innerHTML = "◄ ENTRADA DA DEX";
-   } else {
-     dexBtn.classList.remove("active");
--    dexBtn.innerHTML = "◄ ENTRADA DA DEX";
-+    dexBtn.innerHTML = "▸ ENTRADA DA DEX";
-   }
-+}
+ function loadPokemon(p) {
+ const statsRaw = {};
+ p.stats.forEach(s => statsRaw[s.stat.name] = s.base_stat);
  
--});
-+dexBtn.addEventListener("click", toggleDexEntry);
-+dexBtn.addEventListener("touchend", event => {
-+  event.preventDefault();
-+  toggleDexEntry();
-+}, { passive: false });
+   const dex = p.id;
+   basePokemon = p;
+   document.getElementById("dex").textContent =
+     `#${String(dex).padStart(3, "0")}`;
  
- const otherBtn = document.querySelector('[data-movetab="other"]');
- const otherTab = document.getElementById("other-tab");
+   document.getElementById("name").textContent =
+     p.name.charAt(0).toUpperCase() + p.name.slice(1);
  
- otherBtn?.addEventListener("click", () => {
-   otherTab.classList.toggle("active");
-   otherBtn.classList.toggle("active");
+   document.getElementById("official-art").src =
+     p.sprites.other["official-artwork"].front_default;
+ 
+ document.getElementById("size").textContent =
+   `${p.height / 10} m • ${p.weight / 10} kg`;
+ 
+ fetch(p.species.url)
+   .then(res => res.json())
+   .then(species => {
+ isLegendary = species.is_legendary
+ renderForms(species.varieties, p.name);
+ renderEggGroups(species.egg_groups);
+ 
+ applyPokemonData(p);
  });
  
- document.getElementById("copyDexBtn")
-   .addEventListener("click", () => {
+-  /* DEX ENTRY */
+-const lore = loreData.find(l => Number(l.dex) === Number(p.id));
+-  document.getElementById("dex-entry").textContent =
+-    lore ? lore.dex_entry : "—";
+-
+-
+-
+ }
  
-     const name = document.getElementById("name").textContent;
-     const dex = document.getElementById("dex").textContent;
-     const text = document.getElementById("dex-entry").textContent;
+ function buildPokemonData(p, species) {
+   const statsRaw = {};
+   p.stats.forEach(s => statsRaw[s.stat.name] = s.base_stat);
  
-     if (!text || text === "Carregando biologia...") return;
+   const female = species.gender_rate === -1
+     ? null
+     : species.gender_rate * 12.5;
  
-     const formatted = `
- ◄ 『${name}』【${dex}】
- ╔═════════╡✠╞═════════╗
- ${text}
+   const male = species.gender_rate === -1
+     ? null
+     : 100 - female;
  
- ╚═════════╡✠╞═════════╝
- `;
-diff --git a/pokemon-view.html b/pokemon-view.html
-index 78fa18d22d1ba0e8235244738b641b529475ff72..7f5cc11e27b64cd533dcf4a024734a291a954fc0 100644
---- a/pokemon-view.html
-+++ b/pokemon-view.html
-@@ -91,53 +91,53 @@
-   </div>
- </div>
+ const isFinalStage = species.evolves_from_species !== null &&
+                      species.evolution_chain &&
+                      !species.evolution_chain.url.includes("evolves_to");
  
- </div>
+   return {
+     id: p.id,
+     name: p.name,
+     height: p.height / 10,
+     weight: p.weight / 10,
  
-   <section class="info-panel">
+     types: p.types.map(t => t.type.name),
+@@ -361,77 +350,96 @@ function updateSearchPreview() {
+   card.appendChild(name);
  
-     <div class="block">
-       <h3>Habilidades</h3>
-       <div id="abilities"></div>
-     </div>
-  <div id="abilitiesContainer"></div>
-     <div class="block">
-       <h3>Proporções</h3>
-       <p id="size"></p>
-     </div>
+   card.onclick = () => {
+     preview.innerHTML = "";
+     nameInput.value = "";
+     dexInput.value = "";
  
-     <div class="block">
-       <h3>Acasalamento</h3>
-       <p id="gender"></p>
-       <p id="egg-group"></p>
-     </div>
+     loadPokemonById(found.id); // 🔥 AQUI é o segredo
+   };
  
- <div class="dex-section">
+   preview.appendChild(card);
+ }
  
--<div id="dexToggleBtn" class="ability-item dex-toggle">
--  ◄ ENTRADA DA DEX
--</div>
-+<button id="dexToggleBtn" class="ability-item dex-toggle" type="button">
-+  ▸ ENTRADA DA DEX
-+</button>
+ async function getMoveDetails(url) {
+   if (moveCache.has(url)) {
+     return moveCache.get(url);
+   }
  
-   <div id="dexContent" class="dex-content">
-     <div id="dex-entry"></div>
+   const data = await fetch(url).then(r => r.json());
+   moveCache.set(url, data);
+   return data;
+ }
  
-     <button id="copyDexBtn" class="copy-dex-btn">
-       copiar dex
-     </button>
-   </div>
+ const bulbapediaCache = {};
  
- </div>
++function getBulbapediaPageCandidates(pokemonName) {
++  const cleanedName = pokemonName.trim().toLowerCase();
++  const baseName = cleanedName.split("-")[0];
++
++  const candidates = [cleanedName, baseName]
++    .filter(Boolean)
++    .map(name =>
++      name
++        .split("-")
++        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
++        .join("_")
++    );
++
++  return [...new Set(candidates)];
++}
++
+ async function fetchBulbapediaBiology(pokemonName) {
  
- <div class="capacities-wrapper">
-   <div class="capacity">
-     <span class="capacity-title">INTELIGÊNCIA</span>
-     <span class="capacity-value" id="cap-int">0</span>
-     <span class="capacity-label" id="cap-int-label">Instintivo</span>
-   </div>
+   if (bulbapediaCache[pokemonName]) {
+     return bulbapediaCache[pokemonName];
+   }
  
-   <div class="capacity">
-     <span class="capacity-title">FORÇA</span>
-     <span class="capacity-value" id="cap-str">1</span>
-     <span class="capacity-label" id="cap-str-label">Subdesenvolvida</span>
-   </div>
+   try {
+-    const pageName =
+-      pokemonName.charAt(0).toUpperCase() +
+-      pokemonName.slice(1) +
+-      "_(Pok%C3%A9mon)";
++    const pageCandidates = getBulbapediaPageCandidates(pokemonName);
++    let pageName = null;
++    let sections = null;
  
-   <div class="capacity">
+-    const response = await fetch(
+-      `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${pageName}&prop=sections&format=json&origin=*`
+-    );
++    for (const candidate of pageCandidates) {
++      const sectionsResponse = await fetch(
++        `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${candidate}_(Pok%C3%A9mon)&prop=sections&format=json&origin=*`
++      );
+ 
+-    const data = await response.json();
++      const sectionsData = await sectionsResponse.json();
+ 
+-    if (!data.parse?.sections) {
+-      return "Biologia não encontrada.";
++      if (sectionsData.parse?.sections?.length) {
++        pageName = `${candidate}_(Pok%C3%A9mon)`;
++        sections = sectionsData.parse.sections;
++        break;
++      }
+     }
+ 
+-const dexContent = document.getElementById("dexContent");
+-
+-
+-    const biologySection = data.parse.sections.find(
+-      s => s.line.toLowerCase() === "biology"
++    if (!sections || !pageName) {
++      return "Biologia não encontrada.";
++    }
++    const biologySection = sections.find(s =>
++      s.line.toLowerCase().includes("biology")
+     );
+ 
+     if (!biologySection) {
+       return "Biologia não encontrada.";
+     }
+ 
+     const sectionResponse = await fetch(
+       `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${pageName}&prop=text&section=${biologySection.index}&format=json&origin=*`
+     );
+ 
+     const sectionData = await sectionResponse.json();
+ 
+     if (!sectionData.parse?.text) {
+       return "Descrição não encontrada.";
+     }
+ 
+     const html = sectionData.parse.text["*"];
+ 
+     const tempDiv = document.createElement("div");
+     tempDiv.innerHTML = html;
+ 
+     /* REMOVE LIXO VISUAL */
+     tempDiv.querySelectorAll(
+       "table, sup, .reference, .thumb, .gallery"
+     ).forEach(e => e.remove());
+@@ -1578,26 +1586,25 @@ document.querySelector(".nav-btn.left")
+ document.querySelector(".nav-btn.right")
+   ?.addEventListener("click", goNext);
+ 
+ document.addEventListener("DOMContentLoaded", () => {
+ 
+ [nameInput, dexInput].forEach(input =>
+   input.addEventListener("input", updateSearchPreview)
+ );
+ 
+   document.querySelectorAll(".move-tab-buttons .tab-btn").forEach(btn => {
+     btn.addEventListener("click", () => {
+       const tab = btn.dataset.movetab;
+ 
+       document.querySelectorAll("#level-tab, #other-tab")
+         .forEach(t => t.classList.remove("active"));
+ 
+       document.querySelectorAll(".move-tab-buttons .tab-btn")
+         .forEach(b => b.classList.remove("active"));
+ 
+       document.getElementById(`${tab}-tab`)?.classList.add("active");
+       btn.classList.add("active");
+     });
+   });
+ 
+ });
+-
