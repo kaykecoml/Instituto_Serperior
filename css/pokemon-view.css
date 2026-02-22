@@ -1,8 +1,7 @@
-
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
-
 
 .pokemon-image img {
   width: 260px;
@@ -74,10 +73,12 @@ html, body {
   margin-bottom: 10px;
 }
 
-.image-panel img {
+#official-art {
   width: min(100%, 320px);
   height: auto;
   object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .type-box {
@@ -172,7 +173,6 @@ html, body {
   background: #4fae78;
   color: #08120d;
 }
-
 
 .nav-btn {
   background: none;
@@ -269,7 +269,7 @@ html, body {
   border: 2px solid #2f6b44;
   border-radius: 10px;
   padding: 14px;
- width: 100%;
+  width: 100%;
 }
 
 .stats-container {
@@ -289,7 +289,6 @@ html, body {
   display: block;
   margin: 0 auto 10px auto;
 }
-
 
 .stats-list {
   list-style: none;
@@ -430,7 +429,6 @@ html, body {
   border-radius: 6px;
 }
 
-
 .move-table th {
   border-bottom: 2px solid #2f6b44;
   padding: 6px;
@@ -480,7 +478,7 @@ html, body {
   padding: 6px 0;
   scroll-behavior: smooth;
 
-  scrollbar-width: thin;          /* Firefox */
+  scrollbar-width: thin; /* Firefox */
   scrollbar-color: #7bdc65 transparent;
 }
 
@@ -505,13 +503,13 @@ html, body {
 
 .form-buttons {
   display: flex;
-  align-items: center;     
-  gap: 0px;                
+  align-items: center;
+  gap: 0px;
 }
 
 .form-btn {
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   cursor: pointer;
   transition: transform 0.15s ease;
@@ -520,7 +518,7 @@ html, body {
 .form-base-btn,
 .form-buttons .tab-btn,
 .form-btn {
-  height: 36px; 
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -549,7 +547,7 @@ html, body {
   border-radius: 6px;
 }
 
-  .evolution-panel {
+.evolution-panel {
   grid-column: 2 / 3;
   grid-row: 3;
   max-width: 320px;
@@ -563,7 +561,7 @@ html, body {
   align-items: center;
   gap: 14px;
   flex-wrap: nowrap; /* NÃO quebra linha */
-max-height: 280px;
+  max-height: 280px;
   overflow-y: auto;
 }
 
@@ -621,7 +619,7 @@ max-height: 280px;
 .nav-zone {
   position: fixed;
   top: 0;
-  width: 80px;          
+  width: 80px;
   height: 100vh;
   z-index: 90;
   cursor: pointer;
@@ -818,7 +816,9 @@ max-height: 280px;
   padding: 10px 20px;
   border: 3px solid #184d2c;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   z-index: 9999;
 }
 
@@ -862,7 +862,7 @@ max-height: 280px;
 
 #form-buttons {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
   padding: 6px 0;
   scroll-behavior: smooth;
@@ -940,7 +940,7 @@ max-height: 280px;
   line-height: 1.6;
   color: #eaffea;
   text-align: left;
-white-space: pre-line;
+  white-space: pre-line;
 }
 
 .copy-dex-btn {
@@ -967,9 +967,7 @@ white-space: pre-line;
   background: #1c573a;
 }
 
-
 @media (max-width: 1024px) {
-
   .pokemon-view {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto;
