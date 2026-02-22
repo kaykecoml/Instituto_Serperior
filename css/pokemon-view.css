@@ -990,6 +990,14 @@ white-space: pre-line;
 
   .info-panel,
   .stats-panel,
+  .evolution-panel {
+    width: min(100% - 20px, 640px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .info-panel,
+  .stats-panel,
   .move-tabs,
   .evolution-panel,
   .image-panel {
@@ -1109,6 +1117,23 @@ white-space: pre-line;
     overflow: hidden;
   }
 
+  .info-panel > .block > h3,
+  .info-panel .habitats-panel > h3 {
+    text-align: center;
+  }
+
+  .stats-panel .tab-buttons {
+    justify-content: center;
+  }
+
+  .stats-panel .stats-container,
+  .stats-panel #contest-tab .radar-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .stats-tabs canvas,
   .radar-column canvas {
     width: clamp(160px, 48vw, 220px) !important;
@@ -1142,7 +1167,15 @@ white-space: pre-line;
   }
 
   #form-buttons {
+    width: min(100%, 360px);
+    margin: 8px auto 0;
+    padding: 6px;
+    border: 2px solid #2f6b44;
+    border-radius: 10px;
+    background: #08120d;
     gap: 4px;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
   }
 
   .form-base-btn,
@@ -1166,4 +1199,3 @@ white-space: pre-line;
     display: none;
   }
 }
-
