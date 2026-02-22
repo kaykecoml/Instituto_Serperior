@@ -1,74 +1,67 @@
 diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index 130cdd0bcf92c469d4be7e0a15bf01166d58f33e..93a2e0bdd0317d05fc997e932dff4ea2ea3a3ff4 100644
+index 93a2e0bdd0317d05fc997e932dff4ea2ea3a3ff4..b9647c1096752c188da34e71119c4aea5e261052 100644
 --- a/js/pokemon-view.js
 +++ b/js/pokemon-view.js
-@@ -438,61 +438,82 @@ async function fetchBulbapediaBiology(pokemonName) {
-       const normalizedLine = s.line.toLowerCase();
-       return (
-         normalizedLine.includes("biology") || normalizedLine.includes("biologia")
-       );
-     });
+@@ -347,51 +347,50 @@ function updateSearchPreview() {
+   card.appendChild(img);
+   card.appendChild(name);
  
-     if (!biologySection) {
-       return null;
+   card.onclick = () => {
+     preview.innerHTML = "";
+     nameInput.value = "";
+     dexInput.value = "";
+ 
+     loadPokemonById(found.id); // 🔥 AQUI é o segredo
+   };
+ 
+   preview.appendChild(card);
+ }
+ 
+ async function getMoveDetails(url) {
+   if (moveCache.has(url)) {
+     return moveCache.get(url);
+   }
+ 
+   const data = await fetch(url).then((r) => r.json());
+   moveCache.set(url, data);
+   return data;
+ }
+ 
+ const bulbapediaCache = {};
+-const speciesDexCache = {};
+ 
+ async function fetchJsonWithRetry(url, retries = 2) {
+   let lastError = null;
+ 
+   for (let attempt = 0; attempt <= retries; attempt++) {
+     try {
+       const response = await fetch(url);
+ 
+       if (!response.ok) {
+         throw new Error(`HTTP ${response.status}`);
+       }
+ 
+       return await response.json();
+     } catch (error) {
+       lastError = error;
+ 
+       if (attempt < retries) {
+         await new Promise((resolve) => setTimeout(resolve, 350 * (attempt + 1)));
+       }
      }
+   }
  
-     const sectionData = await fetchJsonWithRetry(
-       `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${encodeURIComponent(pageName)}&prop=text&section=${biologySection.index}&format=json&origin=*`,
-     );
+   throw lastError;
+ }
  
-     if (!sectionData.parse?.text) {
-       return null;
+@@ -488,120 +487,57 @@ async function fetchBulbapediaBiology(pokemonName) {
+         .replace(/\s+/g, " ")
+         .trim();
+ 
+       if (text.length >= 40) {
+         paragraphs.push(text);
+       }
      }
- 
-     const html = sectionData.parse.text["*"];
- 
-     const tempDiv = document.createElement("div");
-     tempDiv.innerHTML = html;
- 
-     /* REMOVE LIXO VISUAL */
-     tempDiv
--      .querySelectorAll("table, sup, .reference, .thumb, .gallery")
-+      .querySelectorAll(
-+        "table, sup, .reference, .thumb, .gallery, .navbox, .metadata, .mw-editsection",
-+      )
-       .forEach((e) => e.remove());
- 
--    /* PEGAR TODOS OS PARÁGRAFOS REAIS */
--    const paragraphs = [...tempDiv.querySelectorAll("p")]
--      .map((p) => p.textContent.trim())
--      .filter(
--        (t) =>
--          t.length > 80 && // evita lixo pequeno
--          !t.toLowerCase().includes("this pokémon"), // evita frases repetitivas pequenas
--      );
-+    /*
-+      PEGAR SOMENTE O TEXTO BASE DA SEÇÃO BIOLOGY
-+      (ignora subtópicos como "Forms", "Behavior", etc.)
-+    */
-+    const paragraphs = [];
-+    for (const element of [...tempDiv.children]) {
-+      const tag = element.tagName?.toLowerCase();
-+
-+      if (!tag) continue;
-+
-+      if (["h3", "h4", "h5", "h6"].includes(tag)) {
-+        break;
-+      }
-+
-+      if (tag !== "p") {
-+        continue;
-+      }
-+
-+      const text = element.textContent
-+        .replace(/\[[^\]]+\]/g, " ")
-+        .replace(/\s+/g, " ")
-+        .trim();
-+
-+      if (text.length >= 40) {
-+        paragraphs.push(text);
-+      }
-+    }
  
      if (paragraphs.length === 0) {
        return null;
@@ -87,10 +80,153 @@ index 130cdd0bcf92c469d4be7e0a15bf01166d58f33e..93a2e0bdd0317d05fc997e932dff4ea2
    }
  }
  
- function normalizeDexText(text) {
-   return text
-     .replace(/[\n\f\r]+/g, " ")
-     .replace(/\s+/g, " ")
-     .trim();
+-function normalizeDexText(text) {
+-  return text
+-    .replace(/[\n\f\r]+/g, " ")
+-    .replace(/\s+/g, " ")
+-    .trim();
+-}
+-
+-function getPreferredFlavorEntry(entries, language) {
+-  const byLanguage = entries.filter((entry) => entry.language.name === language);
+-
+-  if (byLanguage.length === 0) {
+-    return null;
+-  }
+-
+-  const versionOrder = [
+-    "scarlet",
+-    "violet",
+-    "sword",
+-    "shield",
+-    "sun",
+-    "moon",
+-    "ultra-sun",
+-    "ultra-moon",
+-  ];
+-
+-  for (const version of versionOrder) {
+-    const match = byLanguage.find((entry) => entry.version.name === version);
+-    if (match) return match;
+-  }
+-
+-  return byLanguage[byLanguage.length - 1];
+-}
+-
+-async function getDexEntryFromSpecies(species) {
+-  const cacheKey = species.id || species.name;
+-
+-  if (speciesDexCache[cacheKey]) {
+-    return speciesDexCache[cacheKey];
+-  }
+-
+-  const ptEntry = getPreferredFlavorEntry(species.flavor_text_entries, "pt-BR");
+-  if (ptEntry?.flavor_text) {
+-    const text = normalizeDexText(ptEntry.flavor_text);
+-    speciesDexCache[cacheKey] = text;
+-    return text;
+-  }
+-
+-  const enEntry = getPreferredFlavorEntry(species.flavor_text_entries, "en");
+-  if (!enEntry?.flavor_text) {
+-    return null;
+-  }
+-
+-  const translated = await translateToPortuguese(normalizeDexText(enEntry.flavor_text));
+-  speciesDexCache[cacheKey] = translated;
+-
+-  return translated;
+-}
+-
+-async function getDexEntryText(pokemon, species) {
++async function getDexEntryText(pokemon) {
+   const bulbapediaText = await fetchBulbapediaBiology(pokemon.name);
+   if (bulbapediaText) {
+     return bulbapediaText;
+   }
+ 
+-  const speciesText = await getDexEntryFromSpecies(species);
+-  if (speciesText) {
+-    return speciesText;
+-  }
+-
+-  return "Descrição da dex não encontrada.";
++  return "Não foi possível carregar a seção de Biology da Bulbapedia para este Pokémon.";
  }
  
+ async function loadPokemonById(idOrName) {
+   currentId = idOrName;
+ 
+   const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`);
+   const pokemon = await pokeRes.json();
+ 
+   loadPokemon(pokemon);
+ 
+   history.pushState(null, "", `?id=${pokemon.id}`);
+ }
+ 
+ function renderForms(varieties, baseName) {
+   const container = document.getElementById("form-buttons");
+   container.innerHTML = "";
+ 
+   // BOTÃO BASE (apenas 1 vez)
+   const baseBtn = document.createElement("button");
+   baseBtn.textContent = "Base";
+   baseBtn.className = "form-base-btn";
+   baseBtn.onclick = () => applyPokemonData(basePokemon);
+   container.appendChild(baseBtn);
+ 
+   varieties.forEach((v) => {
+@@ -641,51 +577,51 @@ function renderForms(varieties, baseName) {
+   });
+ }
+ 
+ function loadForm(name) {
+   fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+     .then((res) => res.json())
+     .then((pokemon) => {
+       if (!pokemon.moves || pokemon.moves.length === 0) {
+         pokemon.moves = basePokemon?.moves || [];
+       }
+       applyPokemonData(pokemon);
+     });
+ }
+ 
+ async function applyPokemonData(p) {
+   const dexEntry = document.getElementById("dex-entry");
+ 
+   dexEntry.textContent = "Carregando entrada da dex...";
+ 
+   document.getElementById("dexContent").classList.remove("open");
+   const dexToggleButton = document.getElementById("dexToggleBtn");
+   dexToggleButton.classList.remove("active");
+   dexToggleButton.textContent = "▸ ENTRADA DA DEX";
+ 
+   const species = await fetch(p.species.url).then((res) => res.json());
+-  const dexText = await getDexEntryText(p, species);
++  const dexText = await getDexEntryText(p);
+ 
+   dexEntry.classList.remove("expanded");
+   dexEntry.textContent = dexText;
+ 
+   const pokemonData = buildPokemonData(p, species);
+ 
+   const chainData = await fetch(species.evolution_chain.url).then((r) =>
+     r.json(),
+   );
+ 
+   function findNode(name, node) {
+     if (node.species.name === name) return node;
+ 
+     for (const next of node.evolves_to) {
+       const found = findNode(name, next);
+       if (found) return found;
+     }
+     return null;
+   }
+ 
+   let node = findNode(p.name, chainData.chain);
+ 
+   if (!node && p.name.includes("-")) {
+     const baseName = p.name.split("-")[0];
+     node = findNode(baseName, chainData.chain);
