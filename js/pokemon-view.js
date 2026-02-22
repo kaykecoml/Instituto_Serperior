@@ -460,17 +460,38 @@ async function fetchBulbapediaBiology(pokemonName) {
 
     /* REMOVE LIXO VISUAL */
     tempDiv
-      .querySelectorAll("table, sup, .reference, .thumb, .gallery")
+      .querySelectorAll(
+        "table, sup, .reference, .thumb, .gallery, .navbox, .metadata, .mw-editsection",
+      )
       .forEach((e) => e.remove());
 
-    /* PEGAR TODOS OS PARÁGRAFOS REAIS */
-    const paragraphs = [...tempDiv.querySelectorAll("p")]
-      .map((p) => p.textContent.trim())
-      .filter(
-        (t) =>
-          t.length > 80 && // evita lixo pequeno
-          !t.toLowerCase().includes("this pokémon"), // evita frases repetitivas pequenas
-      );
+    /*
+      PEGAR SOMENTE O TEXTO BASE DA SEÇÃO BIOLOGY
+      (ignora subtópicos como "Forms", "Behavior", etc.)
+    */
+    const paragraphs = [];
+    for (const element of [...tempDiv.children]) {
+      const tag = element.tagName?.toLowerCase();
+
+      if (!tag) continue;
+
+      if (["h3", "h4", "h5", "h6"].includes(tag)) {
+        break;
+      }
+
+      if (tag !== "p") {
+        continue;
+      }
+
+      const text = element.textContent
+        .replace(/\[[^\]]+\]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (text.length >= 40) {
+        paragraphs.push(text);
+      }
+    }
 
     if (paragraphs.length === 0) {
       return null;
