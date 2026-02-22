@@ -369,6 +369,7 @@ async function getMoveDetails(url) {
 }
 
 const bulbapediaCache = {};
+const speciesDexCache = {};
 
 async function fetchJsonWithRetry(url, retries = 2) {
   let lastError = null;
@@ -509,13 +510,76 @@ async function fetchBulbapediaBiology(pokemonName) {
   }
 }
 
-async function getDexEntryText(pokemon) {
+function normalizeDexText(text) {
+  return text
+    .replace(/[\n\f\r]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getPreferredFlavorEntry(entries, language) {
+  const byLanguage = entries.filter((entry) => entry.language.name === language);
+
+  if (byLanguage.length === 0) {
+    return null;
+  }
+
+  const versionOrder = [
+    "scarlet",
+    "violet",
+    "sword",
+    "shield",
+    "sun",
+    "moon",
+    "ultra-sun",
+    "ultra-moon",
+  ];
+
+  for (const version of versionOrder) {
+    const match = byLanguage.find((entry) => entry.version.name === version);
+    if (match) return match;
+  }
+
+  return byLanguage[byLanguage.length - 1];
+}
+
+async function getDexEntryFromSpecies(species) {
+  const cacheKey = species.id || species.name;
+
+  if (speciesDexCache[cacheKey]) {
+    return speciesDexCache[cacheKey];
+  }
+
+  const ptEntry = getPreferredFlavorEntry(species.flavor_text_entries, "pt-BR");
+  if (ptEntry?.flavor_text) {
+    const text = normalizeDexText(ptEntry.flavor_text);
+    speciesDexCache[cacheKey] = text;
+    return text;
+  }
+
+  const enEntry = getPreferredFlavorEntry(species.flavor_text_entries, "en");
+  if (!enEntry?.flavor_text) {
+    return null;
+  }
+
+  const translated = await translateToPortuguese(normalizeDexText(enEntry.flavor_text));
+  speciesDexCache[cacheKey] = translated;
+
+  return translated;
+}
+
+async function getDexEntryText(pokemon, species) {
   const bulbapediaText = await fetchBulbapediaBiology(pokemon.name);
   if (bulbapediaText) {
     return bulbapediaText;
   }
 
-  return "Não foi possível carregar a seção de Biology da Bulbapedia para este Pokémon.";
+  const speciesText = await getDexEntryFromSpecies(species);
+  if (speciesText) {
+    return speciesText;
+  }
+
+  return "Descrição da dex não encontrada.";
 }
 
 async function loadPokemonById(idOrName) {
@@ -599,7 +663,7 @@ async function applyPokemonData(p) {
   dexToggleButton.textContent = "▸ ENTRADA DA DEX";
 
   const species = await fetch(p.species.url).then((res) => res.json());
-  const dexText = await getDexEntryText(p);
+  const dexText = await getDexEntryText(p, species);
 
   dexEntry.classList.remove("expanded");
   dexEntry.textContent = dexText;
