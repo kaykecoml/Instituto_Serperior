@@ -613,7 +613,15 @@ function renderForms(varieties, baseName) {
     // MEGA
     if (name.includes("mega")) {
       const img = document.createElement("img");
-      img.src = "assets/mega.png";
+      if (name.includes("mega-x")) {
+        img.src = "assets/megax.png";
+      } else if (name.includes("mega-y")) {
+        img.src = "assets/megay.png";
+      } else if (name.includes("mega-z")) {
+        img.src = "assets/megaz.png";
+      } else {
+        img.src = "assets/mega.png";
+      }
       img.className = "form-btn";
       img.title = "Mega Evolução";
       img.onclick = () => loadForm(name);

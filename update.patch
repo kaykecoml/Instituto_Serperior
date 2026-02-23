@@ -1,72 +1,290 @@
-diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index 339734f9c302f94171cb4e2d57c7ee673f3d4d42..e4195de3fb2dfd0d5baaa385e8b3ab89f755d316 100644
---- a/css/pokemon-view.css
-+++ b/css/pokemon-view.css
-@@ -966,50 +966,58 @@ white-space: pre-line;
- .dex-toggle.active {
-   background: #1c573a;
+diff --git a/css/moves.css b/css/moves.css
+index 79d598b52cbcb567bc8adda479ec42015f804812..3c654f96bb4f3d0dbd613495a66d35e7a53aab34 100644
+--- a/css/moves.css
++++ b/css/moves.css
+@@ -40,50 +40,59 @@ header {
+ 
+ .logo {
+   position: absolute;
+   left: 20px;
+   width: 90px;
+   filter: drop-shadow(0 0 6px #7bdc65);
  }
  
+ .site-title {
+   font-family: "Bully";
+   font-size: 52px;
+   color: #7bdc65;
+  text-shadow:
+     0 0 4px rgba(63, 174, 106, 0.6),
+     0 0 8px rgba(63, 174, 106, 0.4);
+ }
  
- @media (max-width: 1024px) {
+ .site-subtitle {
+   font-family: "Pokemon";
+   font-size: 28px;
+   letter-spacing: 3px;
+   color: #f8d030;
+   text-shadow: 0 0 6px #f8d030;
+ }
  
-   .pokemon-view {
-     grid-template-columns: minmax(0, 1fr);
-     grid-template-rows: auto;
-     padding: clamp(10px, 3.5vw, 16px);
-     gap: clamp(12px, 3vw, 18px);
-   }
- 
-   .left-column,
-   .info-panel,
-   .stats-panel,
-   .move-tabs,
-   .evolution-panel {
-     grid-column: auto !important;
-     grid-row: auto !important;
-     max-width: 100%;
-     width: 100%;
-   }
- 
-+  .info-panel,
-+  .stats-panel,
-+  .evolution-panel {
-+    width: min(100% - 20px, 640px);
-+    margin-left: auto;
-+    margin-right: auto;
-+  }
++.site-home-link {
++  color: inherit;
++  text-decoration: none;
++}
 +
-   .info-panel,
-   .stats-panel,
-   .move-tabs,
-   .evolution-panel,
-   .image-panel {
-     border-radius: 12px;
-     padding: clamp(10px, 3vw, 14px);
-   }
++.site-home-link:hover {
++  text-decoration: underline;
++}
++
+ h1 {
+   font-family: "Bully";
+   font-size: 48px;
+   color:  #9ae06f;
+ }
  
-   button,
-   .tab-btn,
-   .pixel-button,
-   .form-base-btn {
-     min-height: 38px;
-   }
+ h2 {
+   font-family: "Pokemon";
+   font-size: 32px;
+   letter-spacing: 2px;
+   margin-top: 5px;
+   text-align: center;
+ }
  
-   .dex-search {
-     width: min(100% - 20px, 640px);
-     flex-wrap: wrap;
-     gap: 8px;
-   }
+ .titles {
+   text-align: center;
+ }
  
-   .dex-search input,
-   .dex-search button {
-     width: 100%;
-@@ -1087,83 +1095,107 @@ white-space: pre-line;
-     flex-wrap: nowrap;
-     gap: 6px;
-     overflow-x: auto;
-     justify-content: flex-start;
-     padding-bottom: 8px;
+ .move-name {
+   font-family: "Pixel";
+   font-size: 18px;
+   letter-spacing: 1px;
+   text-shadow: 0 0 6px currentColor;
+ }
+ 
+@@ -201,25 +210,34 @@ h2 {
+ .type-grass { color: #78c850; }
+ .type-fire { color: #f08030; }
+ .type-water { color: #6890f0; }
+ .type-electric { color: #f8d030; }
+ .type-psychic { color: #f85888; }
+ .type-dark { color: #705848; }
+ .type-dragon { color: #7038f8; }
+ .type-fairy { color: #ee99ac; }
+ .type-steel { color: #b8b8d0; }
+ .type-ghost { color: #705898; }
+ .type-ice { color: #98d8d8; }
+ .type-fighting { color: #c03028; }
+ .type-ground { color: #e0c068; }
+ .type-rock { color: #b8a038; }
+ .type-poison { color: #a040a0; }
+ .type-flying { color: #a890f0; }
+ .type-bug { color: #a8b820; }
+ .type-normal { color: #a8a878; }
+ 
+ body {
+   background:
+     radial-gradient(circle at top, #1d3b2a, #020403);
+   min-height: 100vh;
+ }
+ 
++
++
++@media (max-width: 768px) {
++  .logo {
++    top: 8px;
++    left: 10px;
++    width: 56px;
++  }
++}
+diff --git a/css/pokemon-view.css b/css/pokemon-view.css
+index 8b294024489f3064bd61633163ecebe4f76f49cb..fa696abae890e323c65f193571507bd25adfe9c8 100644
+--- a/css/pokemon-view.css
++++ b/css/pokemon-view.css
+@@ -30,50 +30,65 @@ body {
+   border-radius: 16px;
+   padding: 18px;
+ }
+ 
+ .info-panel .types {
+   display: flex;
+   justify-content: center;
+   gap: 8px;
+ }
+ 
+ .info-panel .types img {
+   width: 36px;
+ }
+ 
+ .block {
+   margin-top: 14px;
+ }
+ 
+ .block h3 {
+   font-family: Pixel;
+   font-size: 14px;
+   color: #7bdc65;
+   margin-bottom: 4px;
+ }
+ 
++
++.block #size,
++.block #egg-group {
++  font-family: Pixel;
++}
++
++.site-home-link {
++  color: inherit;
++  text-decoration: none;
++}
++
++.site-home-link:hover {
++  text-decoration: underline;
++}
++
+ .cry-btn {
+   margin-top: 16px;
+   width: 100%;
+   background: #2f6b44;
+   border: none;
+   padding: 10px;
+   border-radius: 10px;
+   font-family: Pixel;
+   cursor: pointer;
+ }
+ 
+ .image-panel {
+   text-align: center;
+ }
+ 
+ .dex-title {
+   font-family: Pixel;
+   font-size: 18px;
+   margin-bottom: 10px;
+ }
+ 
+ #official-art {
+   width: min(100%, 320px);
+   height: auto;
+   object-fit: contain;
+@@ -453,51 +468,56 @@ body {
+ }
+ 
+ .battle-section {
+   display: grid;
+   gap: 40px;
+   margin-top: 24px;
+   align-items: flex-start;
+ }
+ 
+ .left-column {
+   display: flex;
+   flex-direction: column;
+   gap: 24px;
+ }
+ 
+ .art-wrapper {
+   flex-direction: column;
+   align-items: center;
+ }
+ 
+ #form-buttons {
+   display: flex;
+   gap: 6px;
+   overflow-x: auto;
+   overflow-y: hidden;
+-  padding: 6px 0;
++  width: min(100%, 360px);
++  margin: 8px auto 0;
++  padding: 6px;
++  border: 2px solid #2f6b44;
++  border-radius: 10px;
++  background: #08120d;
+   scroll-behavior: smooth;
+ 
+   scrollbar-width: thin; /* Firefox */
+   scrollbar-color: #7bdc65 transparent;
+ }
+ 
+ /* Chrome / Edge */
+ #form-buttons::-webkit-scrollbar {
+   height: 6px;
+ }
+ 
+ #form-buttons::-webkit-scrollbar-track {
+   background: transparent;
+ }
+ 
+ #form-buttons::-webkit-scrollbar-thumb {
+   background: #7bdc65;
+   border-radius: 6px;
+ }
+ 
+ /* REMOVE qualquer botão padrão */
+ #form-buttons::-webkit-scrollbar-button {
+   display: none;
+ }
+ 
+@@ -842,51 +862,57 @@ body {
+   background: #2f6b44;
+ }
+ 
+ .ability-details {
+   display: none;
+   margin-top: 6px;
+   font-size: 11px;
+   line-height: 1.4;
+   border-top: 1px solid #184d2c;
+   padding-top: 5px;
+ }
+ 
+ .ability-item.active .ability-details {
+   display: block;
+ }
+ .hidden-ability {
+   filter: grayscale(100%);
+   opacity: 0.7;
+   border: 2px solid #666;
+ }
+ 
+ #form-buttons {
+   display: flex;
+   gap: 6px;
+   overflow-x: auto;
+-  padding: 6px 0;
++  overflow-y: hidden;
++  width: min(100%, 360px);
++  margin: 8px auto 0;
++  padding: 6px;
++  border: 2px solid #2f6b44;
++  border-radius: 10px;
++  background: #08120d;
+   scroll-behavior: smooth;
+ }
+ 
+ #form-buttons::-webkit-scrollbar {
+   height: 6px;
+ }
+ 
+ #form-buttons::-webkit-scrollbar-thumb {
+   background: #7bdc65;
+   border-radius: 4px;
+ }
+ 
+ .form-btn,
+ .form-base-btn,
+ .tab-btn {
+   flex: 0 0 auto;
+ }
+ 
+ .dex-section {
+   text-align: center;
+   margin-top: 20px;
+ }
+ 
+ .dex-btn {
+   background: #1f4f35;
+@@ -1098,50 +1124,65 @@ body {
    }
  
    .tab-btn {
@@ -87,23 +305,38 @@ index 339734f9c302f94171cb4e2d57c7ee673f3d4d42..e4195de3fb2dfd0d5baaa385e8b3ab89
      overflow: hidden;
    }
  
-+  .info-panel > .block > h3,
-+  .info-panel .habitats-panel > h3 {
+   .info-panel > .block > h3,
+   .info-panel .habitats-panel > h3 {
+     text-align: center;
+   }
+ 
++  #size,
++  #egg-group {
 +    text-align: center;
 +  }
 +
-+  .stats-panel .tab-buttons {
++  header {
 +    justify-content: center;
 +  }
 +
-+  .stats-panel .stats-container,
-+  .stats-panel #contest-tab .radar-column {
-+    display: flex;
-+    flex-direction: column;
-+    align-items: center;
-+    justify-content: center;
++  .logo {
++    top: 8px;
++    left: 10px;
++    width: 56px;
 +  }
 +
+   .stats-panel .tab-buttons {
+     justify-content: center;
+   }
+ 
+   .stats-panel .stats-container,
+   .stats-panel #contest-tab .radar-column {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+   }
+ 
    .stats-tabs canvas,
    .radar-column canvas {
      width: clamp(160px, 48vw, 220px) !important;
@@ -117,56 +350,334 @@ index 339734f9c302f94171cb4e2d57c7ee673f3d4d42..e4195de3fb2dfd0d5baaa385e8b3ab89
    }
  
    .move-table {
-     min-width: 620px;
-     font-size: 10px;
-   }
- 
-   .move-table th,
-   .move-table td {
-     white-space: nowrap;
-   }
- 
-   .capacities-wrapper {
-     gap: 8px;
-     flex-wrap: wrap;
-   }
- 
-   .capacity {
-     min-width: 74px;
-     flex: 1 1 30%;
-   }
- 
-   #form-buttons {
-+    width: min(100%, 360px);
-+    margin: 8px auto 0;
-+    padding: 6px;
-+    border: 2px solid #2f6b44;
-+    border-radius: 10px;
-+    background: #08120d;
-     gap: 4px;
-+    -webkit-overflow-scrolling: touch;
-+    touch-action: pan-x;
-   }
- 
-   .form-base-btn,
-   .form-buttons .tab-btn {
-     height: 32px;
-     padding: 2px 6px;
-     font-size: 9px;
-   }
- 
-   .form-btn {
-     width: 28px;
-     height: 28px;
-   }
- 
-   .dex-content {
-     max-height: min(40vh, 280px);
-   }
- 
-   .nav-zone,
-   .nav-btn {
-     display: none;
-   }
+diff --git a/css/pokemon.css b/css/pokemon.css
+index 1ebb2595d8949948417f9e4622ac9e7b1df7199d..4c92e7e6531fbd9c85dabcb77825565413f25fda 100644
+--- a/css/pokemon.css
++++ b/css/pokemon.css
+@@ -38,50 +38,60 @@ header h2 {
+   font-family: "Pixel";
+   font-size: 16px;
+   letter-spacing: 1px;
  }
--
+ 
+ header {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+   padding: 18px 24px;
+   background: linear-gradient(180deg, #1f4d2b, #102018);
+   border-bottom: 4px solid #7bdc65;
+ }
+ 
+ .title-container {
+   text-align: center;
+   line-height: 1.1;
+ }
+ 
+ header h1,
+ header h2 {
+   margin: 0;
+ }
+ 
++
++.site-home-link {
++  color: inherit;
++  text-decoration: none;
++}
++
++.site-home-link:hover {
++  text-decoration: underline;
++}
++
+ .logo {
+   position: absolute;
+   left: 20px;
+   width: 90px;
+   filter: drop-shadow(0 0 6px #7bdc65);
+ }
+ 
+ .title-container {
+   text-align: center;
+ }
+ 
+ 
+ .controls {
+   display: flex;
+   gap: 10px;
+   justify-content: center;
+   padding: 15px;
+   flex-wrap: wrap;
+ }
+ .controls input {
+   background: #0b1611;
+   color: #fff;
+   border: 2px solid #2f6b44;
+   padding: 10px 14px;
+   border-radius: 10px;
+@@ -412,25 +422,47 @@ header h2 {
+   font-size: 11px;
+   margin-top: 6px;
+   padding: 4px 8px;
+   border-radius: 6px;
+   background: rgba(123,220,101,0.1);
+   border: 1px solid #2f6b44;
+   color: #7bdc65;
+   display: inline-block;
+ }
+ 
+ .filter-habitats label {
+   display: block;
+   margin: 4px 0;
+   cursor: pointer;
+ }
+ 
+ .type-icon {
+   width: 20px;
+ }
+ 
+ .pokemon-card {
+   border: 3px solid rgba(0,0,0,0.6);
+   transition: 0.2s;
+ }
+ 
++
++
++@media (max-width: 768px) {
++  header {
++    justify-content: center;
++    padding: 16px 16px 14px;
++  }
++
++  .logo {
++    top: 8px;
++    left: 10px;
++    width: 56px;
++  }
++
++  header h1 {
++    font-size: 40px;
++  }
++
++  header h2 {
++    font-size: 22px;
++  }
++}
+diff --git a/index.html b/index.html
+index a2133f4a7fc0f1e9a5eac1bcaa4cd9d513c98a14..481aa9633a19b3a8926bb9c213eae1ff1c8c746d 100644
+--- a/index.html
++++ b/index.html
+@@ -1,44 +1,44 @@
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Pokémon RPG</title>
+ 
+   <link rel="stylesheet" href="css/pokemon.css">
+ <script type="module" src="js/pokemon.js"></script>
+ 
+ </head>
+ 
+ <body>
+ 
+ <header>
+   <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
+ 
+   <div class="title-container">
+-    <h1>Instituto Serperior</h1>
++    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+     <h2>Registro Pokémon</h2>
+   </div>
+ </header>
+ 
+ <button class="filter-btn" id="toggleViewBtn">Exibição</button>
+ 
+ <section class="controls">
+ <input
+   type="text"
+   id="searchInput"
+   placeholder="Pesquisar Pokémon"
+ >
+ 
+ <input
+   id="dexInput"
+   type="number"
+   min="1"
+   placeholder="Nº Dex"
+ >
+ 
+ <button class="filter-btn" id="openFiltersBtn">Filtros</button>
+ 
+ <div id="filter-modal" class="modal hidden">
+   <div class="modal-content">
+   <h4>Filtrar Pokémon</h4>
+diff --git a/js/pokemon-view.js b/js/pokemon-view.js
+index 93a2e0bdd0317d05fc997e932dff4ea2ea3a3ff4..a60728180007f5da51641fa56a82bea04710de76 100644
+--- a/js/pokemon-view.js
++++ b/js/pokemon-view.js
+@@ -591,51 +591,59 @@ async function loadPokemonById(idOrName) {
+   loadPokemon(pokemon);
+ 
+   history.pushState(null, "", `?id=${pokemon.id}`);
+ }
+ 
+ function renderForms(varieties, baseName) {
+   const container = document.getElementById("form-buttons");
+   container.innerHTML = "";
+ 
+   // BOTÃO BASE (apenas 1 vez)
+   const baseBtn = document.createElement("button");
+   baseBtn.textContent = "Base";
+   baseBtn.className = "form-base-btn";
+   baseBtn.onclick = () => applyPokemonData(basePokemon);
+   container.appendChild(baseBtn);
+ 
+   varieties.forEach((v) => {
+     const name = v.pokemon.name;
+ 
+     // ignora forma base
+     if (name === baseName) return;
+ 
+     // MEGA
+     if (name.includes("mega")) {
+       const img = document.createElement("img");
+-      img.src = "assets/mega.png";
++      if (name.includes("mega-x")) {
++        img.src = "assets/megax.png";
++      } else if (name.includes("mega-y")) {
++        img.src = "assets/megay.png";
++      } else if (name.includes("mega-z")) {
++        img.src = "assets/megaz.png";
++      } else {
++        img.src = "assets/mega.png";
++      }
+       img.className = "form-btn";
+       img.title = "Mega Evolução";
+       img.onclick = () => loadForm(name);
+       container.appendChild(img);
+       return;
+     }
+ 
+     // GIGANTAMAX
+     if (name.includes("gmax")) {
+       const img = document.createElement("img");
+       img.src = "assets/gigantamax.png";
+       img.className = "form-btn";
+       img.title = "Gigantamax";
+       img.onclick = () => loadForm(name);
+       container.appendChild(img);
+       return;
+     }
+ 
+     // FORMAS REGIONAIS / OUTRAS
+     const btn = document.createElement("button");
+     btn.textContent = name.replace(baseName + "-", "");
+     btn.className = "tab-btn";
+     btn.onclick = () => loadForm(name);
+     container.appendChild(btn);
+   });
+diff --git a/moves.html b/moves.html
+index ec4bafbed17fc7287be661b1d14bb2066091cafc..9cd93f2320601a1f582f8e21ada24164d1a3db96 100644
+--- a/moves.html
++++ b/moves.html
+@@ -1,40 +1,40 @@
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+ <meta charset="UTF-8">
+ <title>Golpes Pokémon RPG</title>
+ 
+ <link rel="stylesheet" href="css/moves.css">
+ 
+ <script src="js/utils.js" defer></script>
+ <script src="js/moves.js" defer></script>
+ 
+ </head>
+ 
+ 
+ <body>
+ <header>
+     <img src="assets/logo.png" class="logo">
+ 
+     <div class="title-container">
+-        <h1 class="site-title">Instituto Serperior</h1>
++        <h1 class="site-title"><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+         <h2 class="site-subtitle">Registro de Golpes</h2>
+     </div>
+ </header>
+ 
+ 
+ <input placeholder="Pesquisar golpe"
+  oninput="searchMoves(this.value)">
+ 
+ <select onchange="sortMoves(this.value)">
+   <option value="alpha">A–Z</option>
+   <option value="power">Maior poder</option>
+   <option value="tm">TM</option>
+   <option value="type">Tipo</option>
+   <option value="category">Categoria</option>
+ </select>
+ 
+ <div id="moves"></div>
+ 
+ </body>
+ </html>
+diff --git a/pokemon-view.html b/pokemon-view.html
+index 7f5cc11e27b64cd533dcf4a024734a291a954fc0..7022d3d9eb926e348ca1543919b976f078c13787 100644
+--- a/pokemon-view.html
++++ b/pokemon-view.html
+@@ -1,51 +1,51 @@
+ 
+ 
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Registro Pokémon</title>
+ 
+   <link rel="stylesheet" href="css/pokemon.css">
+   <link rel="stylesheet" href="css/pokemon-view.css">
+   <link rel="icon" href="assets/logo.png">
+ 
+ 
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script type="module" src="js/pokemon-view.js"></script>
+ </head>
+ 
+ <body>
+  <div class="nav-zone left" data-nav="prev"></div>
+  <button class="nav-btn left" data-nav="prev">◀</button>
+ <header>
+   <img src="assets/logo.png" class="logo">
+ 
+   <div class="title-container">
+-    <h1>Instituto Serperior</h1>
++    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+     <h2>Registro Pokémon</h2>
+   </div>
+ </header>
+ 
+ <div class="dex-search">
+   <input
+     type="number"
+     id="dexNumberInput"
+     min="1"
+     placeholder="Nº Dex"
+   />
+ 
+   <input 
+     type="text" 
+     id="dexSearchInput" 
+     placeholder="Nome do Pokémon"
+   />
+ 
+   <button id="dexSearchBtn">Buscar</button>
+ </div>
+ <div id="search-preview" class="search-preview"></div>
+ 
+ <div class="copy-buttons">
+   <button id="copyPokemonBtn" class="pixel-button">Copiar Pokémon</button>
+   <button id="copyMovesBtn" class="pixel-button">Copiar Golpes</button>
