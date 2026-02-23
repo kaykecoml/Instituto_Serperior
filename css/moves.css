@@ -65,10 +65,36 @@ header {
 .site-home-link {
   color: inherit;
   text-decoration: none;
+  display: inline-block;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .site-home-link:hover {
   text-decoration: underline;
+}
+
+.site-home-link:focus,
+.site-home-link:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.site-home-link.expanding {
+  animation: titleExpand 0.36s ease forwards;
+}
+
+@keyframes titleExpand {
+  0% {
+    transform: scale(1);
+    letter-spacing: normal;
+    text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
+  }
+  100% {
+    transform: scale(1.08);
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
+  }
 }
 
 h1 {

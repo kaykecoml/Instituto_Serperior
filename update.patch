@@ -1,98 +1,182 @@
-diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index cd091e9e6e0eb365e48baa26501977e041d7bbe8..52596466134d888d1b70956705c5a06cd48e4226 100644
---- a/css/pokemon-view.css
-+++ b/css/pokemon-view.css
-@@ -201,83 +201,89 @@ body {
- /* efeitos especiais */
- .x4-weak {
-   border: 2px solid #ff2a2a;
-   box-shadow: 0 0 8px #ff2a2a;
- }
- 
- .x4-resist {
-   border: 2px solid #00ff88;
-   box-shadow: 0 0 8px #00ff88;
- }
- 
- .dex {
-   position: absolute;
-   top: 6px;
-   left: 8px;
-   font-size: 14px;
-   opacity: 0.75;
-   z-index: 5;
- }
- 
- .dex-search {
-   display: flex;
-   gap: 10px;
-   justify-content: center;
-   margin: 20px auto;
-+  width: min(100% - 20px, 820px);
-+  padding: 10px;
-+  border: 1px solid #214830;
-+  border-radius: 14px;
-+  background: rgba(8, 18, 13, 0.8);
- }
- 
- #dexNumberInput {
+diff --git a/css/moves.css b/css/moves.css
+index 3c654f96bb4f3d0dbd613495a66d35e7a53aab34..1553ea2d76af3e11e6ca78ce9fd5cab7676ce863 100644
+--- a/css/moves.css
++++ b/css/moves.css
+@@ -43,56 +43,82 @@ header {
+   left: 20px;
    width: 90px;
+   filter: drop-shadow(0 0 6px #7bdc65);
+ }
+ 
+ .site-title {
+   font-family: "Bully";
+   font-size: 52px;
+   color: #7bdc65;
+  text-shadow:
+     0 0 4px rgba(63, 174, 106, 0.6),
+     0 0 8px rgba(63, 174, 106, 0.4);
+ }
+ 
+ .site-subtitle {
+   font-family: "Pokemon";
+   font-size: 28px;
+   letter-spacing: 3px;
+   color: #f8d030;
+   text-shadow: 0 0 6px #f8d030;
+ }
+ 
+ .site-home-link {
+   color: inherit;
+   text-decoration: none;
++  display: inline-block;
++  outline: none;
++  -webkit-tap-highlight-color: transparent;
+ }
+ 
+ .site-home-link:hover {
+   text-decoration: underline;
+ }
+ 
++.site-home-link:focus,
++.site-home-link:focus-visible {
++  outline: none;
++  box-shadow: none;
++}
++
++.site-home-link.expanding {
++  animation: titleExpand 0.36s ease forwards;
++}
++
++@keyframes titleExpand {
++  0% {
++    transform: scale(1);
++    letter-spacing: normal;
++    text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
++  }
++  100% {
++    transform: scale(1.08);
++    letter-spacing: 1.5px;
++    text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
++  }
++}
++
+ h1 {
+   font-family: "Bully";
+   font-size: 48px;
+   color:  #9ae06f;
+ }
+ 
+ h2 {
+   font-family: "Pokemon";
+   font-size: 32px;
+   letter-spacing: 2px;
+   margin-top: 5px;
    text-align: center;
  }
  
- .dex-search input {
-   background: #08120d;
-   border: 2px solid #2f6b44;
+ .titles {
+   text-align: center;
+ }
+ 
+ .move-name {
+   font-family: "Pixel";
+   font-size: 18px;
+   letter-spacing: 1px;
+   text-shadow: 0 0 6px currentColor;
+ }
+ 
+diff --git a/css/pokemon-view.css b/css/pokemon-view.css
+index 52596466134d888d1b70956705c5a06cd48e4226..d9bd58a417bff8afc82541c9b6a3fae84261a53f 100644
+--- a/css/pokemon-view.css
++++ b/css/pokemon-view.css
+@@ -39,56 +39,82 @@ body {
+ 
+ .info-panel .types img {
+   width: 36px;
+ }
+ 
+ .block {
+   margin-top: 14px;
+ }
+ 
+ .block h3 {
+   font-family: Pixel;
+   font-size: 14px;
    color: #7bdc65;
-   padding: 8px 12px;
-   border-radius: 10px;
+   margin-bottom: 4px;
+ }
+ 
+ 
+ .block #size,
+ .block #egg-group {
    font-family: Pixel;
-   outline: none;
-   width: 260px;
  }
  
- .dex-search input::placeholder {
-   color: #4fae78;
+ .site-home-link {
+   color: inherit;
+   text-decoration: none;
++  display: inline-block;
++  outline: none;
++  -webkit-tap-highlight-color: transparent;
  }
  
- .dex-search button {
-   background: #2f6b44;
-   border: 2px solid #4fae78;
-   color: #eaffea;
-   padding: 8px 16px;
-   border-radius: 10px;
-   font-family: Pixel;
-   cursor: pointer;
-   transition: all 0.2s ease;
+ .site-home-link:hover {
+   text-decoration: underline;
  }
  
++.site-home-link:focus,
++.site-home-link:focus-visible {
++  outline: none;
++  box-shadow: none;
++}
 +
- .dex-search button:hover {
-   background: #4fae78;
-   color: #08120d;
- }
- 
- .nav-btn {
-   background: none;
++.site-home-link.expanding {
++  animation: titleExpand 0.36s ease forwards;
++}
++
++@keyframes titleExpand {
++  0% {
++    transform: scale(1);
++    letter-spacing: normal;
++    text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
++  }
++  100% {
++    transform: scale(1.08);
++    letter-spacing: 1.5px;
++    text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
++  }
++}
++
+ .cry-btn {
+   margin-top: 16px;
+   width: 100%;
+   background: #2f6b44;
    border: none;
-   font-size: 32px;
-   color: #7bdc65;
+   padding: 10px;
+   border-radius: 10px;
+   font-family: Pixel;
    cursor: pointer;
  }
- /* container que segura fraqueza + resistência */
- .type-dual-row {
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   gap: 12px;
+ 
+ .image-panel {
+   text-align: center;
  }
  
- /* bloco base */
- .type-panel {
-   padding: 10px;
-   border-radius: 12px;
+ .dex-title {
+   font-family: Pixel;
+   font-size: 18px;
+   margin-bottom: 10px;
+ }
+ 
+ 
+ .art-wrapper {
    display: flex;
-   flex-direction: column;
-@@ -624,77 +630,103 @@ body {
+   align-items: center;
+@@ -626,85 +652,103 @@ body {
+   transform: scale(1.1);
+ }
+ 
+ /* botão base */
  .form-base-btn {
    background: #08120d;
    border: 1px solid #2f6b44;
@@ -114,22 +198,24 @@ index cd091e9e6e0eb365e48baa26501977e041d7bbe8..52596466134d888d1b70956705c5a06c
  .evolution-panel {
    grid-column: 2 / 3;
    grid-row: 3;
-   max-width: 320px;
+-  max-width: 320px;
++  width: 100%;
++  max-width: 420px;
    padding: 16px;
    border-radius: 16px;
    margin-top: 24px;
-+  position: relative;
-+}
-+
-+.evolution-panel::before {
-+  content: "";
-+  position: absolute;
-+  top: 44px;
-+  bottom: 16px;
-+  left: 14px;
-+  width: 3px;
-+  border-radius: 999px;
-+  background: rgba(24, 77, 44, 0.9);
+   position: relative;
+ }
+ 
+ .evolution-panel::before {
+   content: "";
+   position: absolute;
+   top: 44px;
+   bottom: 16px;
+   left: 14px;
+   width: 3px;
+   border-radius: 999px;
+   background: rgba(24, 77, 44, 0.9);
  }
  
  .evolution-title {
@@ -144,11 +230,30 @@ index cd091e9e6e0eb365e48baa26501977e041d7bbe8..52596466134d888d1b70956705c5a06c
    flex-direction: column;
    align-items: center;
    gap: 12px;
-   flex-wrap: nowrap; /* NÃO quebra linha */
-   max-height: 360px;
+-  flex-wrap: nowrap; /* NÃO quebra linha */
+-  max-height: 360px;
++  width: 100%;
++  flex-wrap: nowrap;
++  max-height: 420px;
    overflow-y: auto;
    padding-right: 6px;
-+  padding-left: 16px;
+   padding-left: 16px;
++  scrollbar-width: thin;
++  scrollbar-color: #63d96f rgba(14, 34, 24, 0.4);
++}
++
++.evolution-chain.vertical::-webkit-scrollbar {
++  width: 6px;
++}
++
++.evolution-chain.vertical::-webkit-scrollbar-track {
++  background: rgba(14, 34, 24, 0.55);
++  border-radius: 999px;
++}
++
++.evolution-chain.vertical::-webkit-scrollbar-thumb {
++  background: linear-gradient(180deg, #7bdc65, #42a850);
++  border-radius: 999px;
  }
  
  .evo-node {
@@ -158,46 +263,23 @@ index cd091e9e6e0eb365e48baa26501977e041d7bbe8..52596466134d888d1b70956705c5a06c
    gap: 4px;
  }
  
-+.evo-node.is-clickable {
-+  cursor: pointer;
-+  border-radius: 10px;
-+  padding: 4px;
-+  transition: background 0.15s ease;
-+}
-+
-+.evo-node.is-clickable:hover,
-+.evo-node.is-clickable:focus-visible {
-+  background: rgba(47, 107, 68, 0.25);
-+  outline: 1px solid #4fae78;
-+}
-+
+ .evo-node.is-clickable {
+   cursor: pointer;
+   border-radius: 10px;
+   padding: 4px;
+   transition: background 0.15s ease;
+ }
+ 
+ .evo-node.is-clickable:hover,
+ .evo-node.is-clickable:focus-visible {
+   background: rgba(47, 107, 68, 0.25);
+   outline: 1px solid #4fae78;
+ }
+ 
  .evo-node img {
    width: 96px;
    display: block;
-   margin: 0 auto;
- }
- 
- .evo-name,
- .evo-subtitle,
- .evo-requirement-text {
-   font-family: Pixel;
- }
- 
- .evo-name {
-   font-size: 11px;
-   text-align: center;
- }
- 
- .evo-subtitle {
-   font-size: 10px;
-   opacity: 0.9;
- }
- 
- .evo-transition {
-   display: flex;
-   flex-direction: column;
-@@ -715,50 +747,89 @@ body {
-   height: 26px;
+@@ -748,86 +792,81 @@ body {
    image-rendering: pixelated;
  }
  
@@ -222,45 +304,62 @@ index cd091e9e6e0eb365e48baa26501977e041d7bbe8..52596466134d888d1b70956705c5a06c
    width: 100%;
  }
  
-+.eevee-evolution-layout {
-+  position: relative;
-+  width: min(100%, 300px);
-+  height: 300px;
-+  margin: 8px auto;
-+}
-+
-+.eevee-center {
-+  position: absolute;
-+  top: 50%;
-+  left: 50%;
-+  transform: translate(-50%, -50%);
-+  z-index: 2;
-+}
-+
-+.eevee-ring {
-+  position: absolute;
-+  inset: 0;
-+}
-+
-+.eevee-orbit-item {
-+  --radius: 122px;
-+  position: absolute;
-+  top: 50%;
-+  left: 50%;
-+  transform: rotate(calc(360deg / var(--total) * var(--index)))
-+    translateY(calc(var(--radius) * -1));
-+  transform-origin: center;
+ .eevee-evolution-layout {
+-  position: relative;
+-  width: min(100%, 300px);
+-  height: 300px;
+-  margin: 8px auto;
++  width: 100%;
++  display: grid;
++  grid-template-columns: 1fr;
++  gap: 12px;
++  justify-items: center;
+ }
+ 
+-.eevee-center {
+-  position: absolute;
+-  top: 50%;
+-  left: 50%;
+-  transform: translate(-50%, -50%);
+-  z-index: 2;
++.eevee-base {
++  width: 100%;
 +  display: flex;
-+  flex-direction: column;
-+  align-items: center;
-+  gap: 4px;
-+  width: 122px;
-+}
-+
-+.eevee-orbit-item .evo-transition {
-+  transform: scale(0.72);
-+}
-+
++  justify-content: center;
+ }
+ 
+-.eevee-ring {
+-  position: absolute;
+-  inset: 0;
++.eevee-branches {
++  width: 100%;
++  display: grid;
++  grid-template-columns: repeat(2, minmax(122px, 1fr));
++  gap: 12px 8px;
+ }
+ 
+ .eevee-orbit-item {
+-  --radius: 122px;
+-  position: absolute;
+-  top: 50%;
+-  left: 50%;
+-  transform: rotate(calc(360deg / var(--total) * var(--index)))
+-    translateY(calc(var(--radius) * -1));
+-  transform-origin: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 4px;
+-  width: 122px;
++  width: 100%;
++  min-width: 0;
+ }
+ 
+ .eevee-orbit-item .evo-transition {
+-  transform: scale(0.72);
++  transform: none;
+ }
+ 
  .mega-path,
  .evo-branch-column,
  .mega-branch {
@@ -284,182 +383,7 @@ index cd091e9e6e0eb365e48baa26501977e041d7bbe8..52596466134d888d1b70956705c5a06c
  
  .pokemon-view.is-mystic .block h3,
  .pokemon-view.is-mystic .evolution-title,
- .pokemon-view.is-mystic .evo-requirement-text {
-   color: #f1d98e;
-@@ -798,74 +869,92 @@ body {
- 
- .nav-zone.left:hover ~ .nav-btn.left,
- .nav-zone.right:hover ~ .nav-btn.right {
-   opacity: 0.7;
-   transform: translateY(-50%) scale(1.15);
- }
- 
- .nav-zone {
-   position: fixed;
-   top: 0;
-   width: 80px;
-   height: 100vh;
-   z-index: 90;
-   cursor: pointer;
- }
- 
- .nav-zone.left {
-   left: 0;
- }
- 
- .nav-zone.right {
-   right: 0;
- }
- 
- .search-preview {
--  margin-top: 12px;
-+  margin: -10px auto 0;
-   display: flex;
-   justify-content: center;
-+  width: min(100% - 20px, 820px);
-+}
-+
-+.search-preview .preview-list {
-+  width: 100%;
-+  display: grid;
-+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-+  gap: 8px;
-+  padding: 10px;
-+  border: 1px solid #214830;
-+  border-top: 0;
-+  border-radius: 0 0 14px 14px;
-+  background: rgba(8, 18, 13, 0.93);
- }
- 
- .search-preview .preview-card {
-   display: flex;
-   align-items: center;
-   gap: 10px;
-   padding: 8px 14px;
-   border: 2px solid #2f6b44;
-   border-radius: 12px;
-   background: #08120d;
-   cursor: pointer;
-   transition: all 0.2s ease;
-+  color: #eaffea;
-+  width: 100%;
-+  font-family: Pixel;
-+  text-align: left;
- }
- 
- .search-preview .preview-card:hover {
-   background: #2f6b44;
-   color: #08120d;
- }
- 
- .search-preview img {
-   width: 64px;
-+  image-rendering: pixelated;
- }
- 
- .type-box {
-   margin-top: 20px;
- }
- 
- .info-panel,
- .stats-panel,
- .evolution-panel,
- .move-tabs {
-   width: 100%;
- }
- 
- .capacities-wrapper {
-   display: flex;
-   justify-content: space-evenly;
-   align-items: center;
-   margin-top: 10px;
-   padding: 8px 0;
-   border-top: 1px solid #2f6b44;
- }
- 
- .capacity {
-   display: flex;
-   flex-direction: column;
-@@ -1180,54 +1269,68 @@ body {
- 
-   .info-panel,
-   .stats-panel,
-   .evolution-panel {
-     width: min(100% - 20px, 640px);
-     margin-left: auto;
-     margin-right: auto;
-   }
- 
-   .info-panel,
-   .stats-panel,
-   .move-tabs,
-   .evolution-panel,
-   .image-panel {
-     border-radius: 12px;
-     padding: clamp(10px, 3vw, 14px);
-   }
- 
-   button,
-   .tab-btn,
-   .pixel-button,
-   .form-base-btn {
-     min-height: 38px;
-   }
- 
-+
-   .dex-search {
-     width: min(100% - 20px, 640px);
-     flex-wrap: wrap;
-     gap: 8px;
-+    border: none;
-+    padding: 0;
-+    background: transparent;
-+  }
-+
-+  .search-preview {
-+    margin-top: 8px;
-+    width: min(100% - 20px, 640px);
-+  }
-+
-+  .search-preview .preview-list {
-+    border-top: 1px solid #214830;
-+    border-radius: 14px;
-   }
- 
-   .dex-search input,
-   .dex-search button {
-     width: 100%;
-   }
- 
-   #dexNumberInput {
-     width: 100%;
-   }
- 
-   .copy-buttons {
-     width: min(100% - 20px, 460px);
-     margin: 16px auto;
-     gap: 8px;
-     flex-direction: row;
-     flex-wrap: nowrap;
-   }
- 
-   .pixel-button {
-     flex: 1 1 0;
-     padding: 6px 8px;
-     font-size: clamp(9px, 2.4vw, 11px);
-     min-width: 0;
-     white-space: nowrap;
-@@ -1405,26 +1508,62 @@ body {
-     padding: 20px 10px 10px;
-   }
- 
-   .shiny-toggle {
-     width: 34px;
-     height: 34px;
-   }
- 
-   .shiny-toggle img {
-     width: 20px;
+@@ -1518,52 +1557,37 @@ body {
      height: 20px;
    }
  
@@ -475,160 +399,188 @@ index cd091e9e6e0eb365e48baa26501977e041d7bbe8..52596466134d888d1b70956705c5a06c
    .nav-btn {
      display: none;
    }
-+
-+  .evolution-panel::before {
-+    display: none;
-+  }
-+
-+  .evolution-chain.vertical {
-+    padding-left: 0;
-+  }
-+
-+  .eevee-evolution-layout {
-+    height: auto;
-+    width: 100%;
-+    display: flex;
-+    flex-direction: column;
-+    align-items: center;
-+    gap: 10px;
-+  }
-+
-+  .eevee-center,
-+  .eevee-ring,
-+  .eevee-orbit-item {
-+    position: static;
-+    transform: none;
-+    width: auto;
-+  }
-+
-+  .eevee-ring {
-+    display: flex;
-+    flex-wrap: wrap;
-+    justify-content: center;
-+    gap: 8px;
-+  }
-+
-+  .eevee-orbit-item .evo-transition {
-+    transform: none;
-+  }
- }
-diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index 6070dcbb1d327aba051bbb72a4780cbd04ee14f1..347e10496556d4e979fbd5b8fc86ed3f3a02bc52 100644
---- a/js/pokemon-view.js
-+++ b/js/pokemon-view.js
-@@ -363,77 +363,90 @@ async function renderMoves(moves) {
-   levelMoves
-     .sort((a, b) => a.level - b.level)
-     .forEach((m) =>
-       addRow(
-         levelTbody,
-         m.level,
-         m.details,
-         m.typeIcon,
-         m.categoryIcon,
-         m.power,
-         m.acc,
-         m.pp,
-       ),
-     );
-   currentMovesData = processedMoves;
- }
  
- function updateSearchPreview() {
-   if (!pokemonIndex || pokemonIndex.length === 0) return;
- 
-   const query = nameInput.value.trim().toLowerCase() || dexInput.value.trim();
- 
-   preview.innerHTML = "";
-   if (!query) return;
- 
--  const found = findClosestPokemon(query);
--  if (!found) return;
-+  const candidates = pokemonIndex
-+    .filter(
-+      (p) =>
-+        p.name.startsWith(query) ||
-+        p.name.includes(query) ||
-+        String(p.id).startsWith(query),
-+    )
-+    .slice(0, 6);
- 
--  const card = document.createElement("div");
--  card.className = "preview-card";
-+  if (candidates.length === 0) return;
- 
--  const img = document.createElement("img");
--  img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${found.id}.png`;
-+  const list = document.createElement("div");
-+  list.className = "preview-list";
- 
--  const name = document.createElement("span");
--  name.textContent =
--    `#${String(found.id).padStart(3, "0")} ` +
--    found.name.charAt(0).toUpperCase() +
--    found.name.slice(1);
-+  candidates.forEach((found) => {
-+    const card = document.createElement("button");
-+    card.className = "preview-card";
-+    card.type = "button";
- 
--  card.appendChild(img);
--  card.appendChild(name);
-+    const img = document.createElement("img");
-+    img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${found.id}.png`;
-+    img.alt = found.name;
- 
--  card.onclick = () => {
--    preview.innerHTML = "";
--    nameInput.value = "";
--    dexInput.value = "";
-+    const name = document.createElement("span");
-+    name.textContent = `${formatDexNumber(found.id)} ${formatPokemonName(found.name)}`;
- 
--    loadPokemonById(found.id); // 🔥 AQUI é o segredo
--  };
-+    card.appendChild(img);
-+    card.appendChild(name);
- 
--  preview.appendChild(card);
-+    card.onclick = () => {
-+      preview.innerHTML = "";
-+      nameInput.value = "";
-+      dexInput.value = "";
-+      loadPokemonById(found.id);
-+    };
-+
-+    list.appendChild(card);
-+  });
-+
-+  preview.appendChild(list);
- }
- 
- async function getMoveDetails(url) {
-   if (moveCache.has(url)) {
-     return moveCache.get(url);
+   .evolution-panel::before {
+     display: none;
    }
  
-   const data = await fetch(url).then((r) => r.json());
-   moveCache.set(url, data);
-   return data;
+   .evolution-chain.vertical {
+     padding-left: 0;
+   }
+ 
+   .eevee-evolution-layout {
+-    height: auto;
+-    width: 100%;
+-    display: flex;
+-    flex-direction: column;
+-    align-items: center;
+     gap: 10px;
+   }
+ 
+-  .eevee-center,
+-  .eevee-ring,
+-  .eevee-orbit-item {
+-    position: static;
+-    transform: none;
+-    width: auto;
+-  }
+-
+-  .eevee-ring {
+-    display: flex;
+-    flex-wrap: wrap;
+-    justify-content: center;
+-    gap: 8px;
++  .eevee-branches {
++    grid-template-columns: 1fr;
++    gap: 10px;
+   }
+ 
+   .eevee-orbit-item .evo-transition {
+     transform: none;
+   }
+ }
+diff --git a/css/pokemon.css b/css/pokemon.css
+index 4c92e7e6531fbd9c85dabcb77825565413f25fda..15f64c3fa597287e516f94f26322ef76ac6fe62e 100644
+--- a/css/pokemon.css
++++ b/css/pokemon.css
+@@ -42,56 +42,82 @@ header h2 {
+ 
+ header {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+   padding: 18px 24px;
+   background: linear-gradient(180deg, #1f4d2b, #102018);
+   border-bottom: 4px solid #7bdc65;
  }
  
- const bulbapediaCache = {};
- const speciesDexCache = {};
+ .title-container {
+   text-align: center;
+   line-height: 1.1;
+ }
  
- async function fetchJsonWithRetry(url, retries = 2) {
-   let lastError = null;
+ header h1,
+ header h2 {
+   margin: 0;
+ }
  
-   for (let attempt = 0; attempt <= retries; attempt++) {
-     try {
-       const response = await fetch(url);
  
-       if (!response.ok) {
-         throw new Error(`HTTP ${response.status}`);
-       }
-@@ -1465,79 +1478,113 @@ async function renderEvolutionChain(speciesUrl) {
-   async function traverse(node) {
+ .site-home-link {
+   color: inherit;
+   text-decoration: none;
++  display: inline-block;
++  outline: none;
++  -webkit-tap-highlight-color: transparent;
+ }
+ 
+ .site-home-link:hover {
+   text-decoration: underline;
+ }
+ 
++.site-home-link:focus,
++.site-home-link:focus-visible {
++  outline: none;
++  box-shadow: none;
++}
++
++.site-home-link.expanding {
++  animation: titleExpand 0.36s ease forwards;
++}
++
++@keyframes titleExpand {
++  0% {
++    transform: scale(1);
++    letter-spacing: normal;
++    text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
++  }
++  100% {
++    transform: scale(1.08);
++    letter-spacing: 1.5px;
++    text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
++  }
++}
++
+ .logo {
+   position: absolute;
+   left: 20px;
+   width: 90px;
+   filter: drop-shadow(0 0 6px #7bdc65);
+ }
+ 
+ .title-container {
+   text-align: center;
+ }
+ 
+ 
+ .controls {
+   display: flex;
+   gap: 10px;
+   justify-content: center;
+   padding: 15px;
+   flex-wrap: wrap;
+ }
+ .controls input {
+   background: #0b1611;
+   color: #fff;
+   border: 2px solid #2f6b44;
+   padding: 10px 14px;
+   border-radius: 10px;
+diff --git a/js/moves.js b/js/moves.js
+index 9567ceac795952aec6ddda9932f1dfd5c00441d3..801acadacdd16a57694a28e4d29106dea1edf221 100644
+--- a/js/moves.js
++++ b/js/moves.js
+@@ -143,25 +143,45 @@ function toggleMove(card) {
+       const pp = ppToRPG(move.pp);
+ 
+       details.innerHTML = `
+         <div class="move-stats">
+           <span>⚔ ${dmg}</span>
+           <span>🎯 ${acc}</span>
+           <span>⏳ ${pp}</span>
+         </div>
+ 
+         <p class="desc">${move.description_pt}</p>
+ 
+         <button onclick="event.stopPropagation(); copyMove(\`${formatText(move,dmg,acc,pp)}\`)">
+           Copiar golpe
+         </button>
+       `;
+ 
+       details.dataset.loaded = "true";
+     }
+   }
+ 
+   card.classList.toggle("open");
+ }
+ 
+ 
+ 
++
++function setupSiteTitleAnimation() {
++  const homeLink = document.querySelector(".site-home-link");
++  if (!homeLink) return;
++
++  homeLink.addEventListener("click", (event) => {
++    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
++
++    event.preventDefault();
++    homeLink.classList.remove("expanding");
++    void homeLink.offsetWidth;
++    homeLink.classList.add("expanding");
++
++    setTimeout(() => {
++      window.location.href = homeLink.getAttribute("href") || "index.html";
++    }, 360);
++  });
++}
++
++setupSiteTitleAnimation();
+diff --git a/js/pokemon-view.js b/js/pokemon-view.js
+index 347e10496556d4e979fbd5b8fc86ed3f3a02bc52..79d8b2de4e3891fbe5cbf8213231ebfa69c23e32 100644
+--- a/js/pokemon-view.js
++++ b/js/pokemon-view.js
+@@ -1479,109 +1479,107 @@ async function renderEvolutionChain(speciesUrl) {
      const speciesData = await getSpeciesData(node.species.url);
  
      return {
@@ -653,11 +605,12 @@ index 6070dcbb1d327aba051bbb72a4780cbd04ee14f1..347e10496556d4e979fbd5b8fc86ed3f
  });
  
  async function renderChainNode(node, container) {
-+  if (node.name === "eevee" && node.evolvesTo.length >= 6) {
-+    await renderEeveeCircle(node, container);
-+    return;
-+  }
-+
+   if (node.name === "eevee" && node.evolvesTo.length >= 6) {
+-    await renderEeveeCircle(node, container);
++    await renderEeveeLayout(node, container);
+     return;
+   }
+ 
    const wrapper = await createEvolutionNode(node.name);
    container.appendChild(wrapper);
  
@@ -687,35 +640,45 @@ index 6070dcbb1d327aba051bbb72a4780cbd04ee14f1..347e10496556d4e979fbd5b8fc86ed3f
    }
  }
  
-+async function renderEeveeCircle(node, container) {
-+  const eeveeLayout = document.createElement("div");
-+  eeveeLayout.className = "eevee-evolution-layout";
-+
-+  const center = document.createElement("div");
-+  center.className = "eevee-center";
-+  center.appendChild(await createEvolutionNode(node.name));
-+  eeveeLayout.appendChild(center);
-+
-+  const ring = document.createElement("div");
-+  ring.className = "eevee-ring";
-+
-+  for (const [index, next] of node.evolvesTo.entries()) {
-+    const orb = document.createElement("div");
-+    orb.className = "eevee-orbit-item";
-+    orb.style.setProperty("--index", index);
-+    orb.style.setProperty("--total", node.evolvesTo.length);
-+
-+    const transition = await createEvolutionTransition(next.details);
-+    const evolvedNode = await createEvolutionNode(next.name);
-+    orb.appendChild(transition);
-+    orb.appendChild(evolvedNode);
-+    ring.appendChild(orb);
-+  }
-+
-+  eeveeLayout.appendChild(ring);
-+  container.appendChild(eeveeLayout);
-+}
-+
+-async function renderEeveeCircle(node, container) {
++async function renderEeveeLayout(node, container) {
+   const eeveeLayout = document.createElement("div");
+   eeveeLayout.className = "eevee-evolution-layout";
+ 
+-  const center = document.createElement("div");
+-  center.className = "eevee-center";
+-  center.appendChild(await createEvolutionNode(node.name));
+-  eeveeLayout.appendChild(center);
++  const eeveeBase = document.createElement("div");
++  eeveeBase.className = "eevee-base";
++  eeveeBase.appendChild(await createEvolutionNode(node.name));
++  eeveeLayout.appendChild(eeveeBase);
+ 
+-  const ring = document.createElement("div");
+-  ring.className = "eevee-ring";
++  const eeveeBranches = document.createElement("div");
++  eeveeBranches.className = "eevee-branches";
+ 
+-  for (const [index, next] of node.evolvesTo.entries()) {
++  for (const next of node.evolvesTo) {
+     const orb = document.createElement("div");
+     orb.className = "eevee-orbit-item";
+-    orb.style.setProperty("--index", index);
+-    orb.style.setProperty("--total", node.evolvesTo.length);
+ 
+     const transition = await createEvolutionTransition(next.details);
+     const evolvedNode = await createEvolutionNode(next.name);
+     orb.appendChild(transition);
+     orb.appendChild(evolvedNode);
+-    ring.appendChild(orb);
++    eeveeBranches.appendChild(orb);
+   }
+ 
+-  eeveeLayout.appendChild(ring);
++  eeveeLayout.appendChild(eeveeBranches);
+   container.appendChild(eeveeLayout);
+ }
+ 
  function applySpecialTheme(species) {
    const pokemonView = document.querySelector(".pokemon-view");
    if (!pokemonView) return;
@@ -738,147 +701,235 @@ index 6070dcbb1d327aba051bbb72a4780cbd04ee14f1..347e10496556d4e979fbd5b8fc86ed3f
        "assets/unknown.png";
  
      pokemonSpriteCache.set(name, sprite);
-     return sprite;
-   } catch {
-     return "assets/unknown.png";
-@@ -1552,50 +1599,65 @@ async function getSpeciesData(url) {
- }
- 
- function extractMegaForms(speciesData) {
-   return speciesData.varieties
-     .map((v) => v.pokemon.name)
-     .filter((name) => name.includes("-mega"))
-     .map((name) => {
-       const suffix = name.replace(`${speciesData.name}-mega`, "").replace("-", "");
-       const label = suffix ? `Mega ${suffix.toUpperCase()}` : "Mega";
-       const stoneName = suffix
-         ? `${speciesData.name}ite-${suffix}`
-         : `${speciesData.name}ite`;
- 
-       return {
-         pokemonName: name,
-         label,
-         stoneName,
-       };
-     });
- }
- 
- async function createEvolutionNode(name, subtitle = "") {
-   const wrapper = document.createElement("div");
-   wrapper.className = "evo-node";
- 
-+  const isMega = name.includes("-mega");
-+  if (!isMega) {
-+    wrapper.classList.add("is-clickable");
-+    wrapper.title = "Abrir Pokémon";
-+    wrapper.addEventListener("click", () => loadPokemonById(name));
-+    wrapper.addEventListener("keydown", (event) => {
-+      if (event.key === "Enter" || event.key === " ") {
-+        event.preventDefault();
-+        loadPokemonById(name);
-+      }
-+    });
-+    wrapper.tabIndex = 0;
-+    wrapper.setAttribute("role", "button");
-+  }
-+
-   const img = document.createElement("img");
-   img.width = 96;
-   img.height = 96;
-   img.alt = name;
-   img.src = await getPokemonSprite(name);
- 
-   const nameTag = document.createElement("span");
-   nameTag.className = "evo-name";
-   nameTag.textContent = formatPokemonName(name);
- 
-   wrapper.appendChild(img);
-   wrapper.appendChild(nameTag);
- 
-   if (subtitle) {
-     const subLabel = document.createElement("span");
-     subLabel.className = "evo-subtitle";
-     subLabel.textContent = subtitle;
-     wrapper.appendChild(subLabel);
+@@ -1717,63 +1715,79 @@ function getEvolutionRequirement(details, override = {}) {
+       text: formatPokemonName(details.item.name),
+     };
    }
  
-   return wrapper;
+   if (details.min_level) {
+     return {
+       itemName: "rare_candy",
+       text: `Nv. ${details.min_level}`,
+     };
+   }
+ 
+   if (details.trigger?.name === "trade") {
+     return {
+       itemName: "link_cable",
+       text: "Troca",
+     };
+   }
+ 
+   return {
+     itemName: "rare_candy",
+     text: "Evolui",
+   };
  }
  
- async function createEvolutionTransition(details, override = {}) {
-   const transition = document.createElement("div");
-diff --git a/pokemon-view.html b/pokemon-view.html
-index e85fcf3081a80b9cbe788be7222bce50b44f9bfc..6a298dd05b96034555626f6dab432f2d818ed5d1 100644
---- a/pokemon-view.html
-+++ b/pokemon-view.html
-@@ -174,59 +174,61 @@
+ async function getEvolutionItemImage(itemName) {
+-  const normalized = itemName.toLowerCase().replace(/\s+/g, "_");
++  const normalized = itemName
++    .toLowerCase()
++    .normalize("NFD")
++    .replace(/[\u0300-\u036f]/g, "")
++    .replace(/['’.]/g, "")
++    .replace(/\s+/g, "_")
++    .replace(/-/g, "_");
++
+   if (itemSpriteCache.has(normalized)) return itemSpriteCache.get(normalized);
  
+-  const localPath = `assets/evolution items/${normalized}.png`;
++  const localCandidates = [
++    `assets/evolution items/${normalized}.png`,
++    `assets/evolution items/${normalized.replace(/_/g, " ")}.png`,
++    `assets/evolution items/${normalized.replace(/_/g, "-")}.png`,
++    `assets/evolution items/${normalized
++      .replace(/_/g, " ")
++      .replace(/\b\w/g, (char) => char.toUpperCase())}.png`,
++  ];
  
-   <section class="info-panel stats-panel">
-    <div class="tab-buttons">
- <button class="tab-btn active" data-tab="stats">Status</button>
- <button class="tab-btn" data-tab="contest">Concurso</button>
-   </div>
+-  try {
+-    const localResponse = await fetch(encodeURI(localPath), { method: "HEAD" });
+-    if (localResponse.ok) {
+-      itemSpriteCache.set(normalized, localPath);
+-      return localPath;
++  for (const candidatePath of localCandidates) {
++    try {
++      const localResponse = await fetch(encodeURI(candidatePath), { method: "HEAD" });
++      if (localResponse.ok) {
++        itemSpriteCache.set(normalized, candidatePath);
++        return candidatePath;
++      }
++    } catch {
++      // tenta próximo candidato
+     }
+-  } catch {
+-    // fallback para pokeapi
+   }
  
-   <div id="stats-tab" class="tab-content active">
-     <div class="stats-container">
-       <div class="radar-column">
-         <canvas id="statsRadar" width="220" height="220"></canvas>
-         <ul class="stats-list">
-           <li>Saúde: <strong id="stat-hp"></strong></li>
-           <li>Ataque: <strong id="stat-atk"></strong></li>
-           <li>Defesa: <strong id="stat-def"></strong></li>
-           <li>Ataque Esp.: <strong id="stat-spatk"></strong></li>
-           <li>Defesa Esp.: <strong id="stat-spdef"></strong></li>
-           <li>Velocidade: <strong id="stat-spd"></strong></li>
-         </ul>
-       </div>
-     </div>
-   </div>
+   try {
+     const itemData = await fetch(`https://pokeapi.co/api/v2/item/${normalized}`).then((r) =>
+       r.json(),
+     );
+     const sprite = itemData.sprites.default || "assets/forms/mega.png";
+     itemSpriteCache.set(normalized, sprite);
+     return sprite;
+   } catch {
+     return "assets/forms/mega.png";
+   }
+ }
  
-   <div id="contest-tab" class="tab-content">
--    <div class="radar-column">
--      <canvas id="contestRadar" width="220" height="220"></canvas>
--      <ul class="stats-list">
--        <li>Beleza: <strong id="contest-beauty"></strong></li>
--        <li>Fofura: <strong id="contest-cute"></strong></li>
--        <li>Estilo: <strong id="contest-style"></strong></li>
--        <li>Inteligência: <strong id="contest-smart"></strong></li>
--        <li>Vigor: <strong id="contest-tough"></strong></li>
--      </ul>
-+    <div class="stats-container">
-+      <div class="radar-column">
-+        <canvas id="contestRadar" width="220" height="220"></canvas>
-+        <ul class="stats-list">
-+          <li>Beleza: <strong id="contest-beauty"></strong></li>
-+          <li>Fofura: <strong id="contest-cute"></strong></li>
-+          <li>Estilo: <strong id="contest-style"></strong></li>
-+          <li>Inteligência: <strong id="contest-smart"></strong></li>
-+          <li>Vigor: <strong id="contest-tough"></strong></li>
-+        </ul>
-+      </div>
-     </div>
-   </div>
-   </section>
+ async function createMegaBranch(megaForms) {
+   const megaContainer = document.createElement("div");
+   megaContainer.className = "mega-branch";
  
- </section>
+   if (megaForms.length === 1) {
+     const mega = megaForms[0];
+     megaContainer.appendChild(
+       await createEvolutionTransition(null, {
+         itemName: mega.stoneName,
+         text: mega.label,
+       }),
+@@ -2006,47 +2020,67 @@ ${text}
+ `;
  
-   <!-- DIREITA: GOLPES -->
-   <section class="info-panel move-tabs">
-       <div class="tab-buttons move-tab-buttons">
-       <button class="tab-btn active" data-movetab="level">Golpes (Level)</button>
-       <button class="tab-btn" data-movetab="other">TM / Tutor / Egg</button>
-     </div>
+   navigator.clipboard.writeText(formatted).then(() => showCopyToast());
+ });
  
-     <div id="level-tab" class="tab-content active">
-       <div class="move-table-scroll">
-         <table class="move-table">
-           <thead>
-             <tr>
-               <th>Nível</th>
-               <th>Golpe</th>
-               <th>Tipo</th>
-               <th>Categ.</th>
-               <th>Dano</th>
-               <th>Acerto</th>
-               <th>Uso</th>
+ /* ===== BOTÃO DE CHORO ===== */
+ document.querySelector(".cry-btn")?.addEventListener("click", playCry);
+ 
+ /* ===== NAVEGAÇÃO ===== */
+ document.querySelector(".nav-btn.left")?.addEventListener("click", goPrev);
+ 
+ document.querySelector(".nav-btn.right")?.addEventListener("click", goNext);
+ 
+ document.getElementById("toggleShinyBtn")?.addEventListener("click", () => {
+   isShinyActive = !isShinyActive;
+   updateArtworkImage();
+ });
+ 
+ document.querySelectorAll("[data-mobile-nav]").forEach((btn) => {
+   btn.addEventListener("click", () => {
+     if (btn.dataset.mobileNav === "prev") goPrev();
+     if (btn.dataset.mobileNav === "next") goNext();
+   });
+ });
+ 
++function setupSiteTitleAnimation() {
++  const homeLink = document.querySelector(".site-home-link");
++  if (!homeLink) return;
++
++  homeLink.addEventListener("click", (event) => {
++    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
++
++    event.preventDefault();
++    homeLink.classList.remove("expanding");
++    void homeLink.offsetWidth;
++    homeLink.classList.add("expanding");
++
++    setTimeout(() => {
++      window.location.href = homeLink.getAttribute("href") || "index.html";
++    }, 360);
++  });
++}
++
+ document.addEventListener("DOMContentLoaded", () => {
++  setupSiteTitleAnimation();
++
+   [nameInput, dexInput].forEach((input) =>
+     input.addEventListener("input", updateSearchPreview),
+   );
+ 
+   document.querySelectorAll(".move-tab-buttons .tab-btn").forEach((btn) => {
+     btn.addEventListener("click", () => {
+       const tab = btn.dataset.movetab;
+ 
+       document
+         .querySelectorAll("#level-tab, #other-tab")
+         .forEach((t) => t.classList.remove("active"));
+ 
+       document
+         .querySelectorAll(".move-tab-buttons .tab-btn")
+         .forEach((b) => b.classList.remove("active"));
+ 
+       document.getElementById(`${tab}-tab`)?.classList.add("active");
+       btn.classList.add("active");
+     });
+   });
+ });
+diff --git a/js/pokemon.js b/js/pokemon.js
+index 2a8000dc69f6172773f39b619038e345ad9c547e..47fafe6c50de8d943b191d65c15ae31ef54d32f4 100644
+--- a/js/pokemon.js
++++ b/js/pokemon.js
+@@ -280,51 +280,70 @@ function filterByType(select) {
+ 
+ function goToPokemon(dex) {
+   const id = Number(dex);
+ 
+   if (!id || id < 1 || id > 1025) return;
+ 
+   window.location.href = `pokemon-view.html?id=${id}`;
+ }
+ 
+ function capitalize(text) {
+   return text.charAt(0).toUpperCase() + text.slice(1);
+ }
+ 
+ function getGeneration(dex) {
+   if (dex <= 151) return 1;
+   if (dex <= 251) return 2;
+   if (dex <= 386) return 3;
+   if (dex <= 493) return 4;
+   if (dex <= 649) return 5;
+   if (dex <= 721) return 6;
+   if (dex <= 809) return 7;
+   if (dex <= 905) return 8;
+   return 9;
+ }
+ 
++function setupSiteTitleAnimation() {
++  const homeLink = document.querySelector(".site-home-link");
++  if (!homeLink) return;
++
++  homeLink.addEventListener("click", (event) => {
++    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
++
++    event.preventDefault();
++    homeLink.classList.remove("expanding");
++    void homeLink.offsetWidth;
++    homeLink.classList.add("expanding");
++
++    setTimeout(() => {
++      window.location.href = homeLink.getAttribute("href") || "index.html";
++    }, 360);
++  });
++}
++
+ document.addEventListener("DOMContentLoaded", () => {
++  setupSiteTitleAnimation();
+   loadHabitats();
+   loadPokemons();
+ 
+   // Pesquisa por nome
+   document.getElementById("searchInput").addEventListener("input", (e) => {
+     searchPokemon(e.target.value);
+   });
+ 
+   // Pesquisa por número
+   document.getElementById("dexInput").addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       goToPokemon(e.target.value);
+     }
+   });
+ 
+   // Botões
+   document
+     .getElementById("toggleViewBtn")
+     .addEventListener("click", toggleView);
+ 
+   document
+     .getElementById("openFiltersBtn")
+     .addEventListener("click", openFilters);
+ 
+   document

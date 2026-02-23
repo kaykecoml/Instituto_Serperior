@@ -1501,7 +1501,7 @@ document.querySelectorAll(".nav-zone").forEach((zone) => {
 
 async function renderChainNode(node, container) {
   if (node.name === "eevee" && node.evolvesTo.length >= 6) {
-    await renderEeveeCircle(node, container);
+    await renderEeveeLayout(node, container);
     return;
   }
 
@@ -1534,32 +1534,30 @@ async function renderChainNode(node, container) {
   }
 }
 
-async function renderEeveeCircle(node, container) {
+async function renderEeveeLayout(node, container) {
   const eeveeLayout = document.createElement("div");
   eeveeLayout.className = "eevee-evolution-layout";
 
-  const center = document.createElement("div");
-  center.className = "eevee-center";
-  center.appendChild(await createEvolutionNode(node.name));
-  eeveeLayout.appendChild(center);
+  const eeveeBase = document.createElement("div");
+  eeveeBase.className = "eevee-base";
+  eeveeBase.appendChild(await createEvolutionNode(node.name));
+  eeveeLayout.appendChild(eeveeBase);
 
-  const ring = document.createElement("div");
-  ring.className = "eevee-ring";
+  const eeveeBranches = document.createElement("div");
+  eeveeBranches.className = "eevee-branches";
 
-  for (const [index, next] of node.evolvesTo.entries()) {
+  for (const next of node.evolvesTo) {
     const orb = document.createElement("div");
     orb.className = "eevee-orbit-item";
-    orb.style.setProperty("--index", index);
-    orb.style.setProperty("--total", node.evolvesTo.length);
 
     const transition = await createEvolutionTransition(next.details);
     const evolvedNode = await createEvolutionNode(next.name);
     orb.appendChild(transition);
     orb.appendChild(evolvedNode);
-    ring.appendChild(orb);
+    eeveeBranches.appendChild(orb);
   }
 
-  eeveeLayout.appendChild(ring);
+  eeveeLayout.appendChild(eeveeBranches);
   container.appendChild(eeveeLayout);
 }
 
@@ -1739,19 +1737,35 @@ function getEvolutionRequirement(details, override = {}) {
 }
 
 async function getEvolutionItemImage(itemName) {
-  const normalized = itemName.toLowerCase().replace(/\s+/g, "_");
+  const normalized = itemName
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['’.]/g, "")
+    .replace(/\s+/g, "_")
+    .replace(/-/g, "_");
+
   if (itemSpriteCache.has(normalized)) return itemSpriteCache.get(normalized);
 
-  const localPath = `assets/evolution items/${normalized}.png`;
+  const localCandidates = [
+    `assets/evolution items/${normalized}.png`,
+    `assets/evolution items/${normalized.replace(/_/g, " ")}.png`,
+    `assets/evolution items/${normalized.replace(/_/g, "-")}.png`,
+    `assets/evolution items/${normalized
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase())}.png`,
+  ];
 
-  try {
-    const localResponse = await fetch(encodeURI(localPath), { method: "HEAD" });
-    if (localResponse.ok) {
-      itemSpriteCache.set(normalized, localPath);
-      return localPath;
+  for (const candidatePath of localCandidates) {
+    try {
+      const localResponse = await fetch(encodeURI(candidatePath), { method: "HEAD" });
+      if (localResponse.ok) {
+        itemSpriteCache.set(normalized, candidatePath);
+        return candidatePath;
+      }
+    } catch {
+      // tenta próximo candidato
     }
-  } catch {
-    // fallback para pokeapi
   }
 
   try {
@@ -2028,7 +2042,27 @@ document.querySelectorAll("[data-mobile-nav]").forEach((btn) => {
   });
 });
 
+function setupSiteTitleAnimation() {
+  const homeLink = document.querySelector(".site-home-link");
+  if (!homeLink) return;
+
+  homeLink.addEventListener("click", (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    event.preventDefault();
+    homeLink.classList.remove("expanding");
+    void homeLink.offsetWidth;
+    homeLink.classList.add("expanding");
+
+    setTimeout(() => {
+      window.location.href = homeLink.getAttribute("href") || "index.html";
+    }, 360);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  setupSiteTitleAnimation();
+
   [nameInput, dexInput].forEach((input) =>
     input.addEventListener("input", updateSearchPreview),
   );

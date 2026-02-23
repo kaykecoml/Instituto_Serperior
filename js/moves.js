@@ -165,3 +165,23 @@ function toggleMove(card) {
 
 
 
+
+function setupSiteTitleAnimation() {
+  const homeLink = document.querySelector(".site-home-link");
+  if (!homeLink) return;
+
+  homeLink.addEventListener("click", (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    event.preventDefault();
+    homeLink.classList.remove("expanding");
+    void homeLink.offsetWidth;
+    homeLink.classList.add("expanding");
+
+    setTimeout(() => {
+      window.location.href = homeLink.getAttribute("href") || "index.html";
+    }, 360);
+  });
+}
+
+setupSiteTitleAnimation();
