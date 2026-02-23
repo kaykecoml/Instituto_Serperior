@@ -293,13 +293,6 @@ body {
   color: #08120d;
 }
 
-.nav-btn {
-  background: none;
-  border: none;
-  font-size: 32px;
-  color: #7bdc65;
-  cursor: pointer;
-}
 /* container que segura fraqueza + resistência */
 .type-dual-row {
   display: grid;
@@ -883,14 +876,35 @@ body {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 64px;
+  min-height: 112px;
+  padding: 12px 8px;
+  border: 2px solid #2f6b44;
+  border-radius: 16px;
+  background: rgba(8, 18, 13, 0.92);
   color: #7bdc65;
+  font-family: Pixel;
   cursor: pointer;
-  opacity: 0.25;
+  opacity: 0.35;
   z-index: 100;
   transition: all 0.2s ease;
+}
+
+.nav-btn-arrow {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.nav-btn-dex {
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
 }
 
 .nav-btn.left {
@@ -902,21 +916,23 @@ body {
 }
 
 .nav-btn:hover {
-  opacity: 0.7;
-  transform: translateY(-50%) scale(1.15);
+  opacity: 0.9;
+  transform: translateY(-50%) scale(1.06);
+  border-color: #4fae78;
 }
 
 .nav-zone.left:hover ~ .nav-btn.left,
 .nav-zone.right:hover ~ .nav-btn.right {
-  opacity: 0.7;
-  transform: translateY(-50%) scale(1.15);
+  opacity: 0.9;
+  transform: translateY(-50%) scale(1.06);
+  border-color: #4fae78;
 }
 
 .nav-zone {
   position: fixed;
-  top: 0;
+  top: 110px;
   width: 80px;
-  height: 100vh;
+  height: calc(100vh - 110px);
   z-index: 90;
   cursor: pointer;
 }

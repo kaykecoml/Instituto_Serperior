@@ -71,6 +71,7 @@ const MAX_POKEMON_ID = 1025;
 let currentDisplayedPokemon = null;
 let currentBaseDexId = currentId;
 let isShinyActive = false;
+let isPokemonLoading = false;
 
 
 const nameInput = document.getElementById("dexSearchInput");
@@ -119,15 +120,30 @@ function formatDexNumber(id) {
   return `#${String(id).padStart(4, "0")}`;
 }
 
-function updateMobileDexNavigation() {
+function getAdjacentPokemonIds() {
   const prev = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
   const next = currentId < MAX_POKEMON_ID ? currentId + 1 : 1;
 
-  const prevEl = document.getElementById("mobile-prev-dex");
-  const nextEl = document.getElementById("mobile-next-dex");
+  return { prev, next };
+}
 
-  if (prevEl) prevEl.textContent = formatDexNumber(prev);
-  if (nextEl) nextEl.textContent = formatDexNumber(next);
+function updateDexNavigationLabels() {
+  const { prev, next } = getAdjacentPokemonIds();
+
+  const mobilePrevEl = document.getElementById("mobile-prev-dex");
+  const mobileNextEl = document.getElementById("mobile-next-dex");
+  const desktopPrevEl = document.getElementById("desktop-prev-dex");
+  const desktopNextEl = document.getElementById("desktop-next-dex");
+
+  if (mobilePrevEl) mobilePrevEl.textContent = formatDexNumber(prev);
+  if (mobileNextEl) mobileNextEl.textContent = formatDexNumber(next);
+  if (desktopPrevEl) desktopPrevEl.textContent = formatDexNumber(prev);
+  if (desktopNextEl) desktopNextEl.textContent = formatDexNumber(next);
+}
+
+async function prefetchAdjacentPokemon() {
+  const { prev, next } = getAdjacentPokemonIds();
+  await Promise.allSettled([getPokemonData(prev), getPokemonData(next)]);
 }
 
 async function init() {
@@ -144,7 +160,8 @@ function loadPokemon(p) {
   currentBaseDexId = p.id;
   currentId = p.id;
   isShinyActive = false;
-  updateMobileDexNavigation();
+  updateDexNavigationLabels();
+  void prefetchAdjacentPokemon();
 
   document.getElementById("dex").textContent = `#${String(p.id).padStart(3, "0")}`;
   document.getElementById("name").textContent = formatPokemonName(p.name);
@@ -440,8 +457,6 @@ async function getMoveDetails(url) {
 }
 
 const bulbapediaCache = {};
-const speciesDexCache = {};
-
 async function fetchJsonWithRetry(url, retries = 2) {
   let lastError = null;
 
@@ -581,84 +596,29 @@ async function fetchBulbapediaBiology(pokemonName) {
   }
 }
 
-function normalizeDexText(text) {
-  return text
-    .replace(/[\n\f\r]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function getPreferredFlavorEntry(entries, language) {
-  const byLanguage = entries.filter((entry) => entry.language.name === language);
-
-  if (byLanguage.length === 0) {
-    return null;
-  }
-
-  const versionOrder = [
-    "scarlet",
-    "violet",
-    "sword",
-    "shield",
-    "sun",
-    "moon",
-    "ultra-sun",
-    "ultra-moon",
-  ];
-
-  for (const version of versionOrder) {
-    const match = byLanguage.find((entry) => entry.version.name === version);
-    if (match) return match;
-  }
-
-  return byLanguage[byLanguage.length - 1];
-}
-
-async function getDexEntryFromSpecies(species) {
-  const cacheKey = species.id || species.name;
-
-  if (speciesDexCache[cacheKey]) {
-    return speciesDexCache[cacheKey];
-  }
-
-  const ptEntry = getPreferredFlavorEntry(species.flavor_text_entries, "pt-BR");
-  if (ptEntry?.flavor_text) {
-    const text = normalizeDexText(ptEntry.flavor_text);
-    speciesDexCache[cacheKey] = text;
-    return text;
-  }
-
-  const enEntry = getPreferredFlavorEntry(species.flavor_text_entries, "en");
-  if (!enEntry?.flavor_text) {
-    return null;
-  }
-
-  const translated = await translateToPortuguese(normalizeDexText(enEntry.flavor_text));
-  speciesDexCache[cacheKey] = translated;
-
-  return translated;
-}
-
-async function getDexEntryText(pokemon, species) {
+async function getDexEntryText(pokemon) {
   const bulbapediaText = await fetchBulbapediaBiology(pokemon.name);
   if (bulbapediaText) {
     return bulbapediaText;
   }
 
-  const speciesText = await getDexEntryFromSpecies(species);
-  if (speciesText) {
-    return speciesText;
-  }
-
-  return "Descrição da dex não encontrada.";
+  return "Descrição da Bulbapedia indisponível no momento.";
 }
 
 async function loadPokemonById(idOrName) {
-  const pokemon = await getPokemonData(idOrName);
+  if (isPokemonLoading) return;
 
-  loadPokemon(pokemon);
+  isPokemonLoading = true;
 
-  history.pushState(null, "", `?id=${pokemon.id}`);
+  try {
+    const pokemon = await getPokemonData(idOrName);
+
+    loadPokemon(pokemon);
+
+    history.pushState(null, "", `?id=${pokemon.id}`);
+  } finally {
+    isPokemonLoading = false;
+  }
 }
 
 async function getPokemonData(idOrName) {
@@ -758,7 +718,7 @@ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
 
   const species = await getSpeciesData(p.species.url);
   applySpecialTheme(species);
-  const dexText = await getDexEntryText(p, species);
+  const dexText = await getDexEntryText(p);
 
   dexEntry.classList.remove("expanded");
   dexEntry.textContent = dexText;
@@ -1357,13 +1317,13 @@ function clampCapacity(value) {
 }
 
 function goPrev() {
-  const prevId = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
-  loadPokemonById(prevId);
+  const { prev } = getAdjacentPokemonIds();
+  loadPokemonById(prev);
 }
 
 function goNext() {
-  const nextId = currentId < MAX_POKEMON_ID ? Number(currentId) + 1 : 1;
-  loadPokemonById(nextId);
+  const { next } = getAdjacentPokemonIds();
+  loadPokemonById(next);
 }
 
 function goToDex(n) {

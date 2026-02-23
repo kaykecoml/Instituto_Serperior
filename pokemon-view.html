@@ -18,7 +18,10 @@
 
 <body>
  <div class="nav-zone left" data-nav="prev"></div>
- <button class="nav-btn left" data-nav="prev">◀</button>
+ <button class="nav-btn left" data-nav="prev" type="button" aria-label="Pokémon anterior">
+  <span class="nav-btn-arrow">◀</span>
+  <span class="nav-btn-dex" id="desktop-prev-dex">#1025</span>
+ </button>
 <header>
   <img src="assets/logo.png" class="logo">
 
@@ -271,7 +274,10 @@
 </main>
 
 <div class="nav-zone right" data-nav="next"></div>
-<button class="nav-btn right" data-nav="next">▶</button>
+<button class="nav-btn right" data-nav="next" type="button" aria-label="Próximo Pokémon">
+  <span class="nav-btn-arrow">▶</span>
+  <span class="nav-btn-dex" id="desktop-next-dex">#0002</span>
+</button>
 </body>
   
 </html>
