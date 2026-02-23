@@ -1,336 +1,53 @@
-diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index d9bd58a417bff8afc82541c9b6a3fae84261a53f..6345d51614634c4ba88b6b752ff4773fea87a6f9 100644
---- a/css/pokemon-view.css
-+++ b/css/pokemon-view.css
-@@ -271,57 +271,50 @@ body {
-   outline: none;
-   width: 260px;
- }
- 
- .dex-search input::placeholder {
-   color: #4fae78;
- }
- 
- .dex-search button {
-   background: #2f6b44;
-   border: 2px solid #4fae78;
-   color: #eaffea;
-   padding: 8px 16px;
-   border-radius: 10px;
-   font-family: Pixel;
-   cursor: pointer;
-   transition: all 0.2s ease;
- }
- 
- 
- .dex-search button:hover {
-   background: #4fae78;
-   color: #08120d;
- }
- 
--.nav-btn {
--  background: none;
--  border: none;
--  font-size: 32px;
--  color: #7bdc65;
--  cursor: pointer;
--}
- /* container que segura fraqueza + resistência */
- .type-dual-row {
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   gap: 12px;
- }
- 
- /* bloco base */
- .type-panel {
-   padding: 10px;
-   border-radius: 12px;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 6px;
- }
- 
- /* títulos */
- .type-panel h3 {
-   font-family: Pixel;
-   font-size: 13px;
-   margin-bottom: 4px;
- }
- 
- /* FRAQUEZAS */
-@@ -861,84 +854,107 @@ body {
- .pokemon-view.is-mystic .search-preview .preview-card,
- .pokemon-view.is-mystic .mobile-art-nav {
-   border-color: #d9b44a;
-   box-shadow: 0 0 12px rgba(217, 180, 74, 0.25);
- }
- 
- .pokemon-view.is-mystic .info-panel {
-   background: linear-gradient(180deg, #221931, #0b1611);
- }
- 
- .pokemon-view.is-mystic .block h3,
- .pokemon-view.is-mystic .evolution-title,
- .pokemon-view.is-mystic .evo-requirement-text {
-   color: #f1d98e;
- }
- 
- .pokemon-view.is-mystic .evo-chevron {
-   border-left-color: #f1d98e;
-   border-bottom-color: #f1d98e;
- }
- 
- .nav-btn {
-   position: fixed;
-   top: 50%;
-   transform: translateY(-50%);
--  background: none;
--  border: none;
--  font-size: 56px;
-+  display: flex;
-+  flex-direction: column;
-+  align-items: center;
-+  justify-content: center;
-+  gap: 4px;
-+  width: 64px;
-+  min-height: 112px;
-+  padding: 12px 8px;
-+  border: 2px solid #2f6b44;
-+  border-radius: 16px;
-+  background: rgba(8, 18, 13, 0.92);
-   color: #7bdc65;
-+  font-family: Pixel;
-   cursor: pointer;
--  opacity: 0.25;
-+  opacity: 0.35;
-   z-index: 100;
-   transition: all 0.2s ease;
- }
- 
-+.nav-btn-arrow {
-+  font-size: 30px;
-+  line-height: 1;
-+}
-+
-+.nav-btn-dex {
-+  font-size: 10px;
-+  letter-spacing: 0.6px;
-+  writing-mode: vertical-rl;
-+  transform: rotate(180deg);
-+}
-+
- .nav-btn.left {
-   left: 12px;
- }
- 
- .nav-btn.right {
-   right: 12px;
- }
- 
- .nav-btn:hover {
--  opacity: 0.7;
--  transform: translateY(-50%) scale(1.15);
-+  opacity: 0.9;
-+  transform: translateY(-50%) scale(1.06);
-+  border-color: #4fae78;
- }
- 
- .nav-zone.left:hover ~ .nav-btn.left,
- .nav-zone.right:hover ~ .nav-btn.right {
--  opacity: 0.7;
--  transform: translateY(-50%) scale(1.15);
-+  opacity: 0.9;
-+  transform: translateY(-50%) scale(1.06);
-+  border-color: #4fae78;
- }
- 
- .nav-zone {
-   position: fixed;
--  top: 0;
-+  top: 110px;
-   width: 80px;
--  height: 100vh;
-+  height: calc(100vh - 110px);
-   z-index: 90;
-   cursor: pointer;
- }
- 
- .nav-zone.left {
-   left: 0;
- }
- 
- .nav-zone.right {
-   right: 0;
- }
- 
- .search-preview {
-   margin: -10px auto 0;
-   display: flex;
-   justify-content: center;
-   width: min(100% - 20px, 820px);
- }
- 
- .search-preview .preview-list {
-   width: 100%;
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-   gap: 8px;
-   padding: 10px;
 diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index e5b69b1db4690b2c8cdb7d7f43b50a75609f7481..9b91176aaffcdcfcc1c6b54ae428e973d99b5c95 100644
+index 9b91176aaffcdcfcc1c6b54ae428e973d99b5c95..3444d03a8c0e281cd61bd5a918377cddd5060d22 100644
 --- a/js/pokemon-view.js
 +++ b/js/pokemon-view.js
-@@ -49,124 +49,141 @@ function convertStat(value) {
-   const base = Math.floor(value / 10);
-   return value % 10 >= 9 ? base + 1 : base;
- }
+@@ -1,40 +1,43 @@
+ import { HABITATS } from "./habitats.js";
+ import { powerToDamage, accuracyToRPG, ppToRPG } from "./utils.js";
+ import { abilitiesData } from "./abilities.js";
+ const moveCache = new Map();
+ const pokemonSpriteCache = new Map();
+ const itemSpriteCache = new Map();
+ const speciesVarietyCache = new Map();
+ const pokemonDataCache = new Map();
+ const evolutionChainCache = new Map();
++const bulbapediaCache = new Map();
+ let statsChart = null;
+ let contestChart = null;
+ let damageToken = 0;
+ let currentPokemonData = null;
+ let currentMovesData = null;
+ const translationCache = {};
++const BULBAPEDIA_API = "https://bulbapedia.bulbagarden.net/w/api.php";
++const BULBAPEDIA_CACHE_PREFIX = "bulbapedia-biology-v1:";
  
- function half(v) {
-   return Math.floor(v / 2);
- }
+ const RPG_VERSION_PRIORITY = [
+   "scarlet-violet",
+   "sword-shield",
+   "ultra-sun-ultra-moon",
+   "sun-moon",
+   "omega-ruby-alpha-sapphire",
+   "x-y",
+   "black-2-white-2",
+   "black-white",
+ ];
  
- function getInitialPokemonId() {
-   const params = new URLSearchParams(window.location.search);
-   const id = params.get("id");
+ const EXCLUDED_VERSION_GROUPS = ["legends-za"];
  
-   if (!id) return 1;
- 
-   const num = Number(id);
-   if (isNaN(num) || num < 1) return 1;
- 
-   return num;
- }
- 
- let currentId = getInitialPokemonId();
- const MAX_POKEMON_ID = 1025;
- let currentDisplayedPokemon = null;
- let currentBaseDexId = currentId;
- let isShinyActive = false;
-+let isPokemonLoading = false;
- 
- 
- const nameInput = document.getElementById("dexSearchInput");
- const dexInput = document.getElementById("dexNumberInput");
- const btn = document.getElementById("dexSearchBtn");
- const preview = document.getElementById("search-preview");
- 
- function formatPokemonName(name) {
-   return name
-     .split("-")
-     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-     .join(" ");
- }
- 
- function getArtworkSprite(pokemon, shiny = false) {
-   const official = pokemon?.sprites?.other?.["official-artwork"];
- 
-   if (shiny) {
-     return (
-       official?.front_shiny ||
-       pokemon?.sprites?.other?.home?.front_shiny ||
-       pokemon?.sprites?.front_shiny ||
-       official?.front_default ||
-       pokemon?.sprites?.other?.home?.front_default ||
-       pokemon?.sprites?.front_default ||
-       ""
-     );
-   }
- 
-   return (
-     official?.front_default ||
-     pokemon?.sprites?.other?.home?.front_default ||
-     pokemon?.sprites?.front_default ||
-     ""
-   );
- }
- 
- function updateArtworkImage() {
-   const artEl = document.getElementById("official-art");
-   if (!currentDisplayedPokemon || !artEl) return;
- 
-   artEl.src = getArtworkSprite(currentDisplayedPokemon, isShinyActive);
- }
- 
- function formatDexNumber(id) {
-   return `#${String(id).padStart(4, "0")}`;
- }
- 
--function updateMobileDexNavigation() {
-+function getAdjacentPokemonIds() {
-   const prev = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
-   const next = currentId < MAX_POKEMON_ID ? currentId + 1 : 1;
- 
--  const prevEl = document.getElementById("mobile-prev-dex");
--  const nextEl = document.getElementById("mobile-next-dex");
-+  return { prev, next };
-+}
-+
-+function updateDexNavigationLabels() {
-+  const { prev, next } = getAdjacentPokemonIds();
-+
-+  const mobilePrevEl = document.getElementById("mobile-prev-dex");
-+  const mobileNextEl = document.getElementById("mobile-next-dex");
-+  const desktopPrevEl = document.getElementById("desktop-prev-dex");
-+  const desktopNextEl = document.getElementById("desktop-next-dex");
-+
-+  if (mobilePrevEl) mobilePrevEl.textContent = formatDexNumber(prev);
-+  if (mobileNextEl) mobileNextEl.textContent = formatDexNumber(next);
-+  if (desktopPrevEl) desktopPrevEl.textContent = formatDexNumber(prev);
-+  if (desktopNextEl) desktopNextEl.textContent = formatDexNumber(next);
-+}
- 
--  if (prevEl) prevEl.textContent = formatDexNumber(prev);
--  if (nextEl) nextEl.textContent = formatDexNumber(next);
-+async function prefetchAdjacentPokemon() {
-+  const { prev, next } = getAdjacentPokemonIds();
-+  await Promise.allSettled([getPokemonData(prev), getPokemonData(next)]);
- }
- 
- async function init() {
-   const id = getInitialPokemonId();
-   await loadPokemonById(id);
- }
- 
- init();
- let isLegendary = false;
- let basePokemon = null;
- 
- function loadPokemon(p) {
-   basePokemon = p;
-   currentBaseDexId = p.id;
-   currentId = p.id;
-   isShinyActive = false;
--  updateMobileDexNavigation();
-+  updateDexNavigationLabels();
-+  void prefetchAdjacentPokemon();
- 
-   document.getElementById("dex").textContent = `#${String(p.id).padStart(3, "0")}`;
-   document.getElementById("name").textContent = formatPokemonName(p.name);
-   currentDisplayedPokemon = p;
-   updateArtworkImage();
- 
-   document.getElementById("size").textContent = `${p.height / 10} m • ${p.weight / 10} kg`;
- 
-   fetch(p.species.url)
-     .then((res) => res.json())
-     .then((species) => {
-       isLegendary = species.is_legendary;
-       renderForms(species.varieties, p.name);
-       renderEggGroups(species.egg_groups);
- 
-       applyPokemonData(p, p.id);
-     });
- }
- 
- function buildPokemonData(p, species) {
-   const statsRaw = {};
-   p.stats.forEach((s) => (statsRaw[s.stat.name] = s.base_stat));
- 
-   const female = species.gender_rate === -1 ? null : species.gender_rate * 12.5;
- 
-@@ -418,52 +435,50 @@ function updateSearchPreview() {
+ const INT_LABELS = [
+   "Instintivo",
+   "Consciente",
+   "Racional",
+   "Estrategista",
+   "Gênio",
+ ];
+ const STR_LABELS = [
+   "Frágil",
+   "Subdesenvolvida",
+   "Robusta",
+@@ -434,210 +437,285 @@ function updateSearchPreview() {
+     card.appendChild(name);
  
      card.onclick = () => {
        preview.innerHTML = "";
@@ -355,9 +72,9 @@ index e5b69b1db4690b2c8cdb7d7f43b50a75609f7481..9b91176aaffcdcfcc1c6b54ae428e973
    return data;
  }
  
- const bulbapediaCache = {};
--const speciesDexCache = {};
--
+-const bulbapediaCache = {};
++
++
  async function fetchJsonWithRetry(url, retries = 2) {
    let lastError = null;
  
@@ -382,124 +99,292 @@ index e5b69b1db4690b2c8cdb7d7f43b50a75609f7481..9b91176aaffcdcfcc1c6b54ae428e973
    throw lastError;
  }
  
++function normalizePokemonNameForBulbapedia(pokemonName) {
++  return pokemonName.trim().toLowerCase();
++}
++
  function getBulbapediaPageCandidates(pokemonName) {
-@@ -559,128 +574,73 @@ async function fetchBulbapediaBiology(pokemonName) {
-         .replace(/\s+/g, " ")
-         .trim();
+-  const cleanedName = pokemonName.trim().toLowerCase();
++  const cleanedName = normalizePokemonNameForBulbapedia(pokemonName);
+   const baseName = cleanedName.split("-")[0];
  
-       if (text.length >= 40) {
-         paragraphs.push(text);
+-  const candidates = [cleanedName, baseName].filter(Boolean).map((name) =>
+-    name
+-      .split("-")
+-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+-      .join("_"),
+-  );
++  const candidates = [cleanedName, baseName]
++    .filter(Boolean)
++    .map((name) =>
++      name
++        .split("-")
++        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
++        .join("_"),
++    );
+ 
+   return [...new Set(candidates)];
+ }
+ 
+-async function fetchBulbapediaBiology(pokemonName) {
+-  if (bulbapediaCache[pokemonName]) {
+-    return bulbapediaCache[pokemonName];
+-  }
++function getBulbapediaStorageKey(pokemonName) {
++  return `${BULBAPEDIA_CACHE_PREFIX}${normalizePokemonNameForBulbapedia(pokemonName)}`;
++}
+ 
++function readBulbapediaFromStorage(pokemonName) {
+   try {
+-    const pageCandidates = getBulbapediaPageCandidates(pokemonName);
+-    let pageName = null;
+-    let sections = null;
++    const raw = localStorage.getItem(getBulbapediaStorageKey(pokemonName));
++    if (!raw) return null;
+ 
+-    for (const candidate of pageCandidates) {
+-      const sectionsData = await fetchJsonWithRetry(
+-        `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${encodeURIComponent(candidate)}_(Pok%C3%A9mon)&prop=sections&format=json&origin=*`,
+-      );
++    const parsed = JSON.parse(raw);
++    if (typeof parsed?.text === "string" && parsed.text.trim()) {
++      return parsed.text;
++    }
++  } catch {
++    return null;
++  }
++
++  return null;
++}
+ 
+-      if (sectionsData.parse?.sections?.length) {
+-        pageName = `${candidate}_(Pok%C3%A9mon)`;
+-        sections = sectionsData.parse.sections;
+-        break;
++function writeBulbapediaToStorage(pokemonName, text) {
++  if (!text) return;
++
++  try {
++    localStorage.setItem(
++      getBulbapediaStorageKey(pokemonName),
++      JSON.stringify({ text, updatedAt: Date.now() }),
++    );
++  } catch {
++    // ignora limite de armazenamento sem quebrar o fluxo
++  }
++}
++
++async function fetchBulbapediaJson(params, retries = 2) {
++  const url = new URL(BULBAPEDIA_API);
++  Object.entries({ ...params, format: "json", origin: "*" }).forEach(
++    ([key, value]) => {
++      if (value !== undefined && value !== null) {
++        url.searchParams.set(key, String(value));
        }
+-    }
++    },
++  );
++
++  return fetchJsonWithRetry(url.toString(), retries);
++}
++
++function sanitizeBulbapediaBiologyHtml(html) {
++  const tempDiv = document.createElement("div");
++  tempDiv.innerHTML = html;
++
++  tempDiv
++    .querySelectorAll(
++      "table, figure, figcaption, sup, .reference, .thumb, .gallery, .navbox, .metadata, .mw-editsection, .toc, dl, ul, ol, style, script",
++    )
++    .forEach((e) => e.remove());
++
++  const paragraphs = [];
++  const stopTags = new Set(["h2", "h3", "h4", "h5", "h6"]);
+ 
+-    if (!sections || !pageName) {
+-      return null;
++  for (const element of [...tempDiv.children]) {
++    const tag = element.tagName?.toLowerCase();
++    if (!tag) continue;
++
++    if (stopTags.has(tag)) {
++      break;
+     }
+-    const biologySection = sections.find((s) => {
+-      const normalizedLine = s.line.toLowerCase();
+-      return (
+-        normalizedLine.includes("biology") || normalizedLine.includes("biologia")
+-      );
+-    });
+ 
+-    if (!biologySection) {
+-      return null;
++    if (tag !== "p") {
++      continue;
      }
  
-     if (paragraphs.length === 0) {
-       return null;
+-    const sectionData = await fetchJsonWithRetry(
+-      `https://bulbapedia.bulbagarden.net/w/api.php?action=parse&page=${encodeURIComponent(pageName)}&prop=text&section=${biologySection.index}&format=json&origin=*`,
+-    );
++    const text = element.textContent
++      .replace(/\[[^\]]+\]/g, " ")
++      .replace(/\s+/g, " ")
++      .trim();
+ 
+-    if (!sectionData.parse?.text) {
+-      return null;
++    if (text.length >= 40) {
++      paragraphs.push(text);
      }
++  }
++
++  return paragraphs;
++}
  
-     let finalText = paragraphs.join("\n\n");
+-    const html = sectionData.parse.text["*"];
++async function findBulbapediaBiologySection(pageName) {
++  const sectionsData = await fetchBulbapediaJson({
++    action: "parse",
++    page: pageName,
++    prop: "sections",
++    redirects: 1,
++  });
  
-     finalText = await translateToPortuguese(finalText);
+-    const tempDiv = document.createElement("div");
+-    tempDiv.innerHTML = html;
++  const sections = sectionsData?.parse?.sections;
++  if (!Array.isArray(sections) || sections.length === 0) {
++    return null;
++  }
  
-     bulbapediaCache[pokemonName] = finalText;
+-    /* REMOVE LIXO VISUAL */
+-    tempDiv
+-      .querySelectorAll(
+-        "table, sup, .reference, .thumb, .gallery, .navbox, .metadata, .mw-editsection",
+-      )
+-      .forEach((e) => e.remove());
++  return sections.find((section) => {
++    const line = (section?.line || "").toLowerCase();
++    return line.includes("biology") || line.includes("biologia");
++  });
++}
  
-     return finalText;
+-    /*
+-      PEGAR SOMENTE O TEXTO BASE DA SEÇÃO BIOLOGY
+-      (ignora subtópicos como "Forms", "Behavior", etc.)
+-    */
+-    const paragraphs = [];
+-    for (const element of [...tempDiv.children]) {
+-      const tag = element.tagName?.toLowerCase();
++async function fetchBulbapediaBiology(pokemonName) {
++  const normalizedName = normalizePokemonNameForBulbapedia(pokemonName);
+ 
+-      if (!tag) continue;
++  if (bulbapediaCache.has(normalizedName)) {
++    return bulbapediaCache.get(normalizedName);
++  }
+ 
+-      if (["h3", "h4", "h5", "h6"].includes(tag)) {
+-        break;
+-      }
++  const stored = readBulbapediaFromStorage(normalizedName);
++  if (stored) {
++    bulbapediaCache.set(normalizedName, stored);
++    return stored;
++  }
+ 
+-      if (tag !== "p") {
++  try {
++    const pageCandidates = getBulbapediaPageCandidates(normalizedName);
++
++    for (const candidate of pageCandidates) {
++      const pageName = `${candidate}_(Pokémon)`;
++      const biologySection = await findBulbapediaBiologySection(pageName);
++
++      if (!biologySection?.index) {
+         continue;
+       }
+ 
+-      const text = element.textContent
+-        .replace(/\[[^\]]+\]/g, " ")
+-        .replace(/\s+/g, " ")
+-        .trim();
++      const sectionData = await fetchBulbapediaJson({
++        action: "parse",
++        page: pageName,
++        prop: "text",
++        section: biologySection.index,
++        redirects: 1,
++      });
+ 
+-      if (text.length >= 40) {
+-        paragraphs.push(text);
++      const html = sectionData?.parse?.text?.["*"];
++      if (!html) {
++        continue;
+       }
+-    }
+ 
+-    if (paragraphs.length === 0) {
+-      return null;
+-    }
++      const paragraphs = sanitizeBulbapediaBiologyHtml(html);
++      if (paragraphs.length === 0) {
++        continue;
++      }
++
++      const translatedParagraphs = [];
++      for (const paragraph of paragraphs) {
++        translatedParagraphs.push(await translateToPortuguese(paragraph));
++      }
+ 
+-    let finalText = paragraphs.join("\n\n");
++      const finalText = translatedParagraphs.join("\n\n");
+ 
+-    finalText = await translateToPortuguese(finalText);
++      bulbapediaCache.set(normalizedName, finalText);
++      writeBulbapediaToStorage(normalizedName, finalText);
+ 
+-    bulbapediaCache[pokemonName] = finalText;
++      return finalText;
++    }
+ 
+-    return finalText;
++    return null;
    } catch (err) {
      console.error("Erro Bulbapedia:", err);
      return null;
    }
  }
  
--function normalizeDexText(text) {
--  return text
--    .replace(/[\n\f\r]+/g, " ")
--    .replace(/\s+/g, " ")
--    .trim();
--}
--
--function getPreferredFlavorEntry(entries, language) {
--  const byLanguage = entries.filter((entry) => entry.language.name === language);
--
--  if (byLanguage.length === 0) {
--    return null;
--  }
--
--  const versionOrder = [
--    "scarlet",
--    "violet",
--    "sword",
--    "shield",
--    "sun",
--    "moon",
--    "ultra-sun",
--    "ultra-moon",
--  ];
--
--  for (const version of versionOrder) {
--    const match = byLanguage.find((entry) => entry.version.name === version);
--    if (match) return match;
--  }
--
--  return byLanguage[byLanguage.length - 1];
--}
--
--async function getDexEntryFromSpecies(species) {
--  const cacheKey = species.id || species.name;
--
--  if (speciesDexCache[cacheKey]) {
--    return speciesDexCache[cacheKey];
--  }
--
--  const ptEntry = getPreferredFlavorEntry(species.flavor_text_entries, "pt-BR");
--  if (ptEntry?.flavor_text) {
--    const text = normalizeDexText(ptEntry.flavor_text);
--    speciesDexCache[cacheKey] = text;
--    return text;
--  }
--
--  const enEntry = getPreferredFlavorEntry(species.flavor_text_entries, "en");
--  if (!enEntry?.flavor_text) {
--    return null;
--  }
--
--  const translated = await translateToPortuguese(normalizeDexText(enEntry.flavor_text));
--  speciesDexCache[cacheKey] = translated;
--
--  return translated;
--}
--
--async function getDexEntryText(pokemon, species) {
-+async function getDexEntryText(pokemon) {
+ async function getDexEntryText(pokemon) {
    const bulbapediaText = await fetchBulbapediaBiology(pokemon.name);
    if (bulbapediaText) {
      return bulbapediaText;
    }
  
--  const speciesText = await getDexEntryFromSpecies(species);
--  if (speciesText) {
--    return speciesText;
--  }
--
--  return "Descrição da dex não encontrada.";
-+  return "Descrição da Bulbapedia indisponível no momento.";
+   return "Descrição da Bulbapedia indisponível no momento.";
  }
  
- async function loadPokemonById(idOrName) {
--  const pokemon = await getPokemonData(idOrName);
-+  if (isPokemonLoading) return;
+-async function loadPokemonById(idOrName) {
++async function loadPokemonById(idOrName, options = {}) {
+   if (isPokemonLoading) return;
  
--  loadPokemon(pokemon);
-+  isPokemonLoading = true;
+   isPokemonLoading = true;
  
--  history.pushState(null, "", `?id=${pokemon.id}`);
-+  try {
-+    const pokemon = await getPokemonData(idOrName);
+   try {
+     const pokemon = await getPokemonData(idOrName);
+ 
+     loadPokemon(pokemon);
+ 
+     history.pushState(null, "", `?id=${pokemon.id}`);
 +
-+    loadPokemon(pokemon);
-+
-+    history.pushState(null, "", `?id=${pokemon.id}`);
-+  } finally {
-+    isPokemonLoading = false;
-+  }
++    if (options.scrollToTop) {
++      window.scrollTo({ top: 0, behavior: "smooth" });
++    }
+   } finally {
+     isPokemonLoading = false;
+   }
  }
  
  async function getPokemonData(idOrName) {
@@ -522,210 +407,61 @@ index e5b69b1db4690b2c8cdb7d7f43b50a75609f7481..9b91176aaffcdcfcc1c6b54ae428e973
    const container = document.getElementById("form-buttons");
    container.innerHTML = "";
  
-   // BOTÃO BASE (apenas 1 vez)
-   const baseBtn = document.createElement("button");
-   baseBtn.textContent = "Base";
-@@ -736,51 +696,51 @@ function renderForms(varieties, baseName) {
-   });
- }
+@@ -1582,55 +1660,55 @@ function extractMegaForms(speciesData) {
+     .map((v) => v.pokemon.name)
+     .filter((name) => name.includes("-mega"))
+     .map((name) => {
+       const suffix = name.replace(`${speciesData.name}-mega`, "").replace("-", "");
+       const label = suffix ? `Mega ${suffix.toUpperCase()}` : "Mega";
+       const stoneName = suffix
+         ? `${speciesData.name}ite-${suffix}`
+         : `${speciesData.name}ite`;
  
- function loadForm(name) {
-   getPokemonData(name)
-     .then((pokemon) => {
-       if (!pokemon.moves || pokemon.moves.length === 0) {
-         pokemon.moves = basePokemon?.moves || [];
-       }
-       applyPokemonData(pokemon, currentBaseDexId);
+       return {
+         pokemonName: name,
+         label,
+         stoneName,
+       };
      });
  }
  
- async function applyPokemonData(p, displayDexId = currentBaseDexId) {
-   const dexEntry = document.getElementById("dex-entry");
+ async function createEvolutionNode(name, subtitle = "") {
+   const wrapper = document.createElement("div");
+   wrapper.className = "evo-node";
  
-   dexEntry.textContent = "Carregando entrada da dex...";
- 
-   document.getElementById("dexContent").classList.remove("open");
-   const dexToggleButton = document.getElementById("dexToggleBtn");
-   dexToggleButton.classList.remove("active");
-   dexToggleButton.textContent = "▸ ENTRADA DA DEX";
- 
-   const species = await getSpeciesData(p.species.url);
-   applySpecialTheme(species);
--  const dexText = await getDexEntryText(p, species);
-+  const dexText = await getDexEntryText(p);
- 
-   dexEntry.classList.remove("expanded");
-   dexEntry.textContent = dexText;
- 
-   const pokemonData = buildPokemonData(p, species);
-   pokemonData.id = displayDexId;
- 
-   const chainData = await getEvolutionChainData(species.evolution_chain.url);
- 
-   function findNode(name, node) {
-     if (node.species.name === name) return node;
- 
-     for (const next of node.evolves_to) {
-       const found = findNode(name, next);
-       if (found) return found;
-     }
-     return null;
+   const isMega = name.includes("-mega");
+   if (!isMega) {
+     wrapper.classList.add("is-clickable");
+     wrapper.title = "Abrir Pokémon";
+-    wrapper.addEventListener("click", () => loadPokemonById(name));
++    wrapper.addEventListener("click", () => loadPokemonById(name, { scrollToTop: true }));
+     wrapper.addEventListener("keydown", (event) => {
+       if (event.key === "Enter" || event.key === " ") {
+         event.preventDefault();
+-        loadPokemonById(name);
++        loadPokemonById(name, { scrollToTop: true });
+       }
+     });
+     wrapper.tabIndex = 0;
+     wrapper.setAttribute("role", "button");
    }
  
-   let node = findNode(p.name, chainData.chain);
+   const img = document.createElement("img");
+   img.width = 96;
+   img.height = 96;
+   img.alt = name;
+   img.src = await getPokemonSprite(name);
  
-   if (!node && p.name.includes("-")) {
-     const baseName = p.name.split("-")[0];
-     node = findNode(baseName, chainData.chain);
+   const nameTag = document.createElement("span");
+   nameTag.className = "evo-name";
+   nameTag.textContent = formatPokemonName(name);
+ 
+   wrapper.appendChild(img);
+   wrapper.appendChild(nameTag);
+ 
+   if (subtitle) {
+     const subLabel = document.createElement("span");
+     subLabel.className = "evo-subtitle";
+     subLabel.textContent = subtitle;
+     wrapper.appendChild(subLabel);
    }
-@@ -1335,57 +1295,57 @@ function calcMovement(pokemon) {
- 
-   // Lendário
-   if (pokemon.isLegendary) value += 1;
- 
-   // Estágio único ou final
-   if (pokemon.isFinalStage || pokemon.isSingleStage) value += 1;
- 
-   return clampCapacity(value);
- }
- 
- function sumFromList(list = [], rules) {
-   let total = 0;
-   for (const item of list) {
-     if (rules[item] !== undefined) {
-       total += rules[item];
-     }
-   }
-   return total;
- }
- 
- function clampCapacity(value) {
-   return Math.max(0, Math.min(4, value));
- }
- 
- function goPrev() {
--  const prevId = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
--  loadPokemonById(prevId);
-+  const { prev } = getAdjacentPokemonIds();
-+  loadPokemonById(prev);
- }
- 
- function goNext() {
--  const nextId = currentId < MAX_POKEMON_ID ? Number(currentId) + 1 : 1;
--  loadPokemonById(nextId);
-+  const { next } = getAdjacentPokemonIds();
-+  loadPokemonById(next);
- }
- 
- function goToDex(n) {
-   if (n < 1) return;
-   window.location.href = `pokemon-view.html?id=${n}`;
- }
- 
- function playCry() {
-   new Audio(
-     `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${currentId}.ogg`,
-   ).play();
- }
- 
- function contestValue(rpgStat) {
-   return Math.floor(rpgStat / 10);
- }
- 
- function renderTypeRow(containerId, title, types, mode) {
-   if (!types || Object.keys(types).length === 0) return;
- 
-   const container = document.getElementById(containerId);
-   container.innerHTML = `<strong>${title}</strong>`;
- 
-   const row = document.createElement("div");
-   row.className = "type-row";
-diff --git a/pokemon-view.html b/pokemon-view.html
-index 6a298dd05b96034555626f6dab432f2d818ed5d1..9520c3e078112819f7698eafa715958d4ad8db0f 100644
---- a/pokemon-view.html
-+++ b/pokemon-view.html
-@@ -1,46 +1,49 @@
- 
- 
- <!DOCTYPE html>
- <html lang="pt-br">
- <head>
-   <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Registro Pokémon</title>
- 
-   <link rel="stylesheet" href="css/pokemon.css">
-   <link rel="stylesheet" href="css/pokemon-view.css">
-   <link rel="icon" href="assets/logo.png">
- 
- 
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <script type="module" src="js/pokemon-view.js"></script>
- </head>
- 
- <body>
-  <div class="nav-zone left" data-nav="prev"></div>
-- <button class="nav-btn left" data-nav="prev">◀</button>
-+ <button class="nav-btn left" data-nav="prev" type="button" aria-label="Pokémon anterior">
-+  <span class="nav-btn-arrow">◀</span>
-+  <span class="nav-btn-dex" id="desktop-prev-dex">#1025</span>
-+ </button>
- <header>
-   <img src="assets/logo.png" class="logo">
- 
-   <div class="title-container">
-     <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
-     <h2>Registro Pokémon</h2>
-   </div>
- </header>
- 
- <div class="dex-search">
-   <input
-     type="number"
-     id="dexNumberInput"
-     min="1"
-     placeholder="Nº Dex"
-   />
- 
-   <input 
-     type="text" 
-     id="dexSearchInput" 
-     placeholder="Nome do Pokémon"
-   />
- 
-   <button id="dexSearchBtn">Buscar</button>
- </div>
-@@ -249,29 +252,32 @@
-               <th>Tipo</th>
-               <th>Categ.</th>
-               <th>Dano</th>
-               <th>Acerto</th>
-               <th>Uso</th>
-             </tr>
-           </thead>
-           <tbody id="other-moves"></tbody>
-         </table>
-       </div>
-     </div>
- 
-   </section>
- 
- </section>
- 
- <section class="info-panel evolution-panel">
-   <h3 class="evolution-title">Linha Evolutiva</h3>
-   <div id="evolution-chain" class="evolution-chain vertical"></div>
- </section>
- 
- 
- </main>
- 
- <div class="nav-zone right" data-nav="next"></div>
--<button class="nav-btn right" data-nav="next">▶</button>
-+<button class="nav-btn right" data-nav="next" type="button" aria-label="Próximo Pokémon">
-+  <span class="nav-btn-arrow">▶</span>
-+  <span class="nav-btn-dex" id="desktop-next-dex">#0002</span>
-+</button>
- </body>
-   
- </html>
