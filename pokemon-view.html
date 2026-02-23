@@ -65,10 +65,25 @@
     </div>
 
 <div class="art-wrapper">
-  <img id="official-art">
-  <div class="form-buttons" id="form-buttons"></div>
+  <button class="mobile-art-nav mobile-art-nav-left" data-mobile-nav="prev" type="button">
+    <span class="mobile-art-nav-arrow">◀</span>
+    <span class="mobile-art-nav-dex" id="mobile-prev-dex">#0000</span>
+  </button>
+
+  <div class="art-frame">
+    <img id="official-art">
+    <button id="toggleShinyBtn" class="shiny-toggle" type="button" aria-label="Alternar versão shiny">
+      <img src="assets/forms/shiny.png" alt="Shiny">
+    </button>
+  </div>
+
+  <button class="mobile-art-nav mobile-art-nav-right" data-mobile-nav="next" type="button">
+    <span class="mobile-art-nav-arrow">▶</span>
+    <span class="mobile-art-nav-dex" id="mobile-next-dex">#0000</span>
+  </button>
 </div>
 
+<div class="form-buttons" id="form-buttons"></div>
 
 <div class="type-box">
   <div class="types" id="types"></div>

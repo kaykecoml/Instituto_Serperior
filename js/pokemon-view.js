@@ -62,11 +62,68 @@ function getInitialPokemonId() {
 }
 
 let currentId = getInitialPokemonId();
+const MAX_POKEMON_ID = 1025;
+let currentDisplayedPokemon = null;
+let currentBaseDexId = currentId;
+let isShinyActive = false;
+
 
 const nameInput = document.getElementById("dexSearchInput");
 const dexInput = document.getElementById("dexNumberInput");
 const btn = document.getElementById("dexSearchBtn");
 const preview = document.getElementById("search-preview");
+
+function formatPokemonName(name) {
+  return name
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function getArtworkSprite(pokemon, shiny = false) {
+  const official = pokemon?.sprites?.other?.["official-artwork"];
+
+  if (shiny) {
+    return (
+      official?.front_shiny ||
+      pokemon?.sprites?.other?.home?.front_shiny ||
+      pokemon?.sprites?.front_shiny ||
+      official?.front_default ||
+      pokemon?.sprites?.other?.home?.front_default ||
+      pokemon?.sprites?.front_default ||
+      ""
+    );
+  }
+
+  return (
+    official?.front_default ||
+    pokemon?.sprites?.other?.home?.front_default ||
+    pokemon?.sprites?.front_default ||
+    ""
+  );
+}
+
+function updateArtworkImage() {
+  const artEl = document.getElementById("official-art");
+  if (!currentDisplayedPokemon || !artEl) return;
+
+  artEl.src = getArtworkSprite(currentDisplayedPokemon, isShinyActive);
+}
+
+function formatDexNumber(id) {
+  return `#${String(id).padStart(4, "0")}`;
+}
+
+function updateMobileDexNavigation() {
+  const prev = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
+  const next = currentId < MAX_POKEMON_ID ? currentId + 1 : 1;
+
+  const prevEl = document.getElementById("mobile-prev-dex");
+  const nextEl = document.getElementById("mobile-next-dex");
+
+  if (prevEl) prevEl.textContent = formatDexNumber(prev);
+  if (nextEl) nextEl.textContent = formatDexNumber(next);
+}
 
 async function init() {
   const id = getInitialPokemonId();
@@ -78,22 +135,18 @@ let isLegendary = false;
 let basePokemon = null;
 
 function loadPokemon(p) {
-  const statsRaw = {};
-  p.stats.forEach((s) => (statsRaw[s.stat.name] = s.base_stat));
-
-  const dex = p.id;
   basePokemon = p;
-  document.getElementById("dex").textContent =
-    `#${String(dex).padStart(3, "0")}`;
+  currentBaseDexId = p.id;
+  currentId = p.id;
+  isShinyActive = false;
+  updateMobileDexNavigation();
 
-  document.getElementById("name").textContent =
-    p.name.charAt(0).toUpperCase() + p.name.slice(1);
+  document.getElementById("dex").textContent = `#${String(p.id).padStart(3, "0")}`;
+  document.getElementById("name").textContent = formatPokemonName(p.name);
+  currentDisplayedPokemon = p;
+  updateArtworkImage();
 
-  document.getElementById("official-art").src =
-    p.sprites.other["official-artwork"].front_default;
-
-  document.getElementById("size").textContent =
-    `${p.height / 10} m • ${p.weight / 10} kg`;
+  document.getElementById("size").textContent = `${p.height / 10} m • ${p.weight / 10} kg`;
 
   fetch(p.species.url)
     .then((res) => res.json())
@@ -102,7 +155,7 @@ function loadPokemon(p) {
       renderForms(species.varieties, p.name);
       renderEggGroups(species.egg_groups);
 
-      applyPokemonData(p);
+      applyPokemonData(p, p.id);
     });
 }
 
@@ -583,8 +636,6 @@ async function getDexEntryText(pokemon, species) {
 }
 
 async function loadPokemonById(idOrName) {
-  currentId = idOrName;
-
   const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`);
   const pokemon = await pokeRes.json();
 
@@ -601,7 +652,10 @@ function renderForms(varieties, baseName) {
   const baseBtn = document.createElement("button");
   baseBtn.textContent = "Base";
   baseBtn.className = "form-base-btn";
-  baseBtn.onclick = () => applyPokemonData(basePokemon);
+  baseBtn.onclick = () => {
+    isShinyActive = false;
+    applyPokemonData(basePokemon, currentBaseDexId);
+  };
   container.appendChild(baseBtn);
 
   varieties.forEach((v) => {
@@ -614,13 +668,13 @@ function renderForms(varieties, baseName) {
     if (name.includes("mega")) {
       const img = document.createElement("img");
       if (name.includes("mega-x")) {
-        img.src = "assets/megax.png";
+        img.src = "assets/forms/megax.png";
       } else if (name.includes("mega-y")) {
-        img.src = "assets/megay.png";
+        img.src = "assets/forms/megay.png";
       } else if (name.includes("mega-z")) {
-        img.src = "assets/megaz.png";
+        img.src = "assets/forms/megaz.png";
       } else {
-        img.src = "assets/mega.png";
+        img.src = "assets/forms/mega.png";
       }
       img.className = "form-btn";
       img.title = "Mega Evolução";
@@ -656,11 +710,11 @@ function loadForm(name) {
       if (!pokemon.moves || pokemon.moves.length === 0) {
         pokemon.moves = basePokemon?.moves || [];
       }
-      applyPokemonData(pokemon);
+      applyPokemonData(pokemon, currentBaseDexId);
     });
 }
 
-async function applyPokemonData(p) {
+async function applyPokemonData(p, displayDexId = currentBaseDexId) {
   const dexEntry = document.getElementById("dex-entry");
 
   dexEntry.textContent = "Carregando entrada da dex...";
@@ -677,6 +731,7 @@ async function applyPokemonData(p) {
   dexEntry.textContent = dexText;
 
   const pokemonData = buildPokemonData(p, species);
+  pokemonData.id = displayDexId;
 
   const chainData = await fetch(species.evolution_chain.url).then((r) =>
     r.json(),
@@ -715,9 +770,8 @@ async function applyPokemonData(p) {
   renderGender(species);
   renderCapacities(pokemonData);
 
-  document.getElementById("official-art").src =
-    p.sprites.other["official-artwork"].front_default ||
-    p.sprites.front_default;
+  currentDisplayedPokemon = p;
+  updateArtworkImage();
 
   const types = p.types.map((t) => t.type.name);
   document.getElementById("types").innerHTML = types
@@ -743,15 +797,14 @@ async function applyPokemonData(p) {
   });
   renderDamageRelations(types);
   renderAbilities(p.abilities);
-  renderHabitats(p.id);
+  renderHabitats(displayDexId);
   renderMoves(p.moves);
   renderEvolutionChain(basePokemon.species.url);
 
-  document.getElementById("name").textContent =
-    p.name.charAt(0).toUpperCase() + p.name.slice(1);
+  document.getElementById("name").textContent = formatPokemonName(p.name);
 
   document.getElementById("dex").textContent =
-    `#${String(p.id).padStart(3, "0")}`;
+    `#${String(displayDexId).padStart(3, "0")}`;
 
   document.getElementById("size").textContent =
     `${p.height / 10} m • ${p.weight / 10} kg`;
@@ -1273,13 +1326,13 @@ function clampCapacity(value) {
 }
 
 function goPrev() {
-  if (currentId > 1) {
-    loadPokemonById(currentId - 1);
-  }
+  const prevId = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
+  loadPokemonById(prevId);
 }
 
 function goNext() {
-  loadPokemonById(Number(currentId) + 1);
+  const nextId = currentId < MAX_POKEMON_ID ? Number(currentId) + 1 : 1;
+  loadPokemonById(nextId);
 }
 
 function goToDex(n) {
@@ -1379,7 +1432,7 @@ function add(name, val) {
 let pokemonIndex = [];
 
 async function loadPokemonIndex() {
-  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${MAX_POKEMON_ID}`);
   const data = await res.json();
   pokemonIndex = data.results.map((p, i) => ({
     name: p.name,
@@ -1684,6 +1737,18 @@ document.querySelector(".cry-btn")?.addEventListener("click", playCry);
 document.querySelector(".nav-btn.left")?.addEventListener("click", goPrev);
 
 document.querySelector(".nav-btn.right")?.addEventListener("click", goNext);
+
+document.getElementById("toggleShinyBtn")?.addEventListener("click", () => {
+  isShinyActive = !isShinyActive;
+  updateArtworkImage();
+});
+
+document.querySelectorAll("[data-mobile-nav]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    if (btn.dataset.mobileNav === "prev") goPrev();
+    if (btn.dataset.mobileNav === "next") goNext();
+  });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   [nameInput, dexInput].forEach((input) =>
