@@ -16,6 +16,9 @@ const translationCache = {};
 const BULBAPEDIA_API_URL = "https://bulbapedia.bulbagarden.net/w/api.php";
 const BULBAPEDIA_PAGE_SUFFIX = "(Pokémon)";
 const BULBAPEDIA_STORAGE_PREFIX = "bulbapedia-biology-pt:";
+const BULBAPEDIA_FAILURE_PREFIX = "bulbapedia-biology-fail:";
+const BULBAPEDIA_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 dias
+const BULBAPEDIA_FAILURE_COOLDOWN_MS = 1000 * 60 * 60 * 6; // 6 horas
 
 const RPG_VERSION_PRIORITY = [
   "scarlet-violet",
@@ -466,7 +469,21 @@ function getBulbapediaStorageKey(pokemonName) {
 
 function getBulbapediaFromStorage(pokemonName) {
   try {
-    return localStorage.getItem(getBulbapediaStorageKey(pokemonName));
+    const raw = localStorage.getItem(getBulbapediaStorageKey(pokemonName));
+    if (!raw) return null;
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return raw;
+
+      if (!parsed.text || !parsed.savedAt) return null;
+      if (Date.now() - parsed.savedAt > BULBAPEDIA_CACHE_TTL_MS) return null;
+
+      return parsed.text;
+    } catch {
+      // compatibilidade com formato antigo (texto cru)
+      return raw;
+    }
   } catch {
     return null;
   }
@@ -474,9 +491,35 @@ function getBulbapediaFromStorage(pokemonName) {
 
 function saveBulbapediaToStorage(pokemonName, text) {
   try {
-    localStorage.setItem(getBulbapediaStorageKey(pokemonName), text);
+    localStorage.setItem(
+      getBulbapediaStorageKey(pokemonName),
+      JSON.stringify({ text, savedAt: Date.now() }),
+    );
+    localStorage.removeItem(`${BULBAPEDIA_FAILURE_PREFIX}${pokemonName.toLowerCase()}`);
   } catch {
     // Ignora falhas de quota/storage privado.
+  }
+}
+
+function markBulbapediaFetchFailure(pokemonName) {
+  try {
+    localStorage.setItem(
+      `${BULBAPEDIA_FAILURE_PREFIX}${pokemonName.toLowerCase()}`,
+      String(Date.now() + BULBAPEDIA_FAILURE_COOLDOWN_MS),
+    );
+  } catch {
+    // sem storage disponível
+  }
+}
+
+function shouldSkipBulbapediaFetch(pokemonName) {
+  try {
+    const nextRetryAt = Number(
+      localStorage.getItem(`${BULBAPEDIA_FAILURE_PREFIX}${pokemonName.toLowerCase()}`),
+    );
+    return Number.isFinite(nextRetryAt) && nextRetryAt > Date.now();
+  } catch {
+    return false;
   }
 }
 
@@ -517,6 +560,29 @@ async function callBulbapediaApi(params) {
   return fetchJsonWithRetry(url.toString());
 }
 
+async function callBulbapediaApiWithProxyFallback(params) {
+  try {
+    return await callBulbapediaApi(params);
+  } catch (error) {
+    const message = String(error?.message || "");
+    const shouldUseProxy = message.includes("HTTP 403") || message.includes("HTTP 429");
+
+    if (!shouldUseProxy) throw error;
+
+    const url = new URL(BULBAPEDIA_API_URL);
+    Object.entries({ format: "json", origin: "*", ...params }).forEach(
+      ([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          url.searchParams.set(key, String(value));
+        }
+      },
+    );
+
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url.toString())}`;
+    return fetchJsonWithRetry(proxyUrl, 1);
+  }
+}
+
 function getBulbapediaPageCandidates(pokemonName) {
   const cleanedName = pokemonName.trim().toLowerCase();
   const baseName = cleanedName.split("-")[0];
@@ -547,6 +613,19 @@ function extractParagraphsFromBiologyHtml(html) {
   const parserRoot = tempDiv.querySelector(".mw-parser-output") || tempDiv;
   const paragraphs = [];
 
+  const normalizeText = (rawText) =>
+    rawText
+      .replace(/\[[^\]]+\]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const addTextIfUseful = (rawText) => {
+    const text = normalizeText(rawText);
+    if (text.length >= 40 && !paragraphs.includes(text)) {
+      paragraphs.push(text);
+    }
+  };
+
   for (const element of parserRoot.children) {
     const tag = element.tagName?.toLowerCase();
     if (!tag) continue;
@@ -555,15 +634,25 @@ function extractParagraphsFromBiologyHtml(html) {
       break;
     }
 
-    if (tag !== "p") continue;
+    if (tag === "p") {
+      addTextIfUseful(element.textContent || "");
+      continue;
+    }
 
-    const text = element.textContent
-      .replace(/\[[^\]]+\]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    if (tag === "ul" || tag === "ol") {
+      element.querySelectorAll("li").forEach((li) => {
+        addTextIfUseful(li.textContent || "");
+      });
+      continue;
+    }
 
-    if (text.length >= 40) {
-      paragraphs.push(text);
+    if (tag === "div") {
+      const inlineParagraphs = element.querySelectorAll("p");
+      if (inlineParagraphs.length > 0) {
+        inlineParagraphs.forEach((p) => addTextIfUseful(p.textContent || ""));
+      } else {
+        addTextIfUseful(element.textContent || "");
+      }
     }
   }
 
@@ -571,7 +660,7 @@ function extractParagraphsFromBiologyHtml(html) {
 }
 
 async function fetchBiologySectionHtml(pageTitle, biologySectionIndex) {
-  const sectionData = await callBulbapediaApi({
+  const sectionData = await callBulbapediaApiWithProxyFallback({
     action: "parse",
     page: pageTitle,
     prop: "text",
@@ -582,6 +671,10 @@ async function fetchBiologySectionHtml(pageTitle, biologySectionIndex) {
 }
 
 async function fetchBulbapediaBiology(pokemonName) {
+  if (shouldSkipBulbapediaFetch(pokemonName)) {
+    return null;
+  }
+
   if (bulbapediaCache[pokemonName]) {
     return bulbapediaCache[pokemonName];
   }
@@ -598,7 +691,7 @@ async function fetchBulbapediaBiology(pokemonName) {
     let biologySectionIndex = "";
 
     for (const candidate of pageCandidates) {
-      const sectionsData = await callBulbapediaApi({
+      const sectionsData = await callBulbapediaApiWithProxyFallback({
         action: "parse",
         page: candidate,
         prop: "sections",
@@ -620,6 +713,7 @@ async function fetchBulbapediaBiology(pokemonName) {
     }
 
     if (!pageName || !biologySectionIndex) {
+      markBulbapediaFetchFailure(pokemonName);
       return null;
     }
 
@@ -629,6 +723,7 @@ async function fetchBulbapediaBiology(pokemonName) {
     const paragraphs = extractParagraphsFromBiologyHtml(html);
 
     if (paragraphs.length === 0) {
+      markBulbapediaFetchFailure(pokemonName);
       return null;
     }
 
@@ -641,6 +736,7 @@ async function fetchBulbapediaBiology(pokemonName) {
 
     return finalText;
   } catch (err) {
+    markBulbapediaFetchFailure(pokemonName);
     console.error("Erro Bulbapedia:", err);
     return null;
   }
