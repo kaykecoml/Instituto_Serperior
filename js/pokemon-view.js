@@ -385,33 +385,46 @@ function updateSearchPreview() {
   preview.innerHTML = "";
   if (!query) return;
 
-  const found = findClosestPokemon(query);
-  if (!found) return;
+  const candidates = pokemonIndex
+    .filter(
+      (p) =>
+        p.name.startsWith(query) ||
+        p.name.includes(query) ||
+        String(p.id).startsWith(query),
+    )
+    .slice(0, 6);
 
-  const card = document.createElement("div");
-  card.className = "preview-card";
+  if (candidates.length === 0) return;
 
-  const img = document.createElement("img");
-  img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${found.id}.png`;
+  const list = document.createElement("div");
+  list.className = "preview-list";
 
-  const name = document.createElement("span");
-  name.textContent =
-    `#${String(found.id).padStart(3, "0")} ` +
-    found.name.charAt(0).toUpperCase() +
-    found.name.slice(1);
+  candidates.forEach((found) => {
+    const card = document.createElement("button");
+    card.className = "preview-card";
+    card.type = "button";
 
-  card.appendChild(img);
-  card.appendChild(name);
+    const img = document.createElement("img");
+    img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${found.id}.png`;
+    img.alt = found.name;
 
-  card.onclick = () => {
-    preview.innerHTML = "";
-    nameInput.value = "";
-    dexInput.value = "";
+    const name = document.createElement("span");
+    name.textContent = `${formatDexNumber(found.id)} ${formatPokemonName(found.name)}`;
 
-    loadPokemonById(found.id); // 🔥 AQUI é o segredo
-  };
+    card.appendChild(img);
+    card.appendChild(name);
 
-  preview.appendChild(card);
+    card.onclick = () => {
+      preview.innerHTML = "";
+      nameInput.value = "";
+      dexInput.value = "";
+      loadPokemonById(found.id);
+    };
+
+    list.appendChild(card);
+  });
+
+  preview.appendChild(list);
 }
 
 async function getMoveDetails(url) {
@@ -1487,6 +1500,11 @@ document.querySelectorAll(".nav-zone").forEach((zone) => {
 });
 
 async function renderChainNode(node, container) {
+  if (node.name === "eevee" && node.evolvesTo.length >= 6) {
+    await renderEeveeCircle(node, container);
+    return;
+  }
+
   const wrapper = await createEvolutionNode(node.name);
   container.appendChild(wrapper);
 
@@ -1514,6 +1532,35 @@ async function renderChainNode(node, container) {
   if (node.megaForms.length > 0) {
     container.appendChild(await createMegaBranch(node.megaForms));
   }
+}
+
+async function renderEeveeCircle(node, container) {
+  const eeveeLayout = document.createElement("div");
+  eeveeLayout.className = "eevee-evolution-layout";
+
+  const center = document.createElement("div");
+  center.className = "eevee-center";
+  center.appendChild(await createEvolutionNode(node.name));
+  eeveeLayout.appendChild(center);
+
+  const ring = document.createElement("div");
+  ring.className = "eevee-ring";
+
+  for (const [index, next] of node.evolvesTo.entries()) {
+    const orb = document.createElement("div");
+    orb.className = "eevee-orbit-item";
+    orb.style.setProperty("--index", index);
+    orb.style.setProperty("--total", node.evolvesTo.length);
+
+    const transition = await createEvolutionTransition(next.details);
+    const evolvedNode = await createEvolutionNode(next.name);
+    orb.appendChild(transition);
+    orb.appendChild(evolvedNode);
+    ring.appendChild(orb);
+  }
+
+  eeveeLayout.appendChild(ring);
+  container.appendChild(eeveeLayout);
 }
 
 function applySpecialTheme(species) {
@@ -1573,6 +1620,21 @@ function extractMegaForms(speciesData) {
 async function createEvolutionNode(name, subtitle = "") {
   const wrapper = document.createElement("div");
   wrapper.className = "evo-node";
+
+  const isMega = name.includes("-mega");
+  if (!isMega) {
+    wrapper.classList.add("is-clickable");
+    wrapper.title = "Abrir Pokémon";
+    wrapper.addEventListener("click", () => loadPokemonById(name));
+    wrapper.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        loadPokemonById(name);
+      }
+    });
+    wrapper.tabIndex = 0;
+    wrapper.setAttribute("role", "button");
+  }
 
   const img = document.createElement("img");
   img.width = 96;
