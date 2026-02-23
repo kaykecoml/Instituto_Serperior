@@ -132,6 +132,12 @@ body {
   width: min(100%, 340px);
 }
 
+.art-frame.is-transitioning #official-art {
+  opacity: 0.45;
+  transform: scale(0.98);
+}
+
+
 .shiny-toggle {
   position: absolute;
   top: 6px;
@@ -192,6 +198,7 @@ body {
   object-fit: contain;
   display: block;
   margin: 0 auto;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .type-box {
@@ -662,6 +669,26 @@ body {
   padding: 3px 6px;
   font-size: 10px;
   border-radius: 6px;
+}
+
+
+#form-buttons.is-loading {
+  opacity: 0.7;
+}
+
+.form-base-btn.active,
+.form-buttons .tab-btn.active,
+.form-btn.active {
+  border-color: #b8ff85 !important;
+  box-shadow: 0 0 0 1px rgba(184, 255, 133, 0.45), 0 0 8px rgba(123, 220, 101, 0.35);
+}
+
+.form-btn.active {
+  transform: scale(1.08);
+}
+
+#form-buttons .is-disabled {
+  pointer-events: none;
 }
 
 .evolution-panel {
