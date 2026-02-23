@@ -273,6 +273,34 @@
 
 </main>
 
+<div id="moveSheetOverlay" class="move-sheet-overlay" hidden>
+  <div id="moveSheet" class="move-sheet" role="dialog" aria-modal="true" aria-labelledby="moveSheetTitle">
+    <div id="moveSheetHeader" class="move-sheet-header">
+      <h3 id="moveSheetTitle"></h3>
+    </div>
+    <span id="moveSheetPriority" class="move-sheet-priority"></span>
+    <hr class="move-sheet-divider">
+    <div class="move-sheet-type-icons">
+      <div class="move-sheet-icon-item">
+        <img id="moveSheetTypeIcon" alt="Tipo do golpe">
+        <span id="moveSheetType"></span>
+      </div>
+      <div class="move-sheet-icon-item">
+        <img id="moveSheetCategoryIcon" alt="Categoria do golpe">
+        <span id="moveSheetCategory"></span>
+      </div>
+    </div>
+    <div class="move-sheet-stats">
+      <span id="moveSheetPower"></span>
+      <span id="moveSheetPp"></span>
+      <span id="moveSheetAcc"></span>
+    </div>
+    <div class="move-sheet-description-box">
+      <p id="moveSheetDescription" class="move-sheet-description"></p>
+    </div>
+  </div>
+</div>
+
 <div class="nav-zone right" data-nav="next"></div>
 <button class="nav-btn right" data-nav="next" type="button" aria-label="Próximo Pokémon">
   <span class="nav-btn-arrow">▶</span>

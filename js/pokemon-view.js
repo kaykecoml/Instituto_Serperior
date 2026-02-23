@@ -25,6 +25,27 @@ const RPG_VERSION_PRIORITY = [
   "black-white",
 ];
 const EXCLUDED_VERSION_GROUPS = ["legends-za"];
+const EXCLUDED_DESCRIPTION_VERSION_GROUPS = ["legends-arceus", "legends-za"];
+const TYPE_COLORS = {
+  normal: "#a8a878",
+  fire: "#f08030",
+  water: "#6890f0",
+  electric: "#f8d030",
+  grass: "#78c850",
+  ice: "#98d8d8",
+  fighting: "#c03028",
+  poison: "#a040a0",
+  ground: "#e0c068",
+  flying: "#a890f0",
+  psychic: "#f85888",
+  bug: "#a8b820",
+  rock: "#b8a038",
+  ghost: "#705898",
+  dragon: "#7038f8",
+  dark: "#705848",
+  steel: "#b8b8d0",
+  fairy: "#ee99ac",
+};
 const INT_LABELS = [
   "Instintivo",
   "Consciente",
@@ -67,6 +88,19 @@ const nameInput = document.getElementById("dexSearchInput");
 const dexInput = document.getElementById("dexNumberInput");
 const btn = document.getElementById("dexSearchBtn");
 const preview = document.getElementById("search-preview");
+const isMobileViewport = window.matchMedia("(max-width: 1024px)");
+const moveSheetOverlay = document.getElementById("moveSheetOverlay");
+const moveSheetTitle = document.getElementById("moveSheetTitle");
+const moveSheetHeader = document.getElementById("moveSheetHeader");
+const moveSheetPriority = document.getElementById("moveSheetPriority");
+const moveSheetTypeIcon = document.getElementById("moveSheetTypeIcon");
+const moveSheetCategoryIcon = document.getElementById("moveSheetCategoryIcon");
+const moveSheetType = document.getElementById("moveSheetType");
+const moveSheetCategory = document.getElementById("moveSheetCategory");
+const moveSheetPower = document.getElementById("moveSheetPower");
+const moveSheetPp = document.getElementById("moveSheetPp");
+const moveSheetAcc = document.getElementById("moveSheetAcc");
+const moveSheetDescription = document.getElementById("moveSheetDescription");
 function formatPokemonName(name) {
   return name
     .split("-")
@@ -619,38 +653,116 @@ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
 function getCategoryIcon(damageClass) {
   return `<img src="assets/icons/${damageClass}.png" class="status-icon">`;
 }
+function getMoveZIconPath(moveName) {
+  return `assets/zmove/${moveName}.png`;
+}
+function getTypeBlockIconPath(typeName) {
+  return `assets/types block/${typeName}.png`;
+}
+function normalizeMoveName(moveName) {
+  return moveName
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+function buildMoveNameCell(move) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "move-name-cell";
+  const nameSpan = document.createElement("span");
+  nameSpan.textContent = normalizeMoveName(move.name);
+  wrapper.appendChild(nameSpan);
+  const zIcon = document.createElement("img");
+  zIcon.className = "zmove-icon";
+  zIcon.alt = `Z-Move ${normalizeMoveName(move.name)}`;
+  zIcon.src = getMoveZIconPath(move.name);
+  zIcon.addEventListener("error", () => {
+    zIcon.remove();
+  });
+  wrapper.appendChild(zIcon);
+  return wrapper;
+}
+function openMoveSheet(move, dmg, acc, pp, isStatus) {
+  if (!moveSheetOverlay) return;
+  const typeColor = TYPE_COLORS[move.type.name] || "#7bdc65";
+  moveSheetTitle.textContent = normalizeMoveName(move.name);
+  if (moveSheetHeader) {
+    moveSheetHeader.style.background = typeColor;
+  }
+  moveSheetPriority.textContent = `Prioridade ${move.priority > 0 ? "+" : ""}${move.priority || 0}`;
+  moveSheetType.textContent = move.type.name.toUpperCase();
+  moveSheetCategory.textContent = move.damage_class.name.toUpperCase();
+  if (moveSheetTypeIcon) {
+    moveSheetTypeIcon.src = getTypeBlockIconPath(move.type.name);
+    moveSheetTypeIcon.onerror = () => {
+      moveSheetTypeIcon.src = `assets/types/${move.type.name}.png`;
+      moveSheetTypeIcon.onerror = null;
+    };
+  }
+  if (moveSheetCategoryIcon) {
+    moveSheetCategoryIcon.src = `assets/icons/${move.damage_class.name}.png`;
+  }
+  moveSheetPower.textContent = `${isStatus ? "Dados" : "Dano"}: ${isStatus ? "—" : dmg}`;
+  moveSheetPp.textContent = `PP: ${pp}`;
+  moveSheetAcc.textContent = `ACC: ${acc}`;
+  moveSheetDescription.textContent = "Carregando descrição...";
+  document.body.classList.add("move-sheet-open");
+  moveSheetOverlay.hidden = false;
+  requestAnimationFrame(() => moveSheetOverlay.classList.add("open"));
+  getMoveDescription(move).then((description) => {
+    if (!moveSheetOverlay.hidden) {
+      moveSheetDescription.textContent = description;
+    }
+  });
+}
+function closeMoveSheet() {
+  if (!moveSheetOverlay || moveSheetOverlay.hidden) return;
+  moveSheetOverlay.classList.remove("open");
+  document.body.classList.remove("move-sheet-open");
+  setTimeout(() => {
+    moveSheetOverlay.hidden = true;
+  }, 180);
+}
 function addRow(tbody, col1, move, typeIcon, categoryIcon, dmg, acc, pp) {
   const isStatus = move.damage_class.name === "status";
   // Linha principal
   const tr = document.createElement("tr");
   tr.style.cursor = "pointer";
-  tr.innerHTML = `
-    <td>${col1}</td>
-    <td>${move.name.replace("-", " ")}</td>
-    <td>${typeIcon}</td>
-    <td>${categoryIcon}</td>
-    <td>${isStatus ? "—" : dmg}</td>
-    <td>${acc}</td>
-    <td>${pp}</td>
-  `;
+  const methodCell = document.createElement("td");
+  methodCell.textContent = col1;
+  const nameCell = document.createElement("td");
+  nameCell.appendChild(buildMoveNameCell(move));
+  const typeCell = document.createElement("td");
+  typeCell.innerHTML = typeIcon;
+  const categoryCell = document.createElement("td");
+  categoryCell.innerHTML = categoryIcon;
+  const damageCell = document.createElement("td");
+  damageCell.textContent = isStatus ? "—" : dmg;
+  const accCell = document.createElement("td");
+  accCell.textContent = acc;
+  const ppCell = document.createElement("td");
+  ppCell.textContent = pp;
+  tr.append(
+    methodCell,
+    nameCell,
+    typeCell,
+    categoryCell,
+    damageCell,
+    accCell,
+    ppCell,
+  );
   // Linha da descrição
   const descRow = document.createElement("tr");
   descRow.classList.add("move-description-row");
   const descCell = document.createElement("td");
   descCell.colSpan = 7; // número total de colunas da tabela
   descCell.classList.add("move-description-cell");
-  // pegar descrição
-  const effectEntry = move.effect_entries.find((e) => e.language.name === "en");
-  let description = effectEntry
-    ? effectEntry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "")
-    : "Sem descrição disponível.";
-  let priorityText = "";
-  if (move.priority && move.priority !== 0) {
-    priorityText = `\n\nPrioridade: ${move.priority > 0 ? "+" : ""}${move.priority}`;
-  }
   descCell.textContent = getMoveDescription(move);
   descRow.appendChild(descCell);
   tr.addEventListener("click", async () => {
+    if (isMobileViewport.matches) {
+      openMoveSheet(move, dmg, acc, pp, isStatus);
+      return;
+    }
     const isOpen = descRow.style.display === "table-row";
     document
       .querySelectorAll(".move-description-row")
@@ -667,6 +779,13 @@ function addRow(tbody, col1, move, typeIcon, categoryIcon, dmg, acc, pp) {
   });
   tbody.appendChild(tr);
   tbody.appendChild(descRow);
+}
+if (moveSheetOverlay) {
+  moveSheetOverlay.addEventListener("click", (event) => {
+    if (event.target === moveSheetOverlay) {
+      closeMoveSheet();
+    }
+  });
 }
 function renderDamageRelations(types) {
   const token = ++damageToken;
@@ -861,15 +980,32 @@ function renderRelations(rel) {
     .join("");
 }
 async function getMoveDescription(move) {
-  let entry = move.effect_entries.find((e) => e.language.name === "pt-br");
+  const flavorEntries = move.flavor_text_entries || [];
+  const flavorCandidates = flavorEntries.filter(
+    (entry) => entry.language.name === "pt-br" || entry.language.name === "en",
+  );
+  const nonExcludedFlavor = flavorCandidates.find(
+    (entry) =>
+      !EXCLUDED_DESCRIPTION_VERSION_GROUPS.includes(entry.version_group.name),
+  );
+  const selectedFlavor = nonExcludedFlavor || flavorCandidates[0];
   let text;
-  if (entry) {
-    text = entry.effect;
+  if (selectedFlavor) {
+    const sanitizedText = selectedFlavor.flavor_text.replace(/[\n\f]/g, " ");
+    text =
+      selectedFlavor.language.name === "pt-br"
+        ? sanitizedText
+        : await translateToPortuguese(sanitizedText);
   } else {
-    entry = move.effect_entries.find((e) => e.language.name === "en");
-    if (!entry) return "Descrição não disponível.";
-    text = entry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "");
-    text = await translateToPortuguese(text);
+    let entry = move.effect_entries.find((e) => e.language.name === "pt-br");
+    if (entry) {
+      text = entry.effect;
+    } else {
+      entry = move.effect_entries.find((e) => e.language.name === "en");
+      if (!entry) return "Descrição não disponível.";
+      text = entry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "");
+      text = await translateToPortuguese(text);
+    }
   }
   // prioridade
   if (move.priority && move.priority !== 0) {
