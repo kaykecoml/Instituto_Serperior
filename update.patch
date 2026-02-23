@@ -1,540 +1,222 @@
 diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index fa696abae890e323c65f193571507bd25adfe9c8..f7bf4028532f081ceda5a4e56a4290ef5ed461e9 100644
+index f7bf4028532f081ceda5a4e56a4290ef5ed461e9..cd091e9e6e0eb365e48baa26501977e041d7bbe8 100644
 --- a/css/pokemon-view.css
 +++ b/css/pokemon-view.css
-@@ -66,50 +66,122 @@ body {
- .site-home-link:hover {
-   text-decoration: underline;
- }
- 
- .cry-btn {
-   margin-top: 16px;
-   width: 100%;
-   background: #2f6b44;
-   border: none;
-   padding: 10px;
-   border-radius: 10px;
+@@ -625,78 +625,172 @@ body {
+   background: #08120d;
+   border: 1px solid #2f6b44;
+   color: #7bdc65;
    font-family: Pixel;
+   font-size: 10px;
+   padding: 3px 8px;
+   border-radius: 6px;
    cursor: pointer;
  }
  
- .image-panel {
-   text-align: center;
+ /* formas regionais */
+ .form-buttons .tab-btn {
+   padding: 3px 6px;
+   font-size: 10px;
+   border-radius: 6px;
  }
  
- .dex-title {
-   font-family: Pixel;
-   font-size: 18px;
-   margin-bottom: 10px;
+ .evolution-panel {
+   grid-column: 2 / 3;
+   grid-row: 3;
+   max-width: 320px;
+   padding: 16px;
+   border-radius: 16px;
+   margin-top: 24px;
  }
- 
 +
-+.art-wrapper {
-+  display: flex;
-+  align-items: center;
-+  justify-content: center;
-+  gap: 12px;
-+  margin-bottom: 10px;
-+}
-+
-+.art-frame {
-+  position: relative;
-+  border: 2px solid #2f6b44;
-+  border-radius: 16px;
-+  background: #08120d;
-+  padding: 18px 12px 12px;
-+  width: min(100%, 340px);
-+}
-+
-+.shiny-toggle {
-+  position: absolute;
-+  top: 6px;
-+  right: 6px;
-+  width: 38px;
-+  height: 38px;
-+  border: 2px solid #2f6b44;
-+  border-radius: 10px;
-+  background: rgba(11, 22, 17, 0.95);
-+  cursor: pointer;
-+  display: flex;
-+  align-items: center;
-+  justify-content: center;
-+  transition: transform 0.2s ease;
-+}
-+
-+.shiny-toggle:hover {
-+  transform: scale(1.08);
-+}
-+
-+.shiny-toggle img {
-+  width: 24px;
-+  height: 24px;
-+  object-fit: contain;
-+}
-+
-+.mobile-art-nav {
-+  display: none;
-+  background: rgba(47, 107, 68, 0.22);
-+  border: 2px solid #2f6b44;
-+  color: #7bdc65;
-+  border-radius: 14px;
-+  padding: 10px 8px;
-+  min-height: 160px;
-+  width: 54px;
++.evolution-title {
 +  font-family: Pixel;
-+  cursor: pointer;
-+  align-items: center;
-+  justify-content: space-between;
-+  flex-direction: column;
++  text-align: center;
++  font-size: 14px;
++  margin: 0 0 12px;
 +}
 +
-+.mobile-art-nav-arrow {
-+  font-size: 24px;
-+  line-height: 1;
-+}
-+
-+.mobile-art-nav-dex {
-+  writing-mode: vertical-rl;
-+  transform: rotate(180deg);
-+  font-size: 11px;
-+  letter-spacing: 0.4px;
-+}
-+
- #official-art {
-   width: min(100%, 320px);
-   height: auto;
-   object-fit: contain;
+ .evolution-chain.vertical {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+-  gap: 14px;
++  gap: 12px;
+   flex-wrap: nowrap; /* NÃO quebra linha */
+-  max-height: 280px;
++  max-height: 360px;
+   overflow-y: auto;
++  padding-right: 6px;
+ }
+ 
+ .evo-node {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
++  gap: 4px;
+ }
+ 
+ .evo-node img {
+   width: 96px;
    display: block;
    margin: 0 auto;
  }
  
- .type-box {
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-   margin-top: 15px;
+-.evo-arrow {
++.evo-name,
++.evo-subtitle,
++.evo-requirement-text {
+   font-family: Pixel;
+-  font-size: 12px;
++}
++
++.evo-name {
++  font-size: 11px;
++  text-align: center;
++}
++
++.evo-subtitle {
++  font-size: 10px;
++  opacity: 0.9;
++}
++
++.evo-transition {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 6px;
++}
++
++.evo-requirement {
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  gap: 6px;
++  flex-wrap: wrap;
++}
++
++.evo-item {
++  width: 26px;
++  height: 26px;
++  image-rendering: pixelated;
++}
++
++.evo-requirement-text {
++  font-size: 10px;
+   color: #7bdc65;
  }
  
- .type-row {
-   display: flex;
-   gap: 8px;
-   flex-wrap: wrap;
++.evo-chevron {
++  width: 30px;
++  height: 20px;
++  border-left: 3px solid #7bdc65;
++  border-bottom: 3px solid #7bdc65;
++  transform: rotate(-45deg);
++}
++
++.mega-split-row,
++.evo-branch-row {
++  display: flex;
++  gap: 14px;
++  justify-content: center;
++  width: 100%;
++}
++
++.mega-path,
++.evo-branch-column,
++.mega-branch {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 6px;
++}
++
++.pokemon-view.is-mystic .info-panel,
++.pokemon-view.is-mystic .art-frame,
++.pokemon-view.is-mystic .search-preview .preview-card,
++.pokemon-view.is-mystic .mobile-art-nav {
++  border-color: #d9b44a;
++  box-shadow: 0 0 12px rgba(217, 180, 74, 0.25);
++}
++
++.pokemon-view.is-mystic .info-panel {
++  background: linear-gradient(180deg, #221931, #0b1611);
++}
++
++.pokemon-view.is-mystic .block h3,
++.pokemon-view.is-mystic .evolution-title,
++.pokemon-view.is-mystic .evo-requirement-text {
++  color: #f1d98e;
++}
++
++.pokemon-view.is-mystic .evo-chevron {
++  border-left-color: #f1d98e;
++  border-bottom-color: #f1d98e;
++}
++
+ .nav-btn {
+   position: fixed;
+   top: 50%;
+   transform: translateY(-50%);
+   background: none;
+   border: none;
+   font-size: 56px;
+   color: #7bdc65;
+   cursor: pointer;
+   opacity: 0.25;
+   z-index: 100;
+   transition: all 0.2s ease;
  }
  
- .type {
-   padding: 6px 10px;
-   border-radius: 6px;
-   font-size: 14px;
-@@ -1056,58 +1128,58 @@ body {
-     margin: 16px auto;
-     gap: 8px;
-     flex-direction: row;
-     flex-wrap: nowrap;
-   }
- 
-   .pixel-button {
-     flex: 1 1 0;
-     padding: 6px 8px;
-     font-size: clamp(9px, 2.4vw, 11px);
-     min-width: 0;
-     white-space: nowrap;
-   }
- 
-   .image-panel {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-   }
- 
-   .art-wrapper {
-     width: 100%;
-     min-height: clamp(210px, 44vw, 300px);
-     display: flex;
--    flex-direction: column;
-+    flex-direction: row;
-     align-items: center;
-     justify-content: center;
-     gap: 8px;
-   }
- 
-   #official-art {
--    width: clamp(200px, 58vw, 320px);
-+    width: clamp(220px, 64vw, 340px);
-     max-width: 100%;
-     max-height: 42vh;
-     object-fit: contain;
-     margin: 0 auto;
-     display: block;
-   }
- 
-   .pokemon-image img {
-     width: clamp(160px, 48vw, 240px);
-   }
- 
-   .types img,
-   #weaknesses img,
-   #resistances img,
-   #immunities img,
-   .type-panel img {
-     width: clamp(36px, 8.6vw, 46px);
-     height: clamp(36px, 8.6vw, 46px);
-     object-fit: contain;
-   }
- 
-   .type-dual-row {
-     grid-template-columns: 1fr;
-   }
- 
-@@ -1184,57 +1256,81 @@ body {
-     width: 100%;
-     font-size: clamp(10px, 2.8vw, 13px);
-   }
- 
-   .move-table {
-     min-width: 620px;
-     font-size: 10px;
-   }
- 
-   .move-table th,
-   .move-table td {
-     white-space: nowrap;
-   }
- 
-   .capacities-wrapper {
-     gap: 8px;
-     flex-wrap: wrap;
-   }
- 
-   .capacity {
-     min-width: 74px;
-     flex: 1 1 30%;
-   }
- 
-   #form-buttons {
--    width: min(100%, 360px);
--    margin: 8px auto 0;
-+    width: min(100%, 420px);
-+    margin: 10px auto 0;
-     padding: 6px;
-     border: 2px solid #2f6b44;
-     border-radius: 10px;
-     background: #08120d;
-     gap: 4px;
-     -webkit-overflow-scrolling: touch;
-     touch-action: pan-x;
-   }
- 
-   .form-base-btn,
-   .form-buttons .tab-btn {
--    height: 32px;
--    padding: 2px 6px;
--    font-size: 9px;
-+    height: 34px;
-+    padding: 3px 8px;
-+    font-size: 10px;
-   }
- 
-   .form-btn {
--    width: 28px;
--    height: 28px;
-+    width: 32px;
-+    height: 32px;
-   }
- 
-   .dex-content {
-     max-height: min(40vh, 280px);
-   }
- 
-+
-+  .art-frame {
-+    width: clamp(220px, 64vw, 360px);
-+    padding: 20px 10px 10px;
-+  }
-+
-+  .shiny-toggle {
-+    width: 34px;
-+    height: 34px;
-+  }
-+
-+  .shiny-toggle img {
-+    width: 20px;
-+    height: 20px;
-+  }
-+
-+  .mobile-art-nav {
-+    display: flex;
-+  }
-+
-+  .mobile-art-nav-dex {
-+    font-size: clamp(9px, 2.3vw, 11px);
-+  }
-+
-   .nav-zone,
-   .nav-btn {
-     display: none;
-   }
+ .nav-btn.left {
+   left: 12px;
  }
+ 
+ .nav-btn.right {
+   right: 12px;
+ }
+ 
+ .nav-btn:hover {
+   opacity: 0.7;
+   transform: translateY(-50%) scale(1.15);
 diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index a60728180007f5da51641fa56a82bea04710de76..5b6734daab4061a2488735d3821bd63ce2b81b77 100644
+index 5b6734daab4061a2488735d3821bd63ce2b81b77..6070dcbb1d327aba051bbb72a4780cbd04ee14f1 100644
 --- a/js/pokemon-view.js
 +++ b/js/pokemon-view.js
-@@ -40,91 +40,144 @@ const MOV_LABELS = ["Estático", "Lento", "Ágil", "Atlético", "Veloz"];
+@@ -1,29 +1,32 @@
+ import { HABITATS } from "./habitats.js";
+ import { powerToDamage, accuracyToRPG, ppToRPG } from "./utils.js";
+ import { abilitiesData } from "./abilities.js";
+ const moveCache = new Map();
++const pokemonSpriteCache = new Map();
++const itemSpriteCache = new Map();
++const speciesVarietyCache = new Map();
+ let statsChart = null;
+ let contestChart = null;
+ let damageToken = 0;
+ let currentPokemonData = null;
+ let currentMovesData = null;
+ const translationCache = {};
  
- let moveRenderToken = 0;
+ const RPG_VERSION_PRIORITY = [
+   "scarlet-violet",
+   "sword-shield",
+   "ultra-sun-ultra-moon",
+   "sun-moon",
+   "omega-ruby-alpha-sapphire",
+   "x-y",
+   "black-2-white-2",
+   "black-white",
+ ];
  
- function convertStat(value) {
-   const base = Math.floor(value / 10);
-   return value % 10 >= 9 ? base + 1 : base;
- }
+ const EXCLUDED_VERSION_GROUPS = ["legends-za"];
  
- function half(v) {
-   return Math.floor(v / 2);
- }
- 
- function getInitialPokemonId() {
-   const params = new URLSearchParams(window.location.search);
-   const id = params.get("id");
- 
-   if (!id) return 1;
- 
-   const num = Number(id);
-   if (isNaN(num) || num < 1) return 1;
- 
-   return num;
- }
- 
- let currentId = getInitialPokemonId();
-+const MAX_POKEMON_ID = 1025;
-+let currentDisplayedPokemon = null;
-+let currentBaseDexId = currentId;
-+let isShinyActive = false;
-+
- 
- const nameInput = document.getElementById("dexSearchInput");
- const dexInput = document.getElementById("dexNumberInput");
- const btn = document.getElementById("dexSearchBtn");
- const preview = document.getElementById("search-preview");
- 
-+function formatPokemonName(name) {
-+  return name
-+    .split("-")
-+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-+    .join(" ");
-+}
-+
-+function getArtworkSprite(pokemon, shiny = false) {
-+  const official = pokemon?.sprites?.other?.["official-artwork"];
-+
-+  if (shiny) {
-+    return (
-+      official?.front_shiny ||
-+      pokemon?.sprites?.other?.home?.front_shiny ||
-+      pokemon?.sprites?.front_shiny ||
-+      official?.front_default ||
-+      pokemon?.sprites?.other?.home?.front_default ||
-+      pokemon?.sprites?.front_default ||
-+      ""
-+    );
-+  }
-+
-+  return (
-+    official?.front_default ||
-+    pokemon?.sprites?.other?.home?.front_default ||
-+    pokemon?.sprites?.front_default ||
-+    ""
-+  );
-+}
-+
-+function updateArtworkImage() {
-+  const artEl = document.getElementById("official-art");
-+  if (!currentDisplayedPokemon || !artEl) return;
-+
-+  artEl.src = getArtworkSprite(currentDisplayedPokemon, isShinyActive);
-+}
-+
-+function formatDexNumber(id) {
-+  return `#${String(id).padStart(4, "0")}`;
-+}
-+
-+function updateMobileDexNavigation() {
-+  const prev = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
-+  const next = currentId < MAX_POKEMON_ID ? currentId + 1 : 1;
-+
-+  const prevEl = document.getElementById("mobile-prev-dex");
-+  const nextEl = document.getElementById("mobile-next-dex");
-+
-+  if (prevEl) prevEl.textContent = formatDexNumber(prev);
-+  if (nextEl) nextEl.textContent = formatDexNumber(next);
-+}
-+
- async function init() {
-   const id = getInitialPokemonId();
-   await loadPokemonById(id);
- }
- 
- init();
- let isLegendary = false;
- let basePokemon = null;
- 
- function loadPokemon(p) {
--  const statsRaw = {};
--  p.stats.forEach((s) => (statsRaw[s.stat.name] = s.base_stat));
--
--  const dex = p.id;
-   basePokemon = p;
--  document.getElementById("dex").textContent =
--    `#${String(dex).padStart(3, "0")}`;
--
--  document.getElementById("name").textContent =
--    p.name.charAt(0).toUpperCase() + p.name.slice(1);
-+  currentBaseDexId = p.id;
-+  currentId = p.id;
-+  isShinyActive = false;
-+  updateMobileDexNavigation();
- 
--  document.getElementById("official-art").src =
--    p.sprites.other["official-artwork"].front_default;
-+  document.getElementById("dex").textContent = `#${String(p.id).padStart(3, "0")}`;
-+  document.getElementById("name").textContent = formatPokemonName(p.name);
-+  currentDisplayedPokemon = p;
-+  updateArtworkImage();
- 
--  document.getElementById("size").textContent =
--    `${p.height / 10} m • ${p.weight / 10} kg`;
-+  document.getElementById("size").textContent = `${p.height / 10} m • ${p.weight / 10} kg`;
- 
-   fetch(p.species.url)
-     .then((res) => res.json())
-     .then((species) => {
-       isLegendary = species.is_legendary;
-       renderForms(species.varieties, p.name);
-       renderEggGroups(species.egg_groups);
- 
--      applyPokemonData(p);
-+      applyPokemonData(p, p.id);
-     });
- }
- 
- function buildPokemonData(p, species) {
-   const statsRaw = {};
-   p.stats.forEach((s) => (statsRaw[s.stat.name] = s.base_stat));
- 
-   const female = species.gender_rate === -1 ? null : species.gender_rate * 12.5;
- 
-   const male = species.gender_rate === -1 ? null : 100 - female;
- 
-   const isFinalStage =
-     species.evolves_from_species !== null &&
-     species.evolution_chain &&
-     !species.evolution_chain.url.includes("evolves_to");
- 
-   return {
-     id: p.id,
-     name: p.name,
-     height: p.height / 10,
-     weight: p.weight / 10,
- 
-     types: p.types.map((t) => t.type.name),
-     eggGroups: species.egg_groups.map((g) => g.name),
- 
-@@ -561,219 +614,219 @@ async function getDexEntryFromSpecies(species) {
-   if (!enEntry?.flavor_text) {
-     return null;
-   }
- 
-   const translated = await translateToPortuguese(normalizeDexText(enEntry.flavor_text));
-   speciesDexCache[cacheKey] = translated;
- 
-   return translated;
- }
- 
- async function getDexEntryText(pokemon, species) {
-   const bulbapediaText = await fetchBulbapediaBiology(pokemon.name);
-   if (bulbapediaText) {
-     return bulbapediaText;
-   }
- 
-   const speciesText = await getDexEntryFromSpecies(species);
-   if (speciesText) {
-     return speciesText;
-   }
- 
-   return "Descrição da dex não encontrada.";
- }
- 
- async function loadPokemonById(idOrName) {
--  currentId = idOrName;
--
-   const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`);
-   const pokemon = await pokeRes.json();
- 
-   loadPokemon(pokemon);
- 
-   history.pushState(null, "", `?id=${pokemon.id}`);
- }
- 
- function renderForms(varieties, baseName) {
-   const container = document.getElementById("form-buttons");
-   container.innerHTML = "";
- 
-   // BOTÃO BASE (apenas 1 vez)
-   const baseBtn = document.createElement("button");
-   baseBtn.textContent = "Base";
-   baseBtn.className = "form-base-btn";
--  baseBtn.onclick = () => applyPokemonData(basePokemon);
-+  baseBtn.onclick = () => {
-+    isShinyActive = false;
-+    applyPokemonData(basePokemon, currentBaseDexId);
-+  };
-   container.appendChild(baseBtn);
- 
-   varieties.forEach((v) => {
-     const name = v.pokemon.name;
- 
-     // ignora forma base
-     if (name === baseName) return;
- 
-     // MEGA
-     if (name.includes("mega")) {
-       const img = document.createElement("img");
-       if (name.includes("mega-x")) {
--        img.src = "assets/megax.png";
-+        img.src = "assets/forms/megax.png";
-       } else if (name.includes("mega-y")) {
--        img.src = "assets/megay.png";
-+        img.src = "assets/forms/megay.png";
-       } else if (name.includes("mega-z")) {
--        img.src = "assets/megaz.png";
-+        img.src = "assets/forms/megaz.png";
-       } else {
--        img.src = "assets/mega.png";
-+        img.src = "assets/forms/mega.png";
-       }
-       img.className = "form-btn";
-       img.title = "Mega Evolução";
-       img.onclick = () => loadForm(name);
-       container.appendChild(img);
-       return;
-     }
- 
-     // GIGANTAMAX
-     if (name.includes("gmax")) {
-       const img = document.createElement("img");
-       img.src = "assets/gigantamax.png";
-       img.className = "form-btn";
-       img.title = "Gigantamax";
-       img.onclick = () => loadForm(name);
-       container.appendChild(img);
-       return;
-     }
- 
-     // FORMAS REGIONAIS / OUTRAS
-     const btn = document.createElement("button");
-     btn.textContent = name.replace(baseName + "-", "");
-     btn.className = "tab-btn";
-     btn.onclick = () => loadForm(name);
-     container.appendChild(btn);
+ const INT_LABELS = [
+   "Instintivo",
+   "Consciente",
+   "Racional",
+   "Estrategista",
+@@ -703,50 +706,51 @@ function renderForms(varieties, baseName) {
    });
  }
  
@@ -545,13 +227,11 @@ index a60728180007f5da51641fa56a82bea04710de76..5b6734daab4061a2488735d3821bd63c
        if (!pokemon.moves || pokemon.moves.length === 0) {
          pokemon.moves = basePokemon?.moves || [];
        }
--      applyPokemonData(pokemon);
-+      applyPokemonData(pokemon, currentBaseDexId);
+       applyPokemonData(pokemon, currentBaseDexId);
      });
  }
  
--async function applyPokemonData(p) {
-+async function applyPokemonData(p, displayDexId = currentBaseDexId) {
+ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
    const dexEntry = document.getElementById("dex-entry");
  
    dexEntry.textContent = "Carregando entrada da dex...";
@@ -562,13 +242,14 @@ index a60728180007f5da51641fa56a82bea04710de76..5b6734daab4061a2488735d3821bd63c
    dexToggleButton.textContent = "▸ ENTRADA DA DEX";
  
    const species = await fetch(p.species.url).then((res) => res.json());
++  applySpecialTheme(species);
    const dexText = await getDexEntryText(p, species);
  
    dexEntry.classList.remove("expanded");
    dexEntry.textContent = dexText;
  
    const pokemonData = buildPokemonData(p, species);
-+  pokemonData.id = displayDexId;
+   pokemonData.id = displayDexId;
  
    const chainData = await fetch(species.evolution_chain.url).then((r) =>
      r.json(),
@@ -587,183 +268,7 @@ index a60728180007f5da51641fa56a82bea04710de76..5b6734daab4061a2488735d3821bd63c
    let node = findNode(p.name, chainData.chain);
  
    if (!node && p.name.includes("-")) {
-     const baseName = p.name.split("-")[0];
-     node = findNode(baseName, chainData.chain);
-   }
- 
-   if (!node) {
-     pokemonData.isFinalStage = false;
-     pokemonData.isSingleStage = false;
-   } else {
-     pokemonData.isFinalStage = node.evolves_to.length === 0;
-     pokemonData.isSingleStage =
-       chainData.chain.species.name === node.species.name &&
-       chainData.chain.evolves_to.length === 0;
-   }
- 
-   currentPokemonData = pokemonData;
- 
-   renderEggGroups(pokemonData.eggGroups);
-   renderGender(species);
-   renderCapacities(pokemonData);
- 
--  document.getElementById("official-art").src =
--    p.sprites.other["official-artwork"].front_default ||
--    p.sprites.front_default;
-+  currentDisplayedPokemon = p;
-+  updateArtworkImage();
- 
-   const types = p.types.map((t) => t.type.name);
-   document.getElementById("types").innerHTML = types
-     .map((t) => `<img src="assets/types/${t}.png">`)
-     .join("");
- 
-   renderStats({
-     hp: pokemonData.stats.hp,
-     attack: pokemonData.stats.atk,
-     defense: pokemonData.stats.def,
-     spAttack: pokemonData.stats.spAtk,
-     spDefense: pokemonData.stats.spDef,
-     speed: pokemonData.stats.speed,
-   });
- 
-   renderContest({
-     hp: pokemonData.stats.hp,
-     attack: pokemonData.stats.atk,
-     defense: pokemonData.stats.def,
-     spAttack: pokemonData.stats.spAtk,
-     spDefense: pokemonData.stats.spDef,
-     speed: pokemonData.stats.speed,
-   });
-   renderDamageRelations(types);
-   renderAbilities(p.abilities);
--  renderHabitats(p.id);
-+  renderHabitats(displayDexId);
-   renderMoves(p.moves);
-   renderEvolutionChain(basePokemon.species.url);
- 
--  document.getElementById("name").textContent =
--    p.name.charAt(0).toUpperCase() + p.name.slice(1);
-+  document.getElementById("name").textContent = formatPokemonName(p.name);
- 
-   document.getElementById("dex").textContent =
--    `#${String(p.id).padStart(3, "0")}`;
-+    `#${String(displayDexId).padStart(3, "0")}`;
- 
-   document.getElementById("size").textContent =
-     `${p.height / 10} m • ${p.weight / 10} kg`;
- }
- 
- function getCategoryIcon(damageClass) {
-   return `<img src="assets/icons/${damageClass}.png" class="status-icon">`;
- }
- 
- function addRow(tbody, col1, move, typeIcon, categoryIcon, dmg, acc, pp) {
-   const isStatus = move.damage_class.name === "status";
- 
-   // Linha principal
-   const tr = document.createElement("tr");
-   tr.style.cursor = "pointer";
- 
-   tr.innerHTML = `
-     <td>${col1}</td>
-     <td>${move.name.replace("-", " ")}</td>
-     <td>${typeIcon}</td>
-     <td>${categoryIcon}</td>
-     <td>${isStatus ? "—" : dmg}</td>
-     <td>${acc}</td>
-     <td>${pp}</td>
-   `;
-@@ -1251,57 +1304,57 @@ function calcMovement(pokemon) {
- 
-   // Lendário
-   if (pokemon.isLegendary) value += 1;
- 
-   // Estágio único ou final
-   if (pokemon.isFinalStage || pokemon.isSingleStage) value += 1;
- 
-   return clampCapacity(value);
- }
- 
- function sumFromList(list = [], rules) {
-   let total = 0;
-   for (const item of list) {
-     if (rules[item] !== undefined) {
-       total += rules[item];
-     }
-   }
-   return total;
- }
- 
- function clampCapacity(value) {
-   return Math.max(0, Math.min(4, value));
- }
- 
- function goPrev() {
--  if (currentId > 1) {
--    loadPokemonById(currentId - 1);
--  }
-+  const prevId = currentId > 1 ? currentId - 1 : MAX_POKEMON_ID;
-+  loadPokemonById(prevId);
- }
- 
- function goNext() {
--  loadPokemonById(Number(currentId) + 1);
-+  const nextId = currentId < MAX_POKEMON_ID ? Number(currentId) + 1 : 1;
-+  loadPokemonById(nextId);
- }
- 
- function goToDex(n) {
-   if (n < 1) return;
-   window.location.href = `pokemon-view.html?id=${n}`;
- }
- 
- function playCry() {
-   new Audio(
-     `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${currentId}.ogg`,
-   ).play();
- }
- 
- function contestValue(rpgStat) {
-   return Math.floor(rpgStat / 10);
- }
- 
- function renderTypeRow(containerId, title, types, mode) {
-   if (!types || Object.keys(types).length === 0) return;
- 
-   const container = document.getElementById(containerId);
-   container.innerHTML = `<strong>${title}</strong>`;
- 
-   const row = document.createElement("div");
-   row.className = "type-row";
-@@ -1357,51 +1410,51 @@ function getBestVersionGroup(details) {
-   const valid = details.filter(
-     (v) => !EXCLUDED_VERSION_GROUPS.includes(v.version_group.name),
-   );
- 
-   if (valid.length === 0) return null;
- 
-   // tenta achar pela prioridade
-   for (const version of RPG_VERSION_PRIORITY) {
-     const found = valid.find((v) => v.version_group.name === version);
-     if (found) return found;
-   }
- 
-   // fallback final (última disponível válida)
-   return valid.at(-1);
- }
- 
- function add(name, val) {
-   const li = document.createElement("li");
-   li.innerHTML = `<span>${name}</span><strong>${val}</strong>`;
-   list.appendChild(li);
- }
- 
- let pokemonIndex = [];
- 
- async function loadPokemonIndex() {
--  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
-+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${MAX_POKEMON_ID}`);
+@@ -1436,116 +1440,328 @@ async function loadPokemonIndex() {
    const data = await res.json();
    pokemonIndex = data.results.map((p, i) => ({
      name: p.name,
@@ -789,139 +294,379 @@ index a60728180007f5da51641fa56a82bea04710de76..5b6734daab4061a2488735d3821bd63c
    const container = document.getElementById("evolution-chain");
    container.innerHTML = "";
  
-@@ -1663,47 +1716,59 @@ document.getElementById("copyDexBtn").addEventListener("click", () => {
-   const name = document.getElementById("name").textContent;
-   const dex = document.getElementById("dex").textContent;
-   const text = document.getElementById("dex-entry").textContent;
- 
-   if (!text || text === "Carregando biologia...") return;
- 
-   const formatted = `
- ◄ 『${name}』【${dex}】
- ╔═════════╡✠╞═════════╗
- ${text}
- 
- ╚═════════╡✠╞═════════╝
- `;
- 
-   navigator.clipboard.writeText(formatted).then(() => showCopyToast());
- });
- 
- /* ===== BOTÃO DE CHORO ===== */
- document.querySelector(".cry-btn")?.addEventListener("click", playCry);
- 
- /* ===== NAVEGAÇÃO ===== */
- document.querySelector(".nav-btn.left")?.addEventListener("click", goPrev);
- 
- document.querySelector(".nav-btn.right")?.addEventListener("click", goNext);
- 
-+document.getElementById("toggleShinyBtn")?.addEventListener("click", () => {
-+  isShinyActive = !isShinyActive;
-+  updateArtworkImage();
-+});
+-  function traverse(node) {
++  async function traverse(node) {
++    const speciesData = await getSpeciesData(node.species.url);
 +
-+document.querySelectorAll("[data-mobile-nav]").forEach((btn) => {
-+  btn.addEventListener("click", () => {
-+    if (btn.dataset.mobileNav === "prev") goPrev();
-+    if (btn.dataset.mobileNav === "next") goNext();
-+  });
-+});
-+
- document.addEventListener("DOMContentLoaded", () => {
-   [nameInput, dexInput].forEach((input) =>
-     input.addEventListener("input", updateSearchPreview),
-   );
+     return {
+       name: node.species.name,
++      speciesName: speciesData.name,
+       details: node.evolution_details?.[0] || null,
+-      evolvesTo: node.evolves_to.map(traverse),
++      evolvesTo: await Promise.all(node.evolves_to.map(traverse)),
++      megaForms: extractMegaForms(speciesData),
+     };
+   }
  
-   document.querySelectorAll(".move-tab-buttons .tab-btn").forEach((btn) => {
-     btn.addEventListener("click", () => {
-       const tab = btn.dataset.movetab;
+-  const chain = traverse(chainData.chain);
++  const chain = await traverse(chainData.chain);
+   await renderChainNode(chain, container);
+ }
  
-       document
-         .querySelectorAll("#level-tab, #other-tab")
-         .forEach((t) => t.classList.remove("active"));
- 
-       document
-         .querySelectorAll(".move-tab-buttons .tab-btn")
-         .forEach((b) => b.classList.remove("active"));
- 
-       document.getElementById(`${tab}-tab`)?.classList.add("active");
-       btn.classList.add("active");
-     });
+ document.querySelectorAll(".nav-zone").forEach((zone) => {
+   zone.addEventListener("click", () => {
+     const dir = zone.dataset.nav;
+     if (dir === "prev") goPrev();
+     if (dir === "next") goNext();
    });
  });
+ 
+ async function renderChainNode(node, container) {
+-  const wrapper = document.createElement("div");
+-  wrapper.className = "evo-node";
++  const wrapper = await createEvolutionNode(node.name);
++  container.appendChild(wrapper);
+ 
+-  const img = document.createElement("img");
+-  img.width = 80;
+-  img.height = 80;
+-  img.alt = node.name;
++  if (node.evolvesTo.length > 1) {
++    const branchRow = document.createElement("div");
++    branchRow.className = "evo-branch-row";
++
++    for (const next of node.evolvesTo) {
++      const branchColumn = document.createElement("div");
++      branchColumn.className = "evo-branch-column";
++
++      branchColumn.appendChild(await createEvolutionTransition(next.details));
++      await renderChainNode(next, branchColumn);
++      branchRow.appendChild(branchColumn);
++    }
++
++    container.appendChild(branchRow);
++  } else {
++    for (const next of node.evolvesTo) {
++      container.appendChild(await createEvolutionTransition(next.details));
++      await renderChainNode(next, container);
++    }
++  }
++
++  if (node.megaForms.length > 0) {
++    container.appendChild(await createMegaBranch(node.megaForms));
++  }
++}
++
++function applySpecialTheme(species) {
++  const pokemonView = document.querySelector(".pokemon-view");
++  if (!pokemonView) return;
++
++  const isSpecial = species.is_legendary || species.is_mythical;
++  pokemonView.classList.toggle("is-mystic", isSpecial);
++}
++
++async function getPokemonSprite(name) {
++  if (pokemonSpriteCache.has(name)) return pokemonSpriteCache.get(name);
+ 
+   try {
+-    const poke = await fetch(
+-      `https://pokeapi.co/api/v2/pokemon/${node.name}`,
+-    ).then((r) => r.json());
++    const poke = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then((r) =>
++      r.json(),
++    );
+ 
+-    img.src =
++    const sprite =
+       poke.sprites.other["official-artwork"].front_default ||
+-      poke.sprites.front_default;
++      poke.sprites.front_default ||
++      "assets/unknown.png";
++
++    pokemonSpriteCache.set(name, sprite);
++    return sprite;
+   } catch {
+-    img.src = "assets/unknown.png"; // fallback opcional
++    return "assets/unknown.png";
+   }
++}
++
++async function getSpeciesData(url) {
++  if (speciesVarietyCache.has(url)) return speciesVarietyCache.get(url);
++  const speciesData = await fetch(url).then((r) => r.json());
++  speciesVarietyCache.set(url, speciesData);
++  return speciesData;
++}
++
++function extractMegaForms(speciesData) {
++  return speciesData.varieties
++    .map((v) => v.pokemon.name)
++    .filter((name) => name.includes("-mega"))
++    .map((name) => {
++      const suffix = name.replace(`${speciesData.name}-mega`, "").replace("-", "");
++      const label = suffix ? `Mega ${suffix.toUpperCase()}` : "Mega";
++      const stoneName = suffix
++        ? `${speciesData.name}ite-${suffix}`
++        : `${speciesData.name}ite`;
++
++      return {
++        pokemonName: name,
++        label,
++        stoneName,
++      };
++    });
++}
++
++async function createEvolutionNode(name, subtitle = "") {
++  const wrapper = document.createElement("div");
++  wrapper.className = "evo-node";
++
++  const img = document.createElement("img");
++  img.width = 96;
++  img.height = 96;
++  img.alt = name;
++  img.src = await getPokemonSprite(name);
++
++  const nameTag = document.createElement("span");
++  nameTag.className = "evo-name";
++  nameTag.textContent = formatPokemonName(name);
+ 
+   wrapper.appendChild(img);
+-  container.appendChild(wrapper);
++  wrapper.appendChild(nameTag);
++
++  if (subtitle) {
++    const subLabel = document.createElement("span");
++    subLabel.className = "evo-subtitle";
++    subLabel.textContent = subtitle;
++    wrapper.appendChild(subLabel);
++  }
++
++  return wrapper;
++}
+ 
+-  for (const next of node.evolvesTo) {
+-    const arrow = document.createElement("div");
+-    arrow.className = "evo-arrow";
+-    arrow.textContent = evolutionText(next.details);
+-    container.appendChild(arrow);
++async function createEvolutionTransition(details, override = {}) {
++  const transition = document.createElement("div");
++  transition.className = "evo-transition";
+ 
+-    await renderChainNode(next, container);
++  const requirement = document.createElement("div");
++  requirement.className = "evo-requirement";
++
++  const requirementData = getEvolutionRequirement(details, override);
++  const itemImg = document.createElement("img");
++  itemImg.className = "evo-item";
++  itemImg.alt = requirementData.itemName;
++  itemImg.src = await getEvolutionItemImage(requirementData.itemName);
++  requirement.appendChild(itemImg);
++
++  if (requirementData.text) {
++    const text = document.createElement("span");
++    text.className = "evo-requirement-text";
++    text.textContent = requirementData.text;
++    requirement.appendChild(text);
+   }
++
++  const chevron = document.createElement("div");
++  chevron.className = "evo-chevron";
++
++  transition.appendChild(requirement);
++  transition.appendChild(chevron);
++
++  return transition;
+ }
+ 
+-function evolutionText(details) {
+-  if (!details) return "";
++function getEvolutionRequirement(details, override = {}) {
++  if (override.itemName) {
++    return {
++      itemName: override.itemName,
++      text: override.text || "",
++    };
++  }
+ 
+-  if (details.min_level) return `Nv. ${details.min_level}`;
++  if (!details) {
++    return {
++      itemName: "rare_candy",
++      text: "",
++    };
++  }
++
++  if (details.min_happiness) {
++    return {
++      itemName: "friend",
++      text: "Amizade",
++    };
++  }
++
++  if (details.item?.name) {
++    return {
++      itemName: details.item.name,
++      text: formatPokemonName(details.item.name),
++    };
++  }
+ 
+-  if (details.trigger.name === "trade") return "Troca";
++  if (details.min_level) {
++    return {
++      itemName: "rare_candy",
++      text: `Nv. ${details.min_level}`,
++    };
++  }
++
++  if (details.trigger?.name === "trade") {
++    return {
++      itemName: "link_cable",
++      text: "Troca",
++    };
++  }
++
++  return {
++    itemName: "rare_candy",
++    text: "Evolui",
++  };
++}
+ 
+-  if (details.item) return `Item: ${details.item.name.replace("-", " ")}`;
++async function getEvolutionItemImage(itemName) {
++  const normalized = itemName.toLowerCase().replace(/\s+/g, "_");
++  if (itemSpriteCache.has(normalized)) return itemSpriteCache.get(normalized);
+ 
+-  if (details.min_happiness) return "Amizade";
++  const localPath = `assets/evolution items/${normalized}.png`;
++
++  try {
++    const localResponse = await fetch(encodeURI(localPath), { method: "HEAD" });
++    if (localResponse.ok) {
++      itemSpriteCache.set(normalized, localPath);
++      return localPath;
++    }
++  } catch {
++    // fallback para pokeapi
++  }
++
++  try {
++    const itemData = await fetch(`https://pokeapi.co/api/v2/item/${normalized}`).then((r) =>
++      r.json(),
++    );
++    const sprite = itemData.sprites.default || "assets/forms/mega.png";
++    itemSpriteCache.set(normalized, sprite);
++    return sprite;
++  } catch {
++    return "assets/forms/mega.png";
++  }
++}
++
++async function createMegaBranch(megaForms) {
++  const megaContainer = document.createElement("div");
++  megaContainer.className = "mega-branch";
++
++  if (megaForms.length === 1) {
++    const mega = megaForms[0];
++    megaContainer.appendChild(
++      await createEvolutionTransition(null, {
++        itemName: mega.stoneName,
++        text: mega.label,
++      }),
++    );
++
++    megaContainer.appendChild(await createEvolutionNode(mega.pokemonName, mega.label));
++    return megaContainer;
++  }
++
++  const splitRow = document.createElement("div");
++  splitRow.className = "mega-split-row";
++
++  for (const mega of megaForms) {
++    const path = document.createElement("div");
++    path.className = "mega-path";
++
++    path.appendChild(
++      await createEvolutionTransition(null, {
++        itemName: mega.stoneName,
++        text: mega.label,
++      }),
++    );
++    path.appendChild(await createEvolutionNode(mega.pokemonName, mega.label));
++    splitRow.appendChild(path);
++  }
+ 
+-  return "Evolui";
++  megaContainer.appendChild(splitRow);
++  return megaContainer;
+ }
+ 
+ function getIdFromName(name) {
+   // funciona porque sprites seguem a ordem da dex
+   // alternativa: cachear fetch de /pokemon/{name}
+   return name;
+ }
+ 
+ function renderStats(rpgStats) {
+   if (statsChart) statsChart.destroy();
+   document.getElementById("stat-hp").textContent = rpgStats.hp;
+   document.getElementById("stat-atk").textContent = rpgStats.attack;
+   document.getElementById("stat-def").textContent = rpgStats.defense;
+   document.getElementById("stat-spatk").textContent = rpgStats.spAttack;
+   document.getElementById("stat-spdef").textContent = rpgStats.spDefense;
+   document.getElementById("stat-spd").textContent = rpgStats.speed;
+ 
+   statsChart = new Chart(document.getElementById("statsRadar"), {
+     type: "radar",
+     data: {
+       labels: ["HP", "ATK", "DEF", "Sp.ATK", "Sp.DEF", "SPD"],
+       datasets: [
+         {
+           data: [
+             rpgStats.hp,
 diff --git a/pokemon-view.html b/pokemon-view.html
-index 7022d3d9eb926e348ca1543919b976f078c13787..23c85395497258c1702c2438b52b2330d413fadf 100644
+index 23c85395497258c1702c2438b52b2330d413fadf..e85fcf3081a80b9cbe788be7222bce50b44f9bfc 100644
 --- a/pokemon-view.html
 +++ b/pokemon-view.html
-@@ -43,54 +43,69 @@
-   />
+@@ -239,37 +239,37 @@
  
-   <button id="dexSearchBtn">Buscar</button>
- </div>
- <div id="search-preview" class="search-preview"></div>
- 
- <div class="copy-buttons">
-   <button id="copyPokemonBtn" class="pixel-button">Copiar Pokémon</button>
-   <button id="copyMovesBtn" class="pixel-button">Copiar Golpes</button>
- </div>
- 
- <div id="copyToast" class="copy-toast">
-   Copiado com sucesso!
- </div>
- 
- <main class="pokemon-view">
- 
- <div class="left-column">
-   <section class="image-panel">
-     <div class="dex-title">
-       <span id="dex"></span>
-       <span id="name"></span>
+     <div id="other-tab" class="tab-content">
+       <div class="move-table-scroll">
+         <table class="move-table">
+           <thead>
+             <tr>
+               <th>Método</th>
+               <th>Golpe</th>
+               <th>Tipo</th>
+               <th>Categ.</th>
+               <th>Dano</th>
+               <th>Acerto</th>
+               <th>Uso</th>
+             </tr>
+           </thead>
+           <tbody id="other-moves"></tbody>
+         </table>
+       </div>
      </div>
  
- <div class="art-wrapper">
--  <img id="official-art">
--  <div class="form-buttons" id="form-buttons"></div>
-+  <button class="mobile-art-nav mobile-art-nav-left" data-mobile-nav="prev" type="button">
-+    <span class="mobile-art-nav-arrow">◀</span>
-+    <span class="mobile-art-nav-dex" id="mobile-prev-dex">#0000</span>
-+  </button>
-+
-+  <div class="art-frame">
-+    <img id="official-art">
-+    <button id="toggleShinyBtn" class="shiny-toggle" type="button" aria-label="Alternar versão shiny">
-+      <img src="assets/forms/shiny.png" alt="Shiny">
-+    </button>
-+  </div>
-+
-+  <button class="mobile-art-nav mobile-art-nav-right" data-mobile-nav="next" type="button">
-+    <span class="mobile-art-nav-arrow">▶</span>
-+    <span class="mobile-art-nav-dex" id="mobile-next-dex">#0000</span>
-+  </button>
- </div>
+   </section>
  
-+<div class="form-buttons" id="form-buttons"></div>
+ </section>
  
- <div class="type-box">
-   <div class="types" id="types"></div>
+ <section class="info-panel evolution-panel">
+-  <h3>Linha Evolutiva</h3>
+-  <div id="evolution-chain" class="evolution-chain"></div>
++  <h3 class="evolution-title">Linha Evolutiva</h3>
++  <div id="evolution-chain" class="evolution-chain vertical"></div>
+ </section>
  
-   <div class="type-dual-row">
-     <div class="type-panel weak">
-       <h3>Fraquezas</h3>
-       <div class="types" id="weaknesses"></div>
-     </div>
  
-     <div class="type-panel resist">
-       <h3>Resistências</h3>
-       <div class="types" id="resistances"></div>
-     </div>
-   </div>
+ </main>
  
-   <div class="type-panel immune">
-     <h3>Imunidades</h3>
-     <div class="types" id="immunities"></div>
-   </div>
- </div>
- 
- </div>
- 
-   <section class="info-panel">
+ <div class="nav-zone right" data-nav="next"></div>
+ <button class="nav-btn right" data-nav="next">▶</button>
+ </body>
+   
+ </html>

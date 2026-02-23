@@ -647,20 +647,30 @@ body {
   border-radius: 16px;
   margin-top: 24px;
 }
+
+.evolution-title {
+  font-family: Pixel;
+  text-align: center;
+  font-size: 14px;
+  margin: 0 0 12px;
+}
+
 .evolution-chain.vertical {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: nowrap; /* NÃO quebra linha */
-  max-height: 280px;
+  max-height: 360px;
   overflow-y: auto;
+  padding-right: 6px;
 }
 
 .evo-node {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 4px;
 }
 
 .evo-node img {
@@ -669,10 +679,94 @@ body {
   margin: 0 auto;
 }
 
-.evo-arrow {
+.evo-name,
+.evo-subtitle,
+.evo-requirement-text {
   font-family: Pixel;
-  font-size: 12px;
+}
+
+.evo-name {
+  font-size: 11px;
+  text-align: center;
+}
+
+.evo-subtitle {
+  font-size: 10px;
+  opacity: 0.9;
+}
+
+.evo-transition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.evo-requirement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.evo-item {
+  width: 26px;
+  height: 26px;
+  image-rendering: pixelated;
+}
+
+.evo-requirement-text {
+  font-size: 10px;
   color: #7bdc65;
+}
+
+.evo-chevron {
+  width: 30px;
+  height: 20px;
+  border-left: 3px solid #7bdc65;
+  border-bottom: 3px solid #7bdc65;
+  transform: rotate(-45deg);
+}
+
+.mega-split-row,
+.evo-branch-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  width: 100%;
+}
+
+.mega-path,
+.evo-branch-column,
+.mega-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.pokemon-view.is-mystic .info-panel,
+.pokemon-view.is-mystic .art-frame,
+.pokemon-view.is-mystic .search-preview .preview-card,
+.pokemon-view.is-mystic .mobile-art-nav {
+  border-color: #d9b44a;
+  box-shadow: 0 0 12px rgba(217, 180, 74, 0.25);
+}
+
+.pokemon-view.is-mystic .info-panel {
+  background: linear-gradient(180deg, #221931, #0b1611);
+}
+
+.pokemon-view.is-mystic .block h3,
+.pokemon-view.is-mystic .evolution-title,
+.pokemon-view.is-mystic .evo-requirement-text {
+  color: #f1d98e;
+}
+
+.pokemon-view.is-mystic .evo-chevron {
+  border-left-color: #f1d98e;
+  border-bottom-color: #f1d98e;
 }
 
 .nav-btn {

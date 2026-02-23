@@ -2,6 +2,9 @@ import { HABITATS } from "./habitats.js";
 import { powerToDamage, accuracyToRPG, ppToRPG } from "./utils.js";
 import { abilitiesData } from "./abilities.js";
 const moveCache = new Map();
+const pokemonSpriteCache = new Map();
+const itemSpriteCache = new Map();
+const speciesVarietyCache = new Map();
 let statsChart = null;
 let contestChart = null;
 let damageToken = 0;
@@ -725,6 +728,7 @@ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
   dexToggleButton.textContent = "▸ ENTRADA DA DEX";
 
   const species = await fetch(p.species.url).then((res) => res.json());
+  applySpecialTheme(species);
   const dexText = await getDexEntryText(p, species);
 
   dexEntry.classList.remove("expanded");
@@ -1458,15 +1462,19 @@ async function renderEvolutionChain(speciesUrl) {
   const container = document.getElementById("evolution-chain");
   container.innerHTML = "";
 
-  function traverse(node) {
+  async function traverse(node) {
+    const speciesData = await getSpeciesData(node.species.url);
+
     return {
       name: node.species.name,
+      speciesName: speciesData.name,
       details: node.evolution_details?.[0] || null,
-      evolvesTo: node.evolves_to.map(traverse),
+      evolvesTo: await Promise.all(node.evolves_to.map(traverse)),
+      megaForms: extractMegaForms(speciesData),
     };
   }
 
-  const chain = traverse(chainData.chain);
+  const chain = await traverse(chainData.chain);
   await renderChainNode(chain, container);
 }
 
@@ -1479,51 +1487,259 @@ document.querySelectorAll(".nav-zone").forEach((zone) => {
 });
 
 async function renderChainNode(node, container) {
+  const wrapper = await createEvolutionNode(node.name);
+  container.appendChild(wrapper);
+
+  if (node.evolvesTo.length > 1) {
+    const branchRow = document.createElement("div");
+    branchRow.className = "evo-branch-row";
+
+    for (const next of node.evolvesTo) {
+      const branchColumn = document.createElement("div");
+      branchColumn.className = "evo-branch-column";
+
+      branchColumn.appendChild(await createEvolutionTransition(next.details));
+      await renderChainNode(next, branchColumn);
+      branchRow.appendChild(branchColumn);
+    }
+
+    container.appendChild(branchRow);
+  } else {
+    for (const next of node.evolvesTo) {
+      container.appendChild(await createEvolutionTransition(next.details));
+      await renderChainNode(next, container);
+    }
+  }
+
+  if (node.megaForms.length > 0) {
+    container.appendChild(await createMegaBranch(node.megaForms));
+  }
+}
+
+function applySpecialTheme(species) {
+  const pokemonView = document.querySelector(".pokemon-view");
+  if (!pokemonView) return;
+
+  const isSpecial = species.is_legendary || species.is_mythical;
+  pokemonView.classList.toggle("is-mystic", isSpecial);
+}
+
+async function getPokemonSprite(name) {
+  if (pokemonSpriteCache.has(name)) return pokemonSpriteCache.get(name);
+
+  try {
+    const poke = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then((r) =>
+      r.json(),
+    );
+
+    const sprite =
+      poke.sprites.other["official-artwork"].front_default ||
+      poke.sprites.front_default ||
+      "assets/unknown.png";
+
+    pokemonSpriteCache.set(name, sprite);
+    return sprite;
+  } catch {
+    return "assets/unknown.png";
+  }
+}
+
+async function getSpeciesData(url) {
+  if (speciesVarietyCache.has(url)) return speciesVarietyCache.get(url);
+  const speciesData = await fetch(url).then((r) => r.json());
+  speciesVarietyCache.set(url, speciesData);
+  return speciesData;
+}
+
+function extractMegaForms(speciesData) {
+  return speciesData.varieties
+    .map((v) => v.pokemon.name)
+    .filter((name) => name.includes("-mega"))
+    .map((name) => {
+      const suffix = name.replace(`${speciesData.name}-mega`, "").replace("-", "");
+      const label = suffix ? `Mega ${suffix.toUpperCase()}` : "Mega";
+      const stoneName = suffix
+        ? `${speciesData.name}ite-${suffix}`
+        : `${speciesData.name}ite`;
+
+      return {
+        pokemonName: name,
+        label,
+        stoneName,
+      };
+    });
+}
+
+async function createEvolutionNode(name, subtitle = "") {
   const wrapper = document.createElement("div");
   wrapper.className = "evo-node";
 
   const img = document.createElement("img");
-  img.width = 80;
-  img.height = 80;
-  img.alt = node.name;
+  img.width = 96;
+  img.height = 96;
+  img.alt = name;
+  img.src = await getPokemonSprite(name);
 
-  try {
-    const poke = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${node.name}`,
-    ).then((r) => r.json());
-
-    img.src =
-      poke.sprites.other["official-artwork"].front_default ||
-      poke.sprites.front_default;
-  } catch {
-    img.src = "assets/unknown.png"; // fallback opcional
-  }
+  const nameTag = document.createElement("span");
+  nameTag.className = "evo-name";
+  nameTag.textContent = formatPokemonName(name);
 
   wrapper.appendChild(img);
-  container.appendChild(wrapper);
+  wrapper.appendChild(nameTag);
 
-  for (const next of node.evolvesTo) {
-    const arrow = document.createElement("div");
-    arrow.className = "evo-arrow";
-    arrow.textContent = evolutionText(next.details);
-    container.appendChild(arrow);
+  if (subtitle) {
+    const subLabel = document.createElement("span");
+    subLabel.className = "evo-subtitle";
+    subLabel.textContent = subtitle;
+    wrapper.appendChild(subLabel);
+  }
 
-    await renderChainNode(next, container);
+  return wrapper;
+}
+
+async function createEvolutionTransition(details, override = {}) {
+  const transition = document.createElement("div");
+  transition.className = "evo-transition";
+
+  const requirement = document.createElement("div");
+  requirement.className = "evo-requirement";
+
+  const requirementData = getEvolutionRequirement(details, override);
+  const itemImg = document.createElement("img");
+  itemImg.className = "evo-item";
+  itemImg.alt = requirementData.itemName;
+  itemImg.src = await getEvolutionItemImage(requirementData.itemName);
+  requirement.appendChild(itemImg);
+
+  if (requirementData.text) {
+    const text = document.createElement("span");
+    text.className = "evo-requirement-text";
+    text.textContent = requirementData.text;
+    requirement.appendChild(text);
+  }
+
+  const chevron = document.createElement("div");
+  chevron.className = "evo-chevron";
+
+  transition.appendChild(requirement);
+  transition.appendChild(chevron);
+
+  return transition;
+}
+
+function getEvolutionRequirement(details, override = {}) {
+  if (override.itemName) {
+    return {
+      itemName: override.itemName,
+      text: override.text || "",
+    };
+  }
+
+  if (!details) {
+    return {
+      itemName: "rare_candy",
+      text: "",
+    };
+  }
+
+  if (details.min_happiness) {
+    return {
+      itemName: "friend",
+      text: "Amizade",
+    };
+  }
+
+  if (details.item?.name) {
+    return {
+      itemName: details.item.name,
+      text: formatPokemonName(details.item.name),
+    };
+  }
+
+  if (details.min_level) {
+    return {
+      itemName: "rare_candy",
+      text: `Nv. ${details.min_level}`,
+    };
+  }
+
+  if (details.trigger?.name === "trade") {
+    return {
+      itemName: "link_cable",
+      text: "Troca",
+    };
+  }
+
+  return {
+    itemName: "rare_candy",
+    text: "Evolui",
+  };
+}
+
+async function getEvolutionItemImage(itemName) {
+  const normalized = itemName.toLowerCase().replace(/\s+/g, "_");
+  if (itemSpriteCache.has(normalized)) return itemSpriteCache.get(normalized);
+
+  const localPath = `assets/evolution items/${normalized}.png`;
+
+  try {
+    const localResponse = await fetch(encodeURI(localPath), { method: "HEAD" });
+    if (localResponse.ok) {
+      itemSpriteCache.set(normalized, localPath);
+      return localPath;
+    }
+  } catch {
+    // fallback para pokeapi
+  }
+
+  try {
+    const itemData = await fetch(`https://pokeapi.co/api/v2/item/${normalized}`).then((r) =>
+      r.json(),
+    );
+    const sprite = itemData.sprites.default || "assets/forms/mega.png";
+    itemSpriteCache.set(normalized, sprite);
+    return sprite;
+  } catch {
+    return "assets/forms/mega.png";
   }
 }
 
-function evolutionText(details) {
-  if (!details) return "";
+async function createMegaBranch(megaForms) {
+  const megaContainer = document.createElement("div");
+  megaContainer.className = "mega-branch";
 
-  if (details.min_level) return `Nv. ${details.min_level}`;
+  if (megaForms.length === 1) {
+    const mega = megaForms[0];
+    megaContainer.appendChild(
+      await createEvolutionTransition(null, {
+        itemName: mega.stoneName,
+        text: mega.label,
+      }),
+    );
 
-  if (details.trigger.name === "trade") return "Troca";
+    megaContainer.appendChild(await createEvolutionNode(mega.pokemonName, mega.label));
+    return megaContainer;
+  }
 
-  if (details.item) return `Item: ${details.item.name.replace("-", " ")}`;
+  const splitRow = document.createElement("div");
+  splitRow.className = "mega-split-row";
 
-  if (details.min_happiness) return "Amizade";
+  for (const mega of megaForms) {
+    const path = document.createElement("div");
+    path.className = "mega-path";
 
-  return "Evolui";
+    path.appendChild(
+      await createEvolutionTransition(null, {
+        itemName: mega.stoneName,
+        text: mega.label,
+      }),
+    );
+    path.appendChild(await createEvolutionNode(mega.pokemonName, mega.label));
+    splitRow.appendChild(path);
+  }
+
+  megaContainer.appendChild(splitRow);
+  return megaContainer;
 }
 
 function getIdFromName(name) {
