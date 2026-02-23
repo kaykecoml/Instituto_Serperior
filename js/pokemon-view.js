@@ -5,6 +5,8 @@ const moveCache = new Map();
 const pokemonSpriteCache = new Map();
 const itemSpriteCache = new Map();
 const speciesVarietyCache = new Map();
+const pokemonDataCache = new Map();
+const evolutionChainCache = new Map();
 let statsChart = null;
 let contestChart = null;
 let damageToken = 0;
@@ -652,12 +654,27 @@ async function getDexEntryText(pokemon, species) {
 }
 
 async function loadPokemonById(idOrName) {
-  const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`);
-  const pokemon = await pokeRes.json();
+  const pokemon = await getPokemonData(idOrName);
 
   loadPokemon(pokemon);
 
   history.pushState(null, "", `?id=${pokemon.id}`);
+}
+
+async function getPokemonData(idOrName) {
+  const key = String(idOrName).toLowerCase();
+  if (pokemonDataCache.has(key)) {
+    return pokemonDataCache.get(key);
+  }
+
+  const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`).then((r) =>
+    r.json(),
+  );
+
+  pokemonDataCache.set(String(pokemon.id), pokemon);
+  pokemonDataCache.set(pokemon.name, pokemon);
+
+  return pokemon;
 }
 
 function renderForms(varieties, baseName) {
@@ -720,8 +737,7 @@ function renderForms(varieties, baseName) {
 }
 
 function loadForm(name) {
-  fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    .then((res) => res.json())
+  getPokemonData(name)
     .then((pokemon) => {
       if (!pokemon.moves || pokemon.moves.length === 0) {
         pokemon.moves = basePokemon?.moves || [];
@@ -740,7 +756,7 @@ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
   dexToggleButton.classList.remove("active");
   dexToggleButton.textContent = "▸ ENTRADA DA DEX";
 
-  const species = await fetch(p.species.url).then((res) => res.json());
+  const species = await getSpeciesData(p.species.url);
   applySpecialTheme(species);
   const dexText = await getDexEntryText(p, species);
 
@@ -750,9 +766,7 @@ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
   const pokemonData = buildPokemonData(p, species);
   pokemonData.id = displayDexId;
 
-  const chainData = await fetch(species.evolution_chain.url).then((r) =>
-    r.json(),
-  );
+  const chainData = await getEvolutionChainData(species.evolution_chain.url);
 
   function findNode(name, node) {
     if (node.species.name === name) return node;
@@ -816,7 +830,7 @@ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
   renderAbilities(p.abilities);
   renderHabitats(displayDexId);
   renderMoves(p.moves);
-  renderEvolutionChain(basePokemon.species.url);
+  renderEvolutionChain(chainData);
 
   document.getElementById("name").textContent = formatPokemonName(p.name);
 
@@ -1468,9 +1482,11 @@ function findClosestPokemon(query) {
 }
 
 async function renderEvolutionChain(speciesUrl) {
-  const species = await fetch(speciesUrl).then((r) => r.json());
-  const chainUrl = species.evolution_chain.url;
-  const chainData = await fetch(chainUrl).then((r) => r.json());
+  let chainData = speciesUrl;
+  if (typeof speciesUrl === "string") {
+    const species = await getSpeciesData(speciesUrl);
+    chainData = await getEvolutionChainData(species.evolution_chain.url);
+  }
 
   const container = document.getElementById("evolution-chain");
   container.innerHTML = "";
@@ -1573,9 +1589,7 @@ async function getPokemonSprite(name) {
   if (pokemonSpriteCache.has(name)) return pokemonSpriteCache.get(name);
 
   try {
-    const poke = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then((r) =>
-      r.json(),
-    );
+    const poke = await getPokemonData(name);
 
     const sprite =
       poke.sprites.other["official-artwork"].front_default ||
@@ -1594,6 +1608,13 @@ async function getSpeciesData(url) {
   const speciesData = await fetch(url).then((r) => r.json());
   speciesVarietyCache.set(url, speciesData);
   return speciesData;
+}
+
+async function getEvolutionChainData(url) {
+  if (evolutionChainCache.has(url)) return evolutionChainCache.get(url);
+  const chainData = await fetch(url).then((r) => r.json());
+  evolutionChainCache.set(url, chainData);
+  return chainData;
 }
 
 function extractMegaForms(speciesData) {
@@ -1702,6 +1723,20 @@ function getEvolutionRequirement(details, override = {}) {
     };
   }
 
+  if (details.trigger?.name === "trade") {
+    if (details.held_item?.name) {
+      return {
+        itemName: details.held_item.name,
+        text: `Troca (${formatPokemonName(details.held_item.name)})`,
+      };
+    }
+
+    return {
+      itemName: "trade",
+      text: "Troca",
+    };
+  }
+
   if (details.min_happiness) {
     return {
       itemName: "friend",
@@ -1720,13 +1755,6 @@ function getEvolutionRequirement(details, override = {}) {
     return {
       itemName: "rare_candy",
       text: `Nv. ${details.min_level}`,
-    };
-  }
-
-  if (details.trigger?.name === "trade") {
-    return {
-      itemName: "link_cable",
-      text: "Troca",
     };
   }
 
@@ -1756,6 +1784,10 @@ async function getEvolutionItemImage(itemName) {
       .replace(/\b\w/g, (char) => char.toUpperCase())}.png`,
   ];
 
+  if (normalized === "trade") {
+    localCandidates.unshift("assets/evolution items/trade.png");
+  }
+
   for (const candidatePath of localCandidates) {
     try {
       const localResponse = await fetch(encodeURI(candidatePath), { method: "HEAD" });
@@ -1766,6 +1798,10 @@ async function getEvolutionItemImage(itemName) {
     } catch {
       // tenta próximo candidato
     }
+  }
+
+  if (normalized === "trade") {
+    return "assets/evolution items/trade.png";
   }
 
   try {
