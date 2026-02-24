@@ -64,6 +64,7 @@ async function preloadAllTypes() {
 
 function render(reset) {
   const list = document.getElementById("pokemon-list");
+  applyResponsiveView();
 
   if (reset) {
     list.innerHTML = "";
@@ -103,7 +104,27 @@ function render(reset) {
   }
 }
 
+function applyResponsiveView() {
+  const list = document.getElementById("pokemon-list");
+  if (!list) return;
+
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  list.classList.toggle("list", isMobile);
+  list.classList.toggle("catalog", !isMobile);
+}
+
 function renderTypes(types) {
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  if (isMobile) {
+    return types
+      .map(
+        (t) =>
+          `<span class="type-pill type-pill-${t}">${t.toUpperCase()}</span>`,
+      )
+      .join("");
+  }
+
   return types
     .map(
       (t) =>
@@ -113,22 +134,6 @@ function renderTypes(types) {
           loading="lazy">`,
     )
     .join("");
-}
-
-let viewMode = "grid";
-
-function toggleView() {
-  const list = document.getElementById("pokemon-list");
-
-  if (viewMode === "grid") {
-    list.classList.remove("catalog");
-    list.classList.add("list");
-    viewMode = "list";
-  } else {
-    list.classList.remove("list");
-    list.classList.add("catalog");
-    viewMode = "grid";
-  }
 }
 
 function createCard(p) {
@@ -155,32 +160,33 @@ function applyTypeColor(card, types) {
   const primary = types[0];
 
   const colors = {
-    grass: ["rgba(40,120,60,0.9)", "rgba(120,200,80,0.25)"],
-    fire: ["rgba(160,60,20,0.9)", "rgba(240,120,40,0.25)"],
-    water: ["rgba(40,70,140,0.9)", "rgba(100,150,240,0.25)"],
-    electric: ["rgba(160,140,20,0.9)", "rgba(248,208,48,0.25)"],
-    psychic: ["rgba(140,40,80,0.9)", "rgba(248,88,136,0.25)"],
-    dark: ["rgba(60,50,40,0.9)", "rgba(112,88,72,0.25)"],
-    dragon: ["rgba(60,30,140,0.9)", "rgba(112,56,248,0.25)"],
-    fairy: ["rgba(160,100,120,0.9)", "rgba(238,153,172,0.25)"],
-    steel: ["rgba(90,90,120,0.9)", "rgba(184,184,208,0.25)"],
-    ghost: ["rgba(70,60,110,0.9)", "rgba(112,88,152,0.25)"],
-    ice: ["rgba(70,120,140,0.9)", "rgba(152,216,216,0.25)"],
-    fighting: ["rgba(140,40,30,0.9)", "rgba(192,48,40,0.25)"],
-    ground: ["rgba(140,110,40,0.9)", "rgba(224,192,104,0.25)"],
-    rock: ["rgba(120,100,40,0.9)", "rgba(184,160,56,0.25)"],
-    poison: ["rgba(120,40,120,0.9)", "rgba(160,64,160,0.25)"],
-    flying: ["rgba(120,100,200,0.9)", "rgba(168,144,240,0.25)"],
-    bug: ["rgba(100,120,30,0.9)", "rgba(168,184,32,0.25)"],
-    normal: ["rgba(120,120,100,0.9)", "rgba(168,168,120,0.25)"],
+    grass: ["120,200,80", "rgba(120,200,80,0.16)"],
+    fire: ["240,120,40", "rgba(240,120,40,0.16)"],
+    water: ["100,150,240", "rgba(100,150,240,0.16)"],
+    electric: ["248,208,48", "rgba(248,208,48,0.16)"],
+    psychic: ["248,88,136", "rgba(248,88,136,0.16)"],
+    dark: ["112,88,72", "rgba(112,88,72,0.16)"],
+    dragon: ["112,56,248", "rgba(112,56,248,0.16)"],
+    fairy: ["238,153,172", "rgba(238,153,172,0.16)"],
+    steel: ["184,184,208", "rgba(184,184,208,0.16)"],
+    ghost: ["112,88,152", "rgba(112,88,152,0.16)"],
+    ice: ["152,216,216", "rgba(152,216,216,0.16)"],
+    fighting: ["192,48,40", "rgba(192,48,40,0.16)"],
+    ground: ["224,192,104", "rgba(224,192,104,0.16)"],
+    rock: ["184,160,56", "rgba(184,160,56,0.16)"],
+    poison: ["160,64,160", "rgba(160,64,160,0.16)"],
+    flying: ["168,144,240", "rgba(168,144,240,0.16)"],
+    bug: ["168,184,32", "rgba(168,184,32,0.16)"],
+    normal: ["168,168,120", "rgba(168,168,120,0.16)"],
   };
 
   if (!colors[primary]) return;
 
-  const [border, background] = colors[primary];
+  const [rgb, background] = colors[primary];
 
-  card.style.borderColor = border;
+  card.style.borderColor = `rgba(${rgb}, 0.55)`;
   card.style.background = background;
+  card.style.setProperty("--type-border-soft", `rgba(${rgb}, 0.45)`);
 }
 
 function searchPokemon(text) {
@@ -323,7 +329,9 @@ function setupSiteTitleAnimation() {
 document.addEventListener("DOMContentLoaded", () => {
   setupSiteTitleAnimation();
   loadHabitats();
+  applyResponsiveView();
   loadPokemons();
+  window.addEventListener("resize", applyResponsiveView);
 
   // Pesquisa por nome
   document.getElementById("searchInput").addEventListener("input", (e) => {
@@ -338,10 +346,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Botões
-  document
-    .getElementById("toggleViewBtn")
-    .addEventListener("click", toggleView);
-
   document
     .getElementById("openFiltersBtn")
     .addEventListener("click", openFilters);

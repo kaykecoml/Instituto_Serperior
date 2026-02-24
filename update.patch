@@ -1,25 +1,68 @@
 diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index 23e1c1b9818c017794e2ae36154e281e218067d3..845b526262ac3343b4e3b39ba97ff5ac53dfdb19 100644
+index 845b526262ac3343b4e3b39ba97ff5ac53dfdb19..1c6ca57f2f4ef6a167b26888b18b795375cf7bfd 100644
 --- a/css/pokemon-view.css
 +++ b/css/pokemon-view.css
-@@ -1087,50 +1087,84 @@ body {
- }
+@@ -54,50 +54,59 @@ body {
  
- .move-description-cell {
-   padding: 8px;
+ 
+ .block #size,
+ .block #egg-group {
    font-family: Pixel;
-   font-size: 12px;
-   line-height: 1.4;
-   border-top: 1px solid #2f6b44;
-   white-space: pre-wrap;
-   word-break: break-word;
  }
  
- .move-name-cell {
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
-   gap: 6px;
+ .site-home-link {
+   color: inherit;
+   text-decoration: none;
+   display: inline-block;
+   outline: none;
+   -webkit-tap-highlight-color: transparent;
+ }
+ 
+ .site-home-link:hover {
+   text-decoration: underline;
+ }
+ 
+ .site-home-link:focus,
+ .site-home-link:focus-visible {
+   outline: none;
+   box-shadow: none;
+ }
+ 
++.section-home-link {
++  color: inherit;
++  text-decoration: none;
++}
++
++.section-home-link:hover {
++  text-decoration: underline;
++}
++
+ .site-home-link.expanding {
+   animation: titleExpand 0.36s ease forwards;
+ }
+ 
+ @keyframes titleExpand {
+   0% {
+     transform: scale(1);
+     letter-spacing: normal;
+     text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
+   }
+   100% {
+     transform: scale(1.08);
+     letter-spacing: 1.5px;
+     text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
+   }
+ }
+ 
+ .cry-btn {
+   margin-top: 16px;
+   width: 100%;
+   background: #2f6b44;
+   border: none;
+   padding: 10px;
+   border-radius: 10px;
+   font-family: Pixel;
+@@ -1104,51 +1113,52 @@ body {
  }
  
  .zmove-icon {
@@ -28,40 +71,42 @@ index 23e1c1b9818c017794e2ae36154e281e218067d3..845b526262ac3343b4e3b39ba97ff5ac
    object-fit: contain;
  }
  
-+
-+.quick-nav {
-+  display: none;
-+}
-+
-+.move-sheet-tabs {
-+  display: flex;
-+  gap: 8px;
-+  margin-bottom: 12px;
-+}
-+
-+.move-sheet-tab-btn {
-+  flex: 1;
-+  border: 1px solid #2f6b44;
-+  background: #10261b;
-+  color: #cdeec2;
-+  border-radius: 8px;
-+  padding: 8px;
-+  font-family: Pixel;
-+  font-size: 11px;
-+}
-+
-+.move-sheet-tab-btn.active {
-+  background: #2f6b44;
-+  color: #f5fff3;
-+}
-+
-+.move-sheet-description {
-+  display: none;
-+}
-+
-+.move-sheet-description.active {
-+  display: block;
-+}
+ 
+ .quick-nav {
+   display: none;
+ }
+ 
+ .move-sheet-tabs {
+   display: flex;
+   gap: 8px;
+   margin-bottom: 12px;
+ }
+ 
+ .move-sheet-tab-btn {
+   flex: 1;
+   border: 1px solid #2f6b44;
+   background: #10261b;
+   color: #cdeec2;
+   border-radius: 8px;
+-  padding: 8px;
++  padding: 10px 8px;
++  min-height: 42px;
+   font-family: Pixel;
+   font-size: 11px;
+ }
+ 
+ .move-sheet-tab-btn.active {
+   background: #2f6b44;
+   color: #f5fff3;
+ }
+ 
+ .move-sheet-description {
+   display: none;
+ }
+ 
+ .move-sheet-description.active {
+   display: block;
+ }
  .move-sheet-overlay {
    position: fixed;
    inset: 0;
@@ -71,73 +116,40 @@ index 23e1c1b9818c017794e2ae36154e281e218067d3..845b526262ac3343b4e3b39ba97ff5ac
    justify-content: center;
    z-index: 1000;
    opacity: 0;
-   pointer-events: none;
-   transition: opacity 0.18s ease;
- }
- 
- .move-sheet-overlay.open {
-   opacity: 1;
-   pointer-events: auto;
- }
- 
- .move-sheet {
-   width: min(100%, 680px);
-   background: #08120d;
-   border-top: 2px solid #2f6b44;
-   border-left: 2px solid #2f6b44;
-   border-right: 2px solid #2f6b44;
-   border-radius: 16px 16px 0 0;
-@@ -1591,50 +1625,77 @@ body.move-sheet-open {
-     display: block;
+@@ -1652,50 +1662,60 @@ body.move-sheet-open {
+     gap: 8px;
+     padding: 0 12px 8px;
+     overflow-x: auto;
+     position: sticky;
+     top: 0;
+     z-index: 8;
+     background: #0a1a12;
    }
  
-   .pokemon-image img {
-     width: clamp(160px, 48vw, 240px);
+   .quick-nav-btn {
+     border: 1px solid #2f6b44;
+     background: #10261b;
+     color: #d8f1d0;
+     border-radius: 8px;
+     padding: 7px 10px;
+     white-space: nowrap;
+     font-family: Pixel;
+     font-size: 10px;
    }
  
-   .types img,
-   #weaknesses img,
-   #resistances img,
-   #immunities img,
-   .type-panel img {
-     width: clamp(36px, 8.6vw, 46px);
-     height: clamp(36px, 8.6vw, 46px);
-     object-fit: contain;
+   .quick-nav-btn.active {
+     background: #2f6b44;
+     color: #f8fff6;
    }
  
-   .type-dual-row {
-     grid-template-columns: 1fr;
-   }
- 
-   .type-panel.immune {
-     width: 100%;
-   }
- 
-+  .quick-nav {
-+    display: flex;
-+    gap: 8px;
-+    padding: 0 12px 8px;
-+    overflow-x: auto;
-+    position: sticky;
-+    top: 0;
-+    z-index: 8;
-+    background: #0a1a12;
++  .move-sheet-tabs {
++    gap: 10px;
 +  }
 +
-+  .quick-nav-btn {
-+    border: 1px solid #2f6b44;
-+    background: #10261b;
-+    color: #d8f1d0;
-+    border-radius: 8px;
-+    padding: 7px 10px;
-+    white-space: nowrap;
-+    font-family: Pixel;
-+    font-size: 10px;
-+  }
-+
-+  .quick-nav-btn.active {
-+    background: #2f6b44;
-+    color: #f8fff6;
++  .move-sheet-tab-btn {
++    padding: 11px 10px;
++    min-height: 46px;
++    font-size: 12px;
 +  }
 +
    .tab-buttons {
@@ -165,339 +177,786 @@ index 23e1c1b9818c017794e2ae36154e281e218067d3..845b526262ac3343b4e3b39ba97ff5ac
      width: 100%;
      overflow: hidden;
    }
-diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index f520329cb08bc46076e2109b1047a6c99f9495ab..2c69801b990cf7798e07c80aa9572722d8936cdc 100644
---- a/js/pokemon-view.js
-+++ b/js/pokemon-view.js
-@@ -79,50 +79,51 @@ function getInitialPokemonId() {
-   return num;
+diff --git a/css/pokemon.css b/css/pokemon.css
+index 15f64c3fa597287e516f94f26322ef76ac6fe62e..2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07 100644
+--- a/css/pokemon.css
++++ b/css/pokemon.css
+@@ -57,50 +57,60 @@ header {
+ 
+ header h1,
+ header h2 {
+   margin: 0;
  }
- let currentId = getInitialPokemonId();
- const MAX_POKEMON_ID = 1025;
- let currentDisplayedPokemon = null;
- let currentBaseDexId = currentId;
- let isShinyActive = false;
- let isPokemonLoading = false;
- const nameInput = document.getElementById("dexSearchInput");
- const dexInput = document.getElementById("dexNumberInput");
- const btn = document.getElementById("dexSearchBtn");
- const preview = document.getElementById("search-preview");
- const isMobileViewport = window.matchMedia("(max-width: 1024px)");
- const moveSheetOverlay = document.getElementById("moveSheetOverlay");
- const moveSheetTitle = document.getElementById("moveSheetTitle");
- const moveSheetHeader = document.getElementById("moveSheetHeader");
- const moveSheetPriority = document.getElementById("moveSheetPriority");
- const moveSheetTypeIcon = document.getElementById("moveSheetTypeIcon");
- const moveSheetCategoryIcon = document.getElementById("moveSheetCategoryIcon");
- const moveSheetType = document.getElementById("moveSheetType");
- const moveSheetCategory = document.getElementById("moveSheetCategory");
- const moveSheetPower = document.getElementById("moveSheetPower");
- const moveSheetPp = document.getElementById("moveSheetPp");
- const moveSheetAcc = document.getElementById("moveSheetAcc");
- const moveSheetDescription = document.getElementById("moveSheetDescription");
-+const moveSheetEffect = document.getElementById("moveSheetEffect");
- function formatPokemonName(name) {
-   return name
-     .split("-")
-     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-     .join(" ");
+ 
+ 
+ .site-home-link {
+   color: inherit;
+   text-decoration: none;
+   display: inline-block;
+   outline: none;
+   -webkit-tap-highlight-color: transparent;
  }
- function getArtworkSprite(pokemon, shiny = false) {
-   const official = pokemon?.sprites?.other?.["official-artwork"];
-   if (shiny) {
-     return (
-       official?.front_shiny ||
-       pokemon?.sprites?.other?.home?.front_shiny ||
-       pokemon?.sprites?.front_shiny ||
-       official?.front_default ||
-       pokemon?.sprites?.other?.home?.front_default ||
-       pokemon?.sprites?.front_default ||
-       ""
-     );
-   }
-   return (
-     official?.front_default ||
-     pokemon?.sprites?.other?.home?.front_default ||
-     pokemon?.sprites?.front_default ||
-     ""
-   );
-@@ -682,60 +683,80 @@ function buildMoveNameCell(move) {
-   return wrapper;
+ 
+ .site-home-link:hover {
+   text-decoration: underline;
  }
- function openMoveSheet(move, dmg, acc, pp, isStatus) {
-   if (!moveSheetOverlay) return;
-   const typeColor = TYPE_COLORS[move.type.name] || "#7bdc65";
-   moveSheetTitle.textContent = normalizeMoveName(move.name);
-   if (moveSheetHeader) {
-     moveSheetHeader.style.background = typeColor;
-   }
-   moveSheetPriority.textContent = `Prioridade ${move.priority > 0 ? "+" : ""}${move.priority || 0}`;
-   moveSheetType.textContent = move.type.name.toUpperCase();
-   moveSheetCategory.textContent = move.damage_class.name.toUpperCase();
-   if (moveSheetTypeIcon) {
-     moveSheetTypeIcon.src = getTypeBlockIconPath(move.type.name);
-     moveSheetTypeIcon.onerror = () => {
-       moveSheetTypeIcon.src = `assets/types/${move.type.name}.png`;
-       moveSheetTypeIcon.onerror = null;
-     };
-   }
-   if (moveSheetCategoryIcon) {
-     moveSheetCategoryIcon.src = `assets/icons/${move.damage_class.name}.png`;
-   }
-   moveSheetPower.textContent = `${isStatus ? "Dados" : "Dano"}: ${isStatus ? "—" : dmg}`;
-   moveSheetPp.textContent = `PP: ${pp}`;
-   moveSheetAcc.textContent = `ACC: ${acc}`;
--  moveSheetDescription.textContent = "Carregando descrição...";
-+  if (moveSheetDescription) {
-+    moveSheetDescription.textContent = "Carregando descrição...";
-+  }
-+  if (moveSheetEffect) {
-+    moveSheetEffect.textContent = "Carregando detalhes mecânicos...";
-+  }
-+  setMoveSheetTab("flavor");
-   document.body.classList.add("move-sheet-open");
-   moveSheetOverlay.hidden = false;
-   requestAnimationFrame(() => moveSheetOverlay.classList.add("open"));
-   getMoveDescription(move).then((description) => {
--    if (!moveSheetOverlay.hidden) {
-+    if (!moveSheetOverlay.hidden && moveSheetDescription) {
-       moveSheetDescription.textContent = description;
-     }
-   });
-+  getMoveMechanicalDescription(move).then((effectDescription) => {
-+    if (!moveSheetOverlay.hidden && moveSheetEffect) {
-+      moveSheetEffect.textContent = effectDescription;
-+    }
-+  });
+ 
+ .site-home-link:focus,
+ .site-home-link:focus-visible {
+   outline: none;
+   box-shadow: none;
  }
-+function setMoveSheetTab(tabName) {
-+  document.querySelectorAll("[data-move-sheet-tab]").forEach((button) => {
-+    button.classList.toggle("active", button.dataset.moveSheetTab === tabName);
-+  });
-+  document.querySelectorAll("[data-move-sheet-panel]").forEach((panel) => {
-+    panel.classList.toggle("active", panel.dataset.moveSheetPanel === tabName);
-+  });
+ 
++
++.section-home-link {
++  color: inherit;
++  text-decoration: none;
 +}
 +
- function closeMoveSheet() {
-   if (!moveSheetOverlay || moveSheetOverlay.hidden) return;
-   moveSheetOverlay.classList.remove("open");
-   document.body.classList.remove("move-sheet-open");
-   setTimeout(() => {
-     moveSheetOverlay.hidden = true;
-   }, 180);
- }
- function addRow(tbody, col1, move, typeIcon, categoryIcon, dmg, acc, pp) {
-   const isStatus = move.damage_class.name === "status";
-   // Linha principal
-   const tr = document.createElement("tr");
-   tr.style.cursor = "pointer";
-   const methodCell = document.createElement("td");
-   methodCell.textContent = col1;
-   const nameCell = document.createElement("td");
-   nameCell.appendChild(buildMoveNameCell(move));
-   const typeCell = document.createElement("td");
-   typeCell.innerHTML = typeIcon;
-   const categoryCell = document.createElement("td");
-   categoryCell.innerHTML = categoryIcon;
-   const damageCell = document.createElement("td");
-   damageCell.textContent = isStatus ? "—" : dmg;
-   const accCell = document.createElement("td");
-   accCell.textContent = acc;
-@@ -765,50 +786,55 @@ function addRow(tbody, col1, move, typeIcon, categoryIcon, dmg, acc, pp) {
-     }
-     const isOpen = descRow.style.display === "table-row";
-     document
-       .querySelectorAll(".move-description-row")
-       .forEach((row) => (row.style.display = "none"));
-     document
-       .querySelectorAll(".move-expanded")
-       .forEach((row) => row.classList.remove("move-expanded"));
-     if (!isOpen) {
-       descCell.textContent = "Traduzindo...";
-       descRow.style.display = "table-row";
-       tr.classList.add("move-expanded");
-       descCell.textContent = await getMoveDescription(move);
-     }
-   });
-   tbody.appendChild(tr);
-   tbody.appendChild(descRow);
- }
- if (moveSheetOverlay) {
-   moveSheetOverlay.addEventListener("click", (event) => {
-     if (event.target === moveSheetOverlay) {
-       closeMoveSheet();
-     }
-   });
- }
-+document.querySelectorAll("[data-move-sheet-tab]").forEach((button) => {
-+  button.addEventListener("click", () => {
-+    setMoveSheetTab(button.dataset.moveSheetTab || "flavor");
-+  });
-+});
- function renderDamageRelations(types) {
-   const token = ++damageToken;
-   const relations = {};
-   fetch(`https://pokeapi.co/api/v2/type/${types[0]}`)
-     .then((res) => res.json())
-     .then((type1) => {
-       if (token !== damageToken) return;
-       function apply(rel, mult) {
-         rel.forEach((t) => {
-           relations[t.name] = (relations[t.name] || 1) * mult;
-         });
-       }
-       apply(type1.damage_relations.double_damage_from, 2);
-       apply(type1.damage_relations.half_damage_from, 0.5);
-       apply(type1.damage_relations.no_damage_from, 0);
-       if (types[1]) {
-         fetch(`https://pokeapi.co/api/v2/type/${types[1]}`)
-           .then((res) => res.json())
-           .then((type2) => {
-             if (token !== damageToken) return;
-             apply(type2.damage_relations.double_damage_from, 2);
-             apply(type2.damage_relations.half_damage_from, 0.5);
-             apply(type2.damage_relations.no_damage_from, 0);
-             renderRelations(relations);
-           });
-@@ -977,64 +1003,87 @@ function renderRelations(rel) {
-     .join("");
-   document.getElementById("immunities").innerHTML = immune
-     .map((t) => `<img src="assets/types/${t}.png">`)
-     .join("");
- }
- async function getMoveDescription(move) {
-   const flavorEntries = move.flavor_text_entries || [];
-   const flavorCandidates = flavorEntries.filter(
-     (entry) => entry.language.name === "pt-br" || entry.language.name === "en",
-   );
-   const nonExcludedFlavor = flavorCandidates.find(
-     (entry) =>
-       !EXCLUDED_DESCRIPTION_VERSION_GROUPS.includes(entry.version_group.name),
-   );
-   const selectedFlavor = nonExcludedFlavor || flavorCandidates[0];
-   let text;
-   if (selectedFlavor) {
-     const sanitizedText = selectedFlavor.flavor_text.replace(/[\n\f]/g, " ");
-     text =
-       selectedFlavor.language.name === "pt-br"
-         ? sanitizedText
-         : await translateToPortuguese(sanitizedText);
-   } else {
-     let entry = move.effect_entries.find((e) => e.language.name === "pt-br");
-     if (entry) {
--      text = entry.effect;
-+      text = entry.short_effect || entry.effect;
-     } else {
-       entry = move.effect_entries.find((e) => e.language.name === "en");
-       if (!entry) return "Descrição não disponível.";
--      text = entry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "");
-+      text = (entry.short_effect || entry.effect).replace(
-+        /\$effect_chance/g,
-+        move.effect_chance ?? "",
-+      );
-       text = await translateToPortuguese(text);
-     }
-   }
--  // prioridade
-   if (move.priority && move.priority !== 0) {
-     text += `\n\nPrioridade: ${move.priority > 0 ? "+" : ""}${move.priority}`;
-   }
-   return text;
- }
-+async function getMoveMechanicalDescription(move) {
-+  const effects = move.effect_entries || [];
-+  let entry = effects.find((e) => e.language.name === "pt-br");
-+  let text = "";
-+  if (entry) {
-+    text = entry.effect || entry.short_effect || "";
-+  } else {
-+    const english = effects.find((e) => e.language.name === "en");
-+    if (!english) return "Detalhes mecânicos não disponíveis.";
-+    text = (english.effect || english.short_effect || "").replace(
-+      /\$effect_chance/g,
-+      move.effect_chance ?? "",
-+    );
-+    text = await translateToPortuguese(text);
-+  }
-+  if (!text) return "Detalhes mecânicos não disponíveis.";
-+  if (move.effect_chance !== null && move.effect_chance !== undefined) {
-+    text += `\n\nChance de efeito secundário: ${move.effect_chance}%`;
-+  }
-+  return text;
++.section-home-link:hover {
++  text-decoration: underline;
 +}
- async function translateToPortuguese(text) {
-   if (!text) return "";
-   if (translationCache[text]) {
-     return translationCache[text];
++
+ .site-home-link.expanding {
+   animation: titleExpand 0.36s ease forwards;
+ }
+ 
+ @keyframes titleExpand {
+   0% {
+     transform: scale(1);
+     letter-spacing: normal;
+     text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
    }
-   try {
-     const response = await fetch(
-       `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodeURIComponent(text)}`,
-     );
-     if (!response.ok) throw new Error("Erro na API");
-     const data = await response.json();
-     const translated = data[0].map((t) => t[0]).join("");
-     translationCache[text] = translated;
-     return translated;
-   } catch (error) {
-     console.error("Erro na tradução:", error);
-     return text; // fallback seguro
+   100% {
+     transform: scale(1.08);
+     letter-spacing: 1.5px;
+     text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
    }
  }
- function renderCapacities(pokemon) {
-   const intVal = calcIntelligence(pokemon);
-   const strVal = calcStrength(pokemon);
-   const movVal = calcMovement(pokemon);
-   document.getElementById("cap-int").textContent = intVal;
-   document.getElementById("cap-int-label").textContent = INT_LABELS[intVal];
-@@ -1768,26 +1817,37 @@ function setupSiteTitleAnimation() {
+ 
+ .logo {
+   position: absolute;
+   left: 20px;
+   width: 90px;
+   filter: drop-shadow(0 0 6px #7bdc65);
+ }
+ 
+ .title-container {
+@@ -279,89 +289,106 @@ header h2 {
+   margin-top: 6px;
+ }
+ 
+ .list {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   padding: 20px;
+ }
+ 
+ .list .pokemon-card {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   text-align: left;
+ }
+ 
+ .list .pokemon-card img {
+   width: 72px;
+ }
+ 
+ .types img {
+   width: 26px;
+ }
+ 
++.type-pill {
++  min-width: 96px;
++  height: 32px;
++  padding: 0 10px;
++  border-radius: 16px;
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  border: 2px solid rgba(47, 107, 68, 0.5);
++  color: rgba(23, 67, 59, 0.78);
++  background: rgba(232, 255, 248, 0.12);
++  font-family: Arial, sans-serif;
++  font-size: 11px;
++  font-weight: 700;
++  letter-spacing: 0.5px;
++}
++
+ /* cores dos tipos no filtro */
+ .type-grass { color: #78c850; }
+ .type-fire { color: #f08030; }
+ .type-water { color: #6890f0; }
+ .type-electric { color: #f8d030; }
+ .type-psychic { color: #f85888; }
+ .type-dark { color: #705848; }
+ .type-dragon { color: #7038f8; }
+ .type-fairy { color: #ee99ac; }
+ .type-steel { color: #b8b8d0; }
+ .type-ghost { color: #705898; }
+ .type-ice { color: #98d8d8; }
+ .type-fighting { color: #c03028; }
+ .type-ground { color: #e0c068; }
+ .type-rock { color: #b8a038; }
+ .type-poison { color: #a040a0; }
+ .type-flying { color: #a890f0; }
+ .type-bug { color: #a8b820; }
+ .type-normal { color: #a8a878; }
+ 
+ .list .image-box {
+   width: 72px;
+   height: 72px;
+   position: relative;
+ }
+ 
+ .list .image-box {
+   width: 90px;
+   height: 90px;
+   flex-shrink: 0;
+ }
+ 
+ .list .official-art {
+   width: 80px;
+   height: 80px;
+   border-radius: 50%;
+   padding: 6px;
+   background: #0f2e1d;
+-  border: 4px solid rgba(20, 80, 40, 0.9);
++  border: 3px solid var(--type-border-soft, rgba(123, 220, 101, 0.45));
+ }
+ 
+ 
+ .filter-types label,
+ .filter-gens label {
+   cursor: pointer;
+   padding: 4px 8px;
+   border-radius: 6px;
+   background: rgba(255,255,255,0.05);
+   font-family: Pixel;
+   font-size: 12px;
+ }
+ 
+ .filter-types label:hover,
+ .filter-gens label:hover {
+   background: rgba(123,220,101,0.15);
+ }
+ 
+ 
+ .catalog .official-art {
+   display: block;
+ }
+ 
+ .catalog .sprite {
+   position: absolute;
+@@ -451,44 +478,125 @@ header h2 {
+   border-radius: 6px;
+   background: rgba(123,220,101,0.1);
+   border: 1px solid #2f6b44;
+   color: #7bdc65;
+   display: inline-block;
+ }
+ 
+ .filter-habitats label {
+   display: block;
+   margin: 4px 0;
+   cursor: pointer;
+ }
+ 
+ .type-icon {
+   width: 20px;
+ }
+ 
+ .pokemon-card {
+   border: 3px solid rgba(0,0,0,0.6);
+   transition: 0.2s;
+ }
+ 
+ 
+ 
+ @media (max-width: 768px) {
++
++  .list {
++    padding: 14px;
++    gap: 14px;
++  }
++
++  .list .pokemon-card {
++    position: relative;
++    display: flex;
++    align-items: center;
++    gap: 12px;
++    padding: 10px 14px 10px 8px;
++    border-radius: 18px;
++    border: 2px solid rgba(132, 198, 177, 0.45);
++    background: linear-gradient(140deg, rgba(114, 188, 176, 0.92), rgba(122, 197, 206, 0.9));
++    overflow: hidden;
++  }
++
++  .list .image-box {
++    order: 0;
++    width: 92px;
++    height: 92px;
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    flex-shrink: 0;
++    border-radius: 50%;
++    background: rgba(224, 248, 244, 0.8);
++  }
++
++  .list .official-art {
++    width: 82px;
++    height: 82px;
++    padding: 0;
++    object-fit: contain;
++    background: transparent;
++    border: 2px solid var(--type-border-soft, rgba(51, 117, 98, 0.4));
++  }
++
++  .list .info {
++    order: 1;
++    min-width: 0;
++    flex: 1;
++  }
++
++  .list .name {
++    margin-top: 0;
++    margin-bottom: 8px;
++    font-size: 14px;
++    line-height: 1;
++    color: rgba(31, 76, 73, 0.8);
++    white-space: nowrap;
++    overflow: hidden;
++    text-overflow: ellipsis;
++    letter-spacing: 0.2px;
++  }
++
++  .list .types {
++    justify-content: flex-start;
++    gap: 8px;
++    margin-top: 0;
++    flex-wrap: nowrap;
++    overflow-x: auto;
++    padding-bottom: 2px;
++    scrollbar-width: none;
++  }
++
++  .list .types::-webkit-scrollbar {
++    display: none;
++  }
++
++  .list .type-icon {
++    width: 20px;
++    height: 20px;
++  }
++
++  .list .type-pill {
++    min-width: 110px;
++    height: 34px;
++  }
++
+   header {
+     justify-content: center;
+     padding: 16px 16px 14px;
+   }
+ 
+   .logo {
+     top: 8px;
+     left: 10px;
+     width: 56px;
+   }
+ 
+   header h1 {
+     font-size: 40px;
+   }
+ 
+   header h2 {
+     font-size: 22px;
+   }
+ }
+diff --git a/index.html b/index.html
+index 481aa9633a19b3a8926bb9c213eae1ff1c8c746d..2d6563f664b71e90021fff71ed96cb34c75449e3 100644
+--- a/index.html
++++ b/index.html
+@@ -1,105 +1,76 @@
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+-  <title>Pokémon RPG</title>
+-
++  <meta name="viewport" content="width=device-width, initial-scale=1.0">
++  <title>Instituto Serperior</title>
+   <link rel="stylesheet" href="css/pokemon.css">
+-<script type="module" src="js/pokemon.js"></script>
+-
++  <style>
++    .home-actions {
++      min-height: calc(100vh - 160px);
++      display: flex;
++      align-items: center;
++      justify-content: center;
++      padding: 24px;
++    }
++
++    .home-actions-grid {
++      display: grid;
++      grid-template-columns: repeat(2, minmax(180px, 280px));
++      gap: 14px;
++      width: 100%;
++      max-width: 620px;
++    }
++
++    .home-action-btn {
++      display: inline-flex;
++      align-items: center;
++      justify-content: center;
++      text-align: center;
++      min-height: 64px;
++      padding: 12px;
++      text-decoration: none;
++      font-family: Pixel;
++      font-size: 14px;
++      background: linear-gradient(180deg, #2f6b44, #1f4d2b);
++      color: #fff;
++      border: 2px solid #7bdc65;
++      border-radius: 10px;
++      box-shadow: 0 0 10px #000;
++    }
++
++    .home-action-btn:hover {
++      box-shadow: 0 0 12px #7bdc65;
++    }
++
++    .home-action-btn.is-disabled {
++      opacity: 0.65;
++      cursor: not-allowed;
++    }
++
++    @media (max-width: 700px) {
++      .home-actions-grid {
++        grid-template-columns: 1fr;
++      }
++    }
++  </style>
+ </head>
+-
+ <body>
+-
+-<header>
+-  <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
+-
+-  <div class="title-container">
+-    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+-    <h2>Registro Pokémon</h2>
+-  </div>
+-</header>
+-
+-<button class="filter-btn" id="toggleViewBtn">Exibição</button>
+-
+-<section class="controls">
+-<input
+-  type="text"
+-  id="searchInput"
+-  placeholder="Pesquisar Pokémon"
+->
+-
+-<input
+-  id="dexInput"
+-  type="number"
+-  min="1"
+-  placeholder="Nº Dex"
+->
+-
+-<button class="filter-btn" id="openFiltersBtn">Filtros</button>
+-
+-<div id="filter-modal" class="modal hidden">
+-  <div class="modal-content">
+-  <h4>Filtrar Pokémon</h4>
+-
+-  <div class="modal-sections">
+-
+-    <div class="modal-section">
+-      <h4>Tipos</h4>
+-      <div class="filter-types">   
+-<label class="type-normal"><input type="checkbox" value="normal"> Normal</label>
+-  <label class="type-fire"><input type="checkbox" value="fire"> Fire</label>
+-  <label class="type-water"><input type="checkbox" value="water"> Water</label>
+-  <label class="type-electric"><input type="checkbox" value="electric"> Electric</label>
+-  <label class="type-grass"><input type="checkbox" value="grass"> Grass</label>
+-  <label class="type-ice"><input type="checkbox" value="ice"> Ice</label>
+-  <label class="type-fighting"><input type="checkbox" value="fighting"> Fighting</label>
+-  <label class="type-poison"><input type="checkbox" value="poison"> Poison</label>
+-  <label class="type-ground"><input type="checkbox" value="ground"> Ground</label>
+-  <label class="type-flying"><input type="checkbox" value="flying"> Flying</label>
+-  <label class="type-psychic"><input type="checkbox" value="psychic"> Psychic</label>
+-  <label class="type-bug"><input type="checkbox" value="bug"> Bug</label>
+-  <label class="type-rock"><input type="checkbox" value="rock"> Rock</label>
+-  <label class="type-ghost"><input type="checkbox" value="ghost"> Ghost</label>
+-  <label class="type-dragon"><input type="checkbox" value="dragon"> Dragon</label>
+-  <label class="type-dark"><input type="checkbox" value="dark"> Dark</label>
+-  <label class="type-steel"><input type="checkbox" value="steel"> Steel</label>
+-  <label class="type-fairy"><input type="checkbox" value="fairy"> Fairy</label>
+-    </div>
+-
+-    <div class="modal-section">
+-      <h4>Gerações</h4>
+-      <div class="filter-gens">   
+-<label><input type="checkbox" value="1"> Gen I</label>
+-  <label><input type="checkbox" value="2"> Gen II</label>
+-  <label><input type="checkbox" value="3"> Gen III</label>
+-  <label><input type="checkbox" value="4"> Gen IV</label>
+-  <label><input type="checkbox" value="5"> Gen V</label>
+-  <label><input type="checkbox" value="6"> Gen VI</label>
+-  <label><input type="checkbox" value="7"> Gen VII</label>
+-  <label><input type="checkbox" value="8"> Gen VIII</label>
+-  <label><input type="checkbox" value="9"> Gen IX</label>
+-    </div>
+-
+-    <div class="modal-section">
+-      <h4>Habitat</h4>
+-      <div class="filter-habitats" id="filter-habitats"></div>
++  <header>
++    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
++    <div class="title-container">
++      <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
++      <h2>Painel</h2>
+     </div>
+-
+-  </div>
+-
+-  <div class="modal-actions">
+-<button id="applyFiltersBtn">Buscar</button>
+-<button id="closeFiltersBtn">Cancelar</button>
+-  </div>
+-</div>
+-
+-</div>
+-</div>
+-</section>
+-
+-<div id="pokemon-list" class="catalog"></div>
+-
++  </header>
++
++  <main class="home-actions">
++    <section class="home-actions-grid" aria-label="Menu principal">
++      <a class="home-action-btn" href="pokemon.html">Registro Pokémon</a>
++      <a class="home-action-btn" href="moves.html">Registro de Golpes</a>
++      <span class="home-action-btn is-disabled">Registro de Habilidade</span>
++      <span class="home-action-btn is-disabled">Logar</span>
++    </section>
++  </main>
+ </body>
+ </html>
+diff --git a/js/pokemon.js b/js/pokemon.js
+index 47fafe6c50de8d943b191d65c15ae31ef54d32f4..07f5c9b57e6b5f23e16b6272b73c88d1c985d637 100644
+--- a/js/pokemon.js
++++ b/js/pokemon.js
+@@ -42,167 +42,173 @@ function loadHabitats() {
+ 
+   HABITATS.forEach((h) => {
+     const label = document.createElement("label");
+     label.innerHTML = `
+       <input type="checkbox" value="${h.id}">
+       ${h.nome}
+     `;
+     container.appendChild(label);
+   });
+ }
+ 
+ async function preloadAllTypes() {
+   const promises = pokemons.map(async (p) => {
+     if (!p.types) {
+       const res = await fetch(p.url);
+       const data = await res.json();
+       p.types = data.types.map((t) => t.type.name);
+     }
+   });
+ 
+   await Promise.all(promises);
+ }
+ 
+ function render(reset) {
+   const list = document.getElementById("pokemon-list");
++  applyResponsiveView();
+ 
+   if (reset) {
+     list.innerHTML = "";
+     index = 0;
+   }
+ 
+   const slice = filtered.slice(index, index + PAGE_SIZE);
+   index += PAGE_SIZE;
+ 
+   slice.forEach((p) => {
+     list.insertAdjacentHTML("beforeend", createCard(p));
+ 
+     const card = list.lastElementChild;
+ 
+     card.addEventListener("click", () => {
+       window.location.href = `pokemon-view.html?id=${p.dex}`;
+     });
+     loadTypes(p, card);
+   });
+ 
+   document.querySelectorAll(".load-more").forEach((b) => b.remove());
+ 
+   if (index < filtered.length) {
+     list.insertAdjacentHTML(
+       "beforeend",
+       `
+       <button class="load-more">
+         Carregar mais Pokémon
+       </button>
+     `,
+     );
+ 
+     list.querySelector(".load-more").addEventListener("click", (e) => {
+       e.stopPropagation();
+       render(false);
+     });
+   }
+ }
+ 
++function applyResponsiveView() {
++  const list = document.getElementById("pokemon-list");
++  if (!list) return;
++
++  const isMobile = window.matchMedia("(max-width: 768px)").matches;
++  list.classList.toggle("list", isMobile);
++  list.classList.toggle("catalog", !isMobile);
++}
++
+ function renderTypes(types) {
++  const isMobile = window.matchMedia("(max-width: 768px)").matches;
++
++  if (isMobile) {
++    return types
++      .map(
++        (t) =>
++          `<span class="type-pill type-pill-${t}">${t.toUpperCase()}</span>`,
++      )
++      .join("");
++  }
++
+   return types
+     .map(
+       (t) =>
+         `<img class="type-icon"
+           src="assets/types/${t}.png"
+           alt="${t}"
+           loading="lazy">`,
+     )
+     .join("");
+ }
+ 
+-let viewMode = "grid";
+-
+-function toggleView() {
+-  const list = document.getElementById("pokemon-list");
+-
+-  if (viewMode === "grid") {
+-    list.classList.remove("catalog");
+-    list.classList.add("list");
+-    viewMode = "list";
+-  } else {
+-    list.classList.remove("list");
+-    list.classList.add("catalog");
+-    viewMode = "grid";
+-  }
+-}
+-
+ function createCard(p) {
+   return `
+     <div class="pokemon-card">
+       <div class="image-box">
+         <img class="official-art"
+           src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png"
+           loading="lazy"
+           alt="${p.name}">
+       </div>
+ 
+       <div class="info">
+         <div class="name">
+           #${String(p.dex).padStart(3, "0")} ${p.name}
+         </div>
+         <div class="types"></div>
+       </div>
+     </div>
+   `;
+ }
+ 
+ function applyTypeColor(card, types) {
+   const primary = types[0];
+ 
+   const colors = {
+-    grass: ["rgba(40,120,60,0.9)", "rgba(120,200,80,0.25)"],
+-    fire: ["rgba(160,60,20,0.9)", "rgba(240,120,40,0.25)"],
+-    water: ["rgba(40,70,140,0.9)", "rgba(100,150,240,0.25)"],
+-    electric: ["rgba(160,140,20,0.9)", "rgba(248,208,48,0.25)"],
+-    psychic: ["rgba(140,40,80,0.9)", "rgba(248,88,136,0.25)"],
+-    dark: ["rgba(60,50,40,0.9)", "rgba(112,88,72,0.25)"],
+-    dragon: ["rgba(60,30,140,0.9)", "rgba(112,56,248,0.25)"],
+-    fairy: ["rgba(160,100,120,0.9)", "rgba(238,153,172,0.25)"],
+-    steel: ["rgba(90,90,120,0.9)", "rgba(184,184,208,0.25)"],
+-    ghost: ["rgba(70,60,110,0.9)", "rgba(112,88,152,0.25)"],
+-    ice: ["rgba(70,120,140,0.9)", "rgba(152,216,216,0.25)"],
+-    fighting: ["rgba(140,40,30,0.9)", "rgba(192,48,40,0.25)"],
+-    ground: ["rgba(140,110,40,0.9)", "rgba(224,192,104,0.25)"],
+-    rock: ["rgba(120,100,40,0.9)", "rgba(184,160,56,0.25)"],
+-    poison: ["rgba(120,40,120,0.9)", "rgba(160,64,160,0.25)"],
+-    flying: ["rgba(120,100,200,0.9)", "rgba(168,144,240,0.25)"],
+-    bug: ["rgba(100,120,30,0.9)", "rgba(168,184,32,0.25)"],
+-    normal: ["rgba(120,120,100,0.9)", "rgba(168,168,120,0.25)"],
++    grass: ["120,200,80", "rgba(120,200,80,0.16)"],
++    fire: ["240,120,40", "rgba(240,120,40,0.16)"],
++    water: ["100,150,240", "rgba(100,150,240,0.16)"],
++    electric: ["248,208,48", "rgba(248,208,48,0.16)"],
++    psychic: ["248,88,136", "rgba(248,88,136,0.16)"],
++    dark: ["112,88,72", "rgba(112,88,72,0.16)"],
++    dragon: ["112,56,248", "rgba(112,56,248,0.16)"],
++    fairy: ["238,153,172", "rgba(238,153,172,0.16)"],
++    steel: ["184,184,208", "rgba(184,184,208,0.16)"],
++    ghost: ["112,88,152", "rgba(112,88,152,0.16)"],
++    ice: ["152,216,216", "rgba(152,216,216,0.16)"],
++    fighting: ["192,48,40", "rgba(192,48,40,0.16)"],
++    ground: ["224,192,104", "rgba(224,192,104,0.16)"],
++    rock: ["184,160,56", "rgba(184,160,56,0.16)"],
++    poison: ["160,64,160", "rgba(160,64,160,0.16)"],
++    flying: ["168,144,240", "rgba(168,144,240,0.16)"],
++    bug: ["168,184,32", "rgba(168,184,32,0.16)"],
++    normal: ["168,168,120", "rgba(168,168,120,0.16)"],
+   };
+ 
+   if (!colors[primary]) return;
+ 
+-  const [border, background] = colors[primary];
++  const [rgb, background] = colors[primary];
+ 
+-  card.style.borderColor = border;
++  card.style.borderColor = `rgba(${rgb}, 0.55)`;
+   card.style.background = background;
++  card.style.setProperty("--type-border-soft", `rgba(${rgb}, 0.45)`);
+ }
+ 
+ function searchPokemon(text) {
+   const value = text.trim().toLowerCase();
+ 
+   if (!value) {
+     filtered = [...pokemons];
+     render(true);
+     return;
+   }
+ 
+   // Se for número → navegar direto
+   if (!isNaN(value)) {
+     const id = Number(value);
+     if (id >= 1 && id <= 1025) {
+       window.location.href = `pokemon-view.html?id=${id}`;
+       return;
+     }
+   }
+ 
+   // Se nome exato → navegar
+   const exact = pokemons.find((p) => p.name.toLowerCase() === value);
+ 
+   if (exact) {
+     window.location.href = `pokemon-view.html?id=${exact.dex}`;
+@@ -301,56 +307,54 @@ function getGeneration(dex) {
+   if (dex <= 905) return 8;
+   return 9;
+ }
+ 
+ function setupSiteTitleAnimation() {
+   const homeLink = document.querySelector(".site-home-link");
+   if (!homeLink) return;
+ 
+   homeLink.addEventListener("click", (event) => {
+     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+ 
+     event.preventDefault();
+     homeLink.classList.remove("expanding");
      void homeLink.offsetWidth;
      homeLink.classList.add("expanding");
+ 
      setTimeout(() => {
        window.location.href = homeLink.getAttribute("href") || "index.html";
      }, 360);
    });
  }
+ 
  document.addEventListener("DOMContentLoaded", () => {
    setupSiteTitleAnimation();
-   [nameInput, dexInput].forEach((input) =>
-     input.addEventListener("input", updateSearchPreview),
-   );
-   document.querySelectorAll(".move-tab-buttons .tab-btn").forEach((btn) => {
-     btn.addEventListener("click", () => {
-       const tab = btn.dataset.movetab;
-       document
-         .querySelectorAll("#level-tab, #other-tab")
-         .forEach((t) => t.classList.remove("active"));
-       document
-         .querySelectorAll(".move-tab-buttons .tab-btn")
-         .forEach((b) => b.classList.remove("active"));
-       document.getElementById(`${tab}-tab`)?.classList.add("active");
-       btn.classList.add("active");
-     });
+   loadHabitats();
++  applyResponsiveView();
+   loadPokemons();
++  window.addEventListener("resize", applyResponsiveView);
+ 
+   // Pesquisa por nome
+   document.getElementById("searchInput").addEventListener("input", (e) => {
+     searchPokemon(e.target.value);
    });
-+
-+  const quickButtons = document.querySelectorAll(".quick-nav-btn");
-+  quickButtons.forEach((button) => {
-+    button.addEventListener("click", () => {
-+      const target = document.querySelector(button.dataset.scrollTarget || "");
-+      if (!target) return;
-+      target.scrollIntoView({ behavior: "smooth", block: "start" });
-+      quickButtons.forEach((btn) => btn.classList.remove("active"));
-+      button.classList.add("active");
-+    });
-+  });
+ 
+   // Pesquisa por número
+   document.getElementById("dexInput").addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       goToPokemon(e.target.value);
+     }
+   });
+ 
+   // Botões
+-  document
+-    .getElementById("toggleViewBtn")
+-    .addEventListener("click", toggleView);
+-
+   document
+     .getElementById("openFiltersBtn")
+     .addEventListener("click", openFilters);
+ 
+   document
+     .getElementById("applyFiltersBtn")
+     .addEventListener("click", applyFilters);
+ 
+   document
+     .getElementById("closeFiltersBtn")
+     .addEventListener("click", closeFilters);
  });
 diff --git a/pokemon-view.html b/pokemon-view.html
-index 425fee8de80c5f000f07ece00b7243f7eec4fbfe..6775af9ccb43045249f01943edd0d8f2d511ae14 100644
+index 6775af9ccb43045249f01943edd0d8f2d511ae14..e7bd64144a2457236c06812ff5e855135fa7fbb9 100644
 --- a/pokemon-view.html
 +++ b/pokemon-view.html
-@@ -27,50 +27,57 @@
+@@ -5,51 +5,51 @@
+ <head>
+   <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Registro Pokémon</title>
+ 
+   <link rel="stylesheet" href="css/pokemon.css">
+   <link rel="stylesheet" href="css/pokemon-view.css">
+   <link rel="icon" href="assets/logo.png">
+ 
+ 
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script type="module" src="js/pokemon-view.js"></script>
+ </head>
+ 
+ <body>
+  <div class="nav-zone left" data-nav="prev"></div>
+  <button class="nav-btn left" data-nav="prev" type="button" aria-label="Pokémon anterior">
+   <span class="nav-btn-arrow">◀</span>
+   <span class="nav-btn-dex" id="desktop-prev-dex">#1025</span>
+  </button>
+ <header>
+   <img src="assets/logo.png" class="logo">
  
    <div class="title-container">
      <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
-     <h2>Registro Pokémon</h2>
+-    <h2>Registro Pokémon</h2>
++    <h2><a href="pokemon.html" class="section-home-link">Registro Pokémon</a></h2>
    </div>
  </header>
  
@@ -519,80 +978,117 @@ index 425fee8de80c5f000f07ece00b7243f7eec4fbfe..6775af9ccb43045249f01943edd0d8f2
  </div>
  <div id="search-preview" class="search-preview"></div>
  
-+<nav class="quick-nav" aria-label="Navegação rápida do Pokémon">
-+  <button class="quick-nav-btn active" data-scroll-target=".image-panel" type="button">Visão Geral</button>
-+  <button class="quick-nav-btn" data-scroll-target=".stats-panel" type="button">Status</button>
-+  <button class="quick-nav-btn" data-scroll-target=".move-tabs" type="button">Golpes</button>
-+  <button class="quick-nav-btn" data-scroll-target=".evolution-panel" type="button">Evolução</button>
-+</nav>
+ <nav class="quick-nav" aria-label="Navegação rápida do Pokémon">
+   <button class="quick-nav-btn active" data-scroll-target=".image-panel" type="button">Visão Geral</button>
+   <button class="quick-nav-btn" data-scroll-target=".stats-panel" type="button">Status</button>
+   <button class="quick-nav-btn" data-scroll-target=".move-tabs" type="button">Golpes</button>
+diff --git a/pokemon.html b/pokemon.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..a3d42e6a1fbba4f4658b4375977e049777493886
+--- /dev/null
++++ b/pokemon.html
+@@ -0,0 +1,104 @@
++<!DOCTYPE html>
++<html lang="pt-br">
++<head>
++  <meta charset="UTF-8">
++<meta name="viewport" content="width=device-width, initial-scale=1.0">
++  <title>Pokémon RPG</title>
 +
- <div class="copy-buttons">
-   <button id="copyPokemonBtn" class="pixel-button">Copiar Pokémon</button>
-   <button id="copyMovesBtn" class="pixel-button">Copiar Golpes</button>
- </div>
- 
- <div id="copyToast" class="copy-toast">
-   Copiado com sucesso!
- </div>
- 
- <main class="pokemon-view">
- 
- <div class="left-column">
-   <section class="image-panel">
-     <div class="dex-title">
-       <span id="dex"></span>
-       <span id="name"></span>
-     </div>
- 
- <div class="art-wrapper">
-   <button class="mobile-art-nav mobile-art-nav-left" data-mobile-nav="prev" type="button">
-     <span class="mobile-art-nav-arrow">◀</span>
-     <span class="mobile-art-nav-dex" id="mobile-prev-dex">#0000</span>
-   </button>
- 
-   <div class="art-frame">
-@@ -274,38 +281,43 @@
- </main>
- 
- <div id="moveSheetOverlay" class="move-sheet-overlay" hidden>
-   <div id="moveSheet" class="move-sheet" role="dialog" aria-modal="true" aria-labelledby="moveSheetTitle">
-     <div id="moveSheetHeader" class="move-sheet-header">
-       <h3 id="moveSheetTitle"></h3>
-     </div>
-     <span id="moveSheetPriority" class="move-sheet-priority"></span>
-     <hr class="move-sheet-divider">
-     <div class="move-sheet-type-icons">
-       <div class="move-sheet-icon-item">
-         <img id="moveSheetTypeIcon" alt="Tipo do golpe">
-         <span id="moveSheetType"></span>
-       </div>
-       <div class="move-sheet-icon-item">
-         <img id="moveSheetCategoryIcon" alt="Categoria do golpe">
-         <span id="moveSheetCategory"></span>
-       </div>
-     </div>
-     <div class="move-sheet-stats">
-       <span id="moveSheetPower"></span>
-       <span id="moveSheetPp"></span>
-       <span id="moveSheetAcc"></span>
-     </div>
-     <div class="move-sheet-description-box">
--      <p id="moveSheetDescription" class="move-sheet-description"></p>
-+      <div class="move-sheet-tabs" role="tablist" aria-label="Detalhes do golpe">
-+        <button id="moveSheetTabFlavor" class="move-sheet-tab-btn active" data-move-sheet-tab="flavor" type="button">Descrição</button>
-+        <button id="moveSheetTabEffect" class="move-sheet-tab-btn" data-move-sheet-tab="effect" type="button">Mecânica</button>
-+      </div>
-+      <p id="moveSheetDescription" class="move-sheet-description active" data-move-sheet-panel="flavor"></p>
-+      <p id="moveSheetEffect" class="move-sheet-description" data-move-sheet-panel="effect"></p>
-     </div>
-   </div>
- </div>
- 
- <div class="nav-zone right" data-nav="next"></div>
- <button class="nav-btn right" data-nav="next" type="button" aria-label="Próximo Pokémon">
-   <span class="nav-btn-arrow">▶</span>
-   <span class="nav-btn-dex" id="desktop-next-dex">#0002</span>
- </button>
- </body>
-   
- </html>
++  <link rel="stylesheet" href="css/pokemon.css">
++<script type="module" src="js/pokemon.js"></script>
++
++</head>
++
++<body>
++
++<header>
++  <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
++
++  <div class="title-container">
++    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
++    <h2><a href="pokemon.html" class="section-home-link">Registro Pokémon</a></h2>
++  </div>
++</header>
++
++
++<section class="controls">
++<input
++  type="text"
++  id="searchInput"
++  placeholder="Pesquisar Pokémon"
++>
++
++<input
++  id="dexInput"
++  type="number"
++  min="1"
++  placeholder="Nº Dex"
++>
++
++<button class="filter-btn" id="openFiltersBtn">Filtros</button>
++
++<div id="filter-modal" class="modal hidden">
++  <div class="modal-content">
++  <h4>Filtrar Pokémon</h4>
++
++  <div class="modal-sections">
++
++    <div class="modal-section">
++      <h4>Tipos</h4>
++      <div class="filter-types">   
++<label class="type-normal"><input type="checkbox" value="normal"> Normal</label>
++  <label class="type-fire"><input type="checkbox" value="fire"> Fire</label>
++  <label class="type-water"><input type="checkbox" value="water"> Water</label>
++  <label class="type-electric"><input type="checkbox" value="electric"> Electric</label>
++  <label class="type-grass"><input type="checkbox" value="grass"> Grass</label>
++  <label class="type-ice"><input type="checkbox" value="ice"> Ice</label>
++  <label class="type-fighting"><input type="checkbox" value="fighting"> Fighting</label>
++  <label class="type-poison"><input type="checkbox" value="poison"> Poison</label>
++  <label class="type-ground"><input type="checkbox" value="ground"> Ground</label>
++  <label class="type-flying"><input type="checkbox" value="flying"> Flying</label>
++  <label class="type-psychic"><input type="checkbox" value="psychic"> Psychic</label>
++  <label class="type-bug"><input type="checkbox" value="bug"> Bug</label>
++  <label class="type-rock"><input type="checkbox" value="rock"> Rock</label>
++  <label class="type-ghost"><input type="checkbox" value="ghost"> Ghost</label>
++  <label class="type-dragon"><input type="checkbox" value="dragon"> Dragon</label>
++  <label class="type-dark"><input type="checkbox" value="dark"> Dark</label>
++  <label class="type-steel"><input type="checkbox" value="steel"> Steel</label>
++  <label class="type-fairy"><input type="checkbox" value="fairy"> Fairy</label>
++    </div>
++
++    <div class="modal-section">
++      <h4>Gerações</h4>
++      <div class="filter-gens">   
++<label><input type="checkbox" value="1"> Gen I</label>
++  <label><input type="checkbox" value="2"> Gen II</label>
++  <label><input type="checkbox" value="3"> Gen III</label>
++  <label><input type="checkbox" value="4"> Gen IV</label>
++  <label><input type="checkbox" value="5"> Gen V</label>
++  <label><input type="checkbox" value="6"> Gen VI</label>
++  <label><input type="checkbox" value="7"> Gen VII</label>
++  <label><input type="checkbox" value="8"> Gen VIII</label>
++  <label><input type="checkbox" value="9"> Gen IX</label>
++    </div>
++
++    <div class="modal-section">
++      <h4>Habitat</h4>
++      <div class="filter-habitats" id="filter-habitats"></div>
++    </div>
++
++  </div>
++
++  <div class="modal-actions">
++<button id="applyFiltersBtn">Buscar</button>
++<button id="closeFiltersBtn">Cancelar</button>
++  </div>
++</div>
++
++</div>
++</div>
++</section>
++
++<div id="pokemon-list" class="catalog"></div>
++
++</body>
++</html>

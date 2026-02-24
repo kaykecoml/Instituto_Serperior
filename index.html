@@ -2,104 +2,75 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokémon RPG</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instituto Serperior</title>
   <link rel="stylesheet" href="css/pokemon.css">
-<script type="module" src="js/pokemon.js"></script>
+  <style>
+    .home-actions {
+      min-height: calc(100vh - 160px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
 
+    .home-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 280px));
+      gap: 14px;
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .home-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 64px;
+      padding: 12px;
+      text-decoration: none;
+      font-family: Pixel;
+      font-size: 14px;
+      background: linear-gradient(180deg, #2f6b44, #1f4d2b);
+      color: #fff;
+      border: 2px solid #7bdc65;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .home-action-btn:hover {
+      box-shadow: 0 0 12px #7bdc65;
+    }
+
+    .home-action-btn.is-disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 700px) {
+      .home-actions-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<header>
-  <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
-
-  <div class="title-container">
-    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
-    <h2>Registro Pokémon</h2>
-  </div>
-</header>
-
-<button class="filter-btn" id="toggleViewBtn">Exibição</button>
-
-<section class="controls">
-<input
-  type="text"
-  id="searchInput"
-  placeholder="Pesquisar Pokémon"
->
-
-<input
-  id="dexInput"
-  type="number"
-  min="1"
-  placeholder="Nº Dex"
->
-
-<button class="filter-btn" id="openFiltersBtn">Filtros</button>
-
-<div id="filter-modal" class="modal hidden">
-  <div class="modal-content">
-  <h4>Filtrar Pokémon</h4>
-
-  <div class="modal-sections">
-
-    <div class="modal-section">
-      <h4>Tipos</h4>
-      <div class="filter-types">   
-<label class="type-normal"><input type="checkbox" value="normal"> Normal</label>
-  <label class="type-fire"><input type="checkbox" value="fire"> Fire</label>
-  <label class="type-water"><input type="checkbox" value="water"> Water</label>
-  <label class="type-electric"><input type="checkbox" value="electric"> Electric</label>
-  <label class="type-grass"><input type="checkbox" value="grass"> Grass</label>
-  <label class="type-ice"><input type="checkbox" value="ice"> Ice</label>
-  <label class="type-fighting"><input type="checkbox" value="fighting"> Fighting</label>
-  <label class="type-poison"><input type="checkbox" value="poison"> Poison</label>
-  <label class="type-ground"><input type="checkbox" value="ground"> Ground</label>
-  <label class="type-flying"><input type="checkbox" value="flying"> Flying</label>
-  <label class="type-psychic"><input type="checkbox" value="psychic"> Psychic</label>
-  <label class="type-bug"><input type="checkbox" value="bug"> Bug</label>
-  <label class="type-rock"><input type="checkbox" value="rock"> Rock</label>
-  <label class="type-ghost"><input type="checkbox" value="ghost"> Ghost</label>
-  <label class="type-dragon"><input type="checkbox" value="dragon"> Dragon</label>
-  <label class="type-dark"><input type="checkbox" value="dark"> Dark</label>
-  <label class="type-steel"><input type="checkbox" value="steel"> Steel</label>
-  <label class="type-fairy"><input type="checkbox" value="fairy"> Fairy</label>
+  <header>
+    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
+    <div class="title-container">
+      <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+      <h2>Painel</h2>
     </div>
+  </header>
 
-    <div class="modal-section">
-      <h4>Gerações</h4>
-      <div class="filter-gens">   
-<label><input type="checkbox" value="1"> Gen I</label>
-  <label><input type="checkbox" value="2"> Gen II</label>
-  <label><input type="checkbox" value="3"> Gen III</label>
-  <label><input type="checkbox" value="4"> Gen IV</label>
-  <label><input type="checkbox" value="5"> Gen V</label>
-  <label><input type="checkbox" value="6"> Gen VI</label>
-  <label><input type="checkbox" value="7"> Gen VII</label>
-  <label><input type="checkbox" value="8"> Gen VIII</label>
-  <label><input type="checkbox" value="9"> Gen IX</label>
-    </div>
-
-    <div class="modal-section">
-      <h4>Habitat</h4>
-      <div class="filter-habitats" id="filter-habitats"></div>
-    </div>
-
-  </div>
-
-  <div class="modal-actions">
-<button id="applyFiltersBtn">Buscar</button>
-<button id="closeFiltersBtn">Cancelar</button>
-  </div>
-</div>
-
-</div>
-</div>
-</section>
-
-<div id="pokemon-list" class="catalog"></div>
-
+  <main class="home-actions">
+    <section class="home-actions-grid" aria-label="Menu principal">
+      <a class="home-action-btn" href="pokemon.html">Registro Pokémon</a>
+      <a class="home-action-btn" href="moves.html">Registro de Golpes</a>
+      <span class="home-action-btn is-disabled">Registro de Habilidade</span>
+      <span class="home-action-btn is-disabled">Logar</span>
+    </section>
+  </main>
 </body>
 </html>

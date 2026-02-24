@@ -76,6 +76,15 @@ body {
   box-shadow: none;
 }
 
+.section-home-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.section-home-link:hover {
+  text-decoration: underline;
+}
+
 .site-home-link.expanding {
   animation: titleExpand 0.36s ease forwards;
 }
@@ -1126,7 +1135,8 @@ body {
   background: #10261b;
   color: #cdeec2;
   border-radius: 8px;
-  padding: 8px;
+  padding: 10px 8px;
+  min-height: 42px;
   font-family: Pixel;
   font-size: 11px;
 }
@@ -1672,6 +1682,16 @@ body.move-sheet-open {
   .quick-nav-btn.active {
     background: #2f6b44;
     color: #f8fff6;
+  }
+
+  .move-sheet-tabs {
+    gap: 10px;
+  }
+
+  .move-sheet-tab-btn {
+    padding: 11px 10px;
+    min-height: 46px;
+    font-size: 12px;
   }
 
   .tab-buttons {
