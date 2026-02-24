@@ -2,14 +2,19 @@ import { HABITATS } from "./habitats.js";
 
 const PAGE_SIZE = 24;
 const MAX_POKEMON_ID = 1025;
+const FAVORITES_KEY = "favoritePokemons";
 let index = 0;
 let pokemons = [];
 let filtered = [];
 let pokemonIndex = [];
+let favorites = new Set();
 const pokemonDataCache = new Map();
+const typePokemonIdsCache = new Map();
+const habitatPokemonMap = new Map(HABITATS.map((h) => [h.id, new Set(h.pokedex)]));
+const favoritesMode = window.location.pathname.endsWith("favoritos.html");
 
 const TYPE_OPTIONS = [
-  "normal","fire","water","electric","grass","ice","fighting","poison","ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy",
+  "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy",
 ];
 
 const TYPE_ICON_PATHS = {
@@ -42,11 +47,36 @@ function getTypeIconPath(type) {
   return TYPE_ICON_PATHS[type] || `assets/types block/${type}.png`;
 }
 
+function loadFavorites() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+    favorites = new Set(stored.filter((id) => Number.isInteger(id)));
+  } catch {
+    favorites = new Set();
+  }
+}
+
+function persistFavorites() {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
+}
+
 async function getPokemonData(pokemon) {
   if (pokemonDataCache.has(pokemon.url)) return pokemonDataCache.get(pokemon.url);
   const data = await fetch(pokemon.url).then((res) => res.json());
   pokemonDataCache.set(pokemon.url, data);
   return data;
+}
+
+async function getIdsByType(type) {
+  if (typePokemonIdsCache.has(type)) return typePokemonIdsCache.get(type);
+  const typeData = await fetch(`https://pokeapi.co/api/v2/type/${type}`).then((res) => res.json());
+  const ids = new Set(
+    typeData.pokemon
+      .map((entry) => Number(entry.pokemon.url.split("/").filter(Boolean).pop()))
+      .filter((id) => Number.isInteger(id) && id <= MAX_POKEMON_ID),
+  );
+  typePokemonIdsCache.set(type, ids);
+  return ids;
 }
 
 async function loadPokemons() {
@@ -62,7 +92,7 @@ async function loadPokemons() {
   }));
 
   pokemonIndex = pokemons.map((p) => ({ id: p.dex, name: p.name.toLowerCase() }));
-  filtered = [...pokemons];
+  filtered = favoritesMode ? pokemons.filter((p) => favorites.has(p.dex)) : [...pokemons];
   render(true);
 }
 
@@ -102,15 +132,6 @@ async function loadTypes(pokemon, cardElement) {
   typesContainer.innerHTML = renderTypes(pokemon.types);
 }
 
-async function preloadAllTypes() {
-  await Promise.all(pokemons.map(async (p) => {
-    if (!p.types) {
-      const data = await getPokemonData(p);
-      p.types = data.types.map((t) => t.type.name);
-    }
-  }));
-}
-
 function render(reset) {
   const list = document.getElementById("pokemon-list");
   applyResponsiveView();
@@ -128,6 +149,13 @@ function render(reset) {
     card.addEventListener("click", () => {
       window.location.href = `pokemon-view.html?id=${p.dex}`;
     });
+
+    const favoriteBtn = card.querySelector(".favorite-btn");
+    favoriteBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleFavorite(p.dex, favoriteBtn);
+    });
+
     loadTypes(p, card);
   });
 
@@ -138,6 +166,23 @@ function render(reset) {
       e.stopPropagation();
       render(false);
     });
+  }
+}
+
+function toggleFavorite(dex, button) {
+  if (favorites.has(dex)) {
+    favorites.delete(dex);
+  } else {
+    favorites.add(dex);
+  }
+  persistFavorites();
+  if (button) {
+    button.querySelector("img").src = favorites.has(dex) ? "assets/favorit.png" : "assets/nofavorit.png";
+  }
+
+  if (favoritesMode) {
+    filtered = filtered.filter((pokemon) => favorites.has(pokemon.dex));
+    render(true);
   }
 }
 
@@ -157,7 +202,8 @@ function renderTypes(types) {
 }
 
 function createCard(p) {
-  return `<div class="pokemon-card"><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
+  const favoriteIcon = favorites.has(p.dex) ? "assets/favorit.png" : "assets/nofavorit.png";
+  return `<div class="pokemon-card"><button class="favorite-btn" aria-label="Favoritar ${p.name}" type="button"><img src="${favoriteIcon}" alt="Favorito"></button><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
 }
 
 function applyTypeColor(card, types) {
@@ -171,12 +217,13 @@ function applyTypeColor(card, types) {
 
 function searchPokemon(text) {
   const value = text.trim().toLowerCase();
+  const source = favoritesMode ? pokemons.filter((p) => favorites.has(p.dex)) : pokemons;
   if (!value) {
-    filtered = [...pokemons];
+    filtered = [...source];
     render(true);
     return;
   }
-  filtered = pokemons.filter((p) => p.name.toLowerCase().includes(value) || String(p.dex).startsWith(value));
+  filtered = source.filter((p) => p.name.toLowerCase().includes(value) || String(p.dex).startsWith(value));
   render(true);
 }
 
@@ -188,13 +235,14 @@ function goToPokemonBySearch() {
 
   if (!Number.isNaN(Number(query))) {
     const id = Number(query);
-    if (id >= 1 && id <= MAX_POKEMON_ID) {
+    const allowed = !favoritesMode || favorites.has(id);
+    if (id >= 1 && id <= MAX_POKEMON_ID && allowed) {
       window.location.href = `pokemon-view.html?id=${id}`;
       return;
     }
   }
 
-  const found = pokemons.find((p) => p.name.toLowerCase() === query);
+  const found = pokemons.find((p) => p.name.toLowerCase() === query && (!favoritesMode || favorites.has(p.dex)));
   if (found) window.location.href = `pokemon-view.html?id=${found.dex}`;
 }
 
@@ -206,7 +254,9 @@ function updateSearchPreview() {
   preview.innerHTML = "";
   if (!query) return;
 
-  const candidates = pokemonIndex.filter((p) => p.name.includes(query) || String(p.id).startsWith(query)).slice(0, 6);
+  const candidates = pokemonIndex
+    .filter((p) => (!favoritesMode || favorites.has(p.id)) && (p.name.includes(query) || String(p.id).startsWith(query)))
+    .slice(0, 6);
   if (!candidates.length) return;
 
   const list = document.createElement("div");
@@ -233,15 +283,26 @@ function closeFilters() {
 }
 
 async function applyFilters() {
-  await preloadAllTypes();
   const types = [...document.querySelectorAll(".filter-types input:checked")].map((i) => i.value);
   const gens = [...document.querySelectorAll(".filter-gens input:checked")].map((i) => Number(i.value));
   const habitats = [...document.querySelectorAll(".filter-habitats input:checked")].map((i) => i.value);
+  const baseList = favoritesMode ? pokemons.filter((p) => favorites.has(p.dex)) : pokemons;
 
-  filtered = pokemons.filter((p) => {
-    const matchType = types.length === 0 || p.types.some((t) => types.includes(t));
+  let typeAllowedIds = null;
+  if (types.length) {
+    const sets = await Promise.all(types.map((type) => getIdsByType(type)));
+    typeAllowedIds = new Set();
+    sets.forEach((set) => set.forEach((id) => typeAllowedIds.add(id)));
+  }
+
+  const habitatAllowedIds = habitats.length
+    ? new Set(habitats.flatMap((habitatId) => [...(habitatPokemonMap.get(habitatId) || [])]))
+    : null;
+
+  filtered = baseList.filter((p) => {
+    const matchType = !typeAllowedIds || typeAllowedIds.has(p.dex);
     const matchGen = gens.length === 0 || gens.includes(p.generation);
-    const matchHabitat = habitats.length === 0 || HABITATS.filter((h) => habitats.includes(h.id)).some((h) => h.pokedex.includes(p.dex));
+    const matchHabitat = !habitatAllowedIds || habitatAllowedIds.has(p.dex);
     return matchType && matchGen && matchHabitat;
   });
 
@@ -302,6 +363,7 @@ function getGeneration(dex) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadFavorites();
   setupSiteTitleAnimation();
   setupSideMenu();
   renderFilterTypes();
@@ -309,6 +371,11 @@ document.addEventListener("DOMContentLoaded", () => {
   applyResponsiveView();
   loadPokemons();
   window.addEventListener("resize", applyResponsiveView);
+
+  const pageTitle = document.querySelector(".section-home-link");
+  if (favoritesMode && pageTitle) {
+    pageTitle.textContent = "Favoritos";
+  }
 
   const nameInput = document.getElementById("searchInput");
   const dexInput = document.getElementById("dexInput");

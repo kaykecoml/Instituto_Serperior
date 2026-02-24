@@ -1,457 +1,8 @@
-diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index 1c6ca57f2f4ef6a167b26888b18b795375cf7bfd..58cc4c8bd3facdefaf27ef8312dbe0ecde9e491e 100644
---- a/css/pokemon-view.css
-+++ b/css/pokemon-view.css
-@@ -99,50 +99,58 @@ body {
-     transform: scale(1.08);
-     letter-spacing: 1.5px;
-     text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
-   }
- }
- 
- .cry-btn {
-   margin-top: 16px;
-   width: 100%;
-   background: #2f6b44;
-   border: none;
-   padding: 10px;
-   border-radius: 10px;
-   font-family: Pixel;
-   cursor: pointer;
- }
- 
- .image-panel {
-   text-align: center;
- }
- 
- .dex-title {
-   font-family: Pixel;
-   font-size: 18px;
-   margin-bottom: 10px;
-+  line-height: 1.25;
-+  text-shadow: 0 0 8px rgba(123, 220, 101, 0.25);
-+}
-+
-+#name {
-+  color: #f7ffb7;
-+  font-size: 1.22em;
-+  letter-spacing: 0.6px;
- }
- 
- 
- .art-wrapper {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   gap: 12px;
-   margin-bottom: 10px;
- }
- 
- .art-frame {
-   position: relative;
-   border: 2px solid #2f6b44;
-   border-radius: 16px;
-   background: #08120d;
-   padding: 18px 12px 12px;
-   width: min(100%, 340px);
- }
- 
- .art-frame.is-transitioning #official-art {
-   opacity: 0.45;
-   transform: scale(0.98);
- }
- 
-@@ -193,66 +201,74 @@ body {
-   font-size: 24px;
-   line-height: 1;
- }
- 
- .mobile-art-nav-dex {
-   writing-mode: vertical-rl;
-   transform: rotate(180deg);
-   font-size: 11px;
-   letter-spacing: 0.4px;
- }
- 
- #official-art {
-   width: min(100%, 320px);
-   height: auto;
-   object-fit: contain;
-   display: block;
-   margin: 0 auto;
-   transition: opacity 0.2s ease, transform 0.2s ease;
- }
- 
- .type-box {
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-   margin-top: 15px;
-+  width: 100%;
-+}
-+
-+#types {
-+  flex-wrap: wrap;
-+  max-width: 100%;
- }
- 
- .type-row {
-   display: flex;
-   gap: 8px;
-   flex-wrap: wrap;
- }
- 
- .type {
-   padding: 6px 10px;
-   border-radius: 6px;
-   font-size: 14px;
- }
- .types img {
--  width: 44px;
--  height: 44px;
-+  width: 36px;
-+  height: 36px;
-+  object-fit: contain;
-+  aspect-ratio: 1 / 1;
- }
- 
- #weaknesses img,
- #resistances img,
- #immunities img {
-   width: 40px;
-   height: 40px;
- }
- 
- /* efeitos especiais */
- .x4-weak {
-   border: 2px solid #ff2a2a;
-   box-shadow: 0 0 8px #ff2a2a;
- }
- 
- .x4-resist {
-   border: 2px solid #00ff88;
-   box-shadow: 0 0 8px #00ff88;
- }
- 
- .dex {
-   position: absolute;
-   top: 6px;
-   left: 8px;
-   font-size: 14px;
-@@ -291,102 +307,104 @@ body {
- .dex-search input::placeholder {
-   color: #4fae78;
- }
- 
- .dex-search button {
-   background: #2f6b44;
-   border: 2px solid #4fae78;
-   color: #eaffea;
-   padding: 8px 16px;
-   border-radius: 10px;
-   font-family: Pixel;
-   cursor: pointer;
-   transition: all 0.2s ease;
- }
- 
- 
- .dex-search button:hover {
-   background: #4fae78;
-   color: #08120d;
- }
- 
- /* container que segura fraqueza + resistência */
- .type-dual-row {
-   display: grid;
-   grid-template-columns: 1fr 1fr;
--  gap: 12px;
-+  gap: 8px;
- }
- 
- /* bloco base */
- .type-panel {
--  padding: 10px;
-+  padding: 8px;
-   border-radius: 12px;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 6px;
- }
- 
- /* títulos */
- .type-panel h3 {
-   font-family: Pixel;
-   font-size: 13px;
-   margin-bottom: 4px;
- }
- 
- /* FRAQUEZAS */
- .type-panel.weak {
-   border: 2px solid #ff2a2a;
-   box-shadow: 0 0 8px rgba(255, 42, 42, 0.3);
- }
- 
- /* RESISTÊNCIAS */
- .type-panel.resist {
-   border: 2px solid #00ff88;
-   box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
- }
- 
- /* IMUNIDADES */
- .type-panel.immune {
-   border: 2px solid #8a8a8a;
-   box-shadow: 0 0 6px rgba(138, 138, 138, 0.3);
-   align-self: center;
-   width: fit-content;
- }
- 
- /* ícones organizados */
- .type-panel .types {
-   display: flex;
-   gap: 6px;
-   flex-wrap: wrap;
-   justify-content: center;
- }
- 
- /* tamanho final dos ícones */
- .type-panel img {
--  width: 38px;
--  height: 38px;
-+  width: 32px;
-+  height: 32px;
-+  object-fit: contain;
-+  aspect-ratio: 1 / 1;
- }
- 
- .movement-list {
-   list-style: none;
-   padding: 0;
-   margin: 0;
-   display: flex;
-   flex-direction: column;
-   gap: 6px;
- }
- 
- .movement-list li {
-   background: #08120d;
-   border: 1px solid #2f6b44;
-   border-radius: 8px;
-   padding: 6px 10px;
-   font-family: Pixel;
-   font-size: 13px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
- }
- 
- .movement-list span {
-   opacity: 0.85;
-@@ -1617,50 +1635,63 @@ body.move-sheet-open {
-   }
- 
-   .art-wrapper {
-     width: 100%;
-     min-height: clamp(210px, 44vw, 300px);
-     display: flex;
-     flex-direction: row;
-     align-items: center;
-     justify-content: center;
-     gap: 8px;
-   }
- 
-   #official-art {
-     width: clamp(220px, 64vw, 340px);
-     max-width: 100%;
-     max-height: 42vh;
-     object-fit: contain;
-     margin: 0 auto;
-     display: block;
-   }
- 
-   .pokemon-image img {
-     width: clamp(160px, 48vw, 240px);
-   }
- 
-+  .dex-title {
-+    font-size: clamp(20px, 5.3vw, 26px);
-+    text-align: center;
-+  }
-+
-+  #name {
-+    display: block;
-+    margin-top: 2px;
-+    font-size: clamp(22px, 6.2vw, 30px);
-+    color: #fff5a0;
-+    text-shadow: 0 0 10px rgba(248, 208, 48, 0.55);
-+  }
-+
-   .types img,
-   #weaknesses img,
-   #resistances img,
-   #immunities img,
-   .type-panel img {
-     width: clamp(36px, 8.6vw, 46px);
-     height: clamp(36px, 8.6vw, 46px);
-     object-fit: contain;
-   }
- 
-   .type-dual-row {
-     grid-template-columns: 1fr;
-   }
- 
-   .type-panel.immune {
-     width: 100%;
-   }
- 
-   .quick-nav {
-     display: flex;
-     gap: 8px;
-     padding: 0 12px 8px;
-     overflow-x: auto;
-     position: sticky;
-     top: 0;
-@@ -1712,53 +1743,56 @@ body.move-sheet-open {
-   }
- 
-   .move-tab-buttons .tab-btn {
-     min-width: clamp(130px, 44vw, 220px);
-   }
- 
-   .tab-content {
-     width: 100%;
-     overflow: hidden;
-   }
- 
-   .info-panel > .block > h3,
-   .info-panel .habitats-panel > h3 {
-     text-align: center;
-   }
- 
-   #size,
-   #egg-group {
-     text-align: center;
-   }
- 
-   header {
-     justify-content: center;
-   }
- 
--  .logo {
-+  .logo-button {
-     top: 8px;
-     left: 10px;
-+  }
-+
-+  .logo {
-     width: 56px;
-   }
- 
-   .stats-panel .tab-buttons {
-     justify-content: center;
-   }
- 
-   .stats-panel .stats-container,
-   .stats-panel #contest-tab .radar-column {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-   }
- 
-   .stats-tabs canvas,
-   .radar-column canvas {
-     width: clamp(160px, 48vw, 220px) !important;
-     height: clamp(160px, 48vw, 220px) !important;
-     max-width: 100%;
-   }
- 
-   .stats-list {
-     width: 100%;
-     font-size: clamp(10px, 2.8vw, 13px);
 diff --git a/css/pokemon.css b/css/pokemon.css
-index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63663dc42a 100644
+index 59526b1756f9f4c598e9cbd66f39ae63663dc42a..89242d94b155b7091c7c4936bd85ff8525999438 100644
 --- a/css/pokemon.css
 +++ b/css/pokemon.css
-@@ -85,56 +85,63 @@ header h2 {
-   text-decoration: none;
- }
- 
- .section-home-link:hover {
-   text-decoration: underline;
- }
- 
- .site-home-link.expanding {
-   animation: titleExpand 0.36s ease forwards;
- }
- 
- @keyframes titleExpand {
-   0% {
-     transform: scale(1);
-     letter-spacing: normal;
-     text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
-   }
-   100% {
-     transform: scale(1.08);
-     letter-spacing: 1.5px;
-     text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
-   }
- }
- 
- .logo {
--  position: absolute;
--  left: 20px;
-   width: 90px;
-   filter: drop-shadow(0 0 6px #7bdc65);
- }
- 
-+.logo-button {
-+  position: absolute;
-+  left: 20px;
-+  background: transparent;
-+  border: none;
-+  padding: 0;
-+  cursor: pointer;
-+}
-+
- .title-container {
-   text-align: center;
- }
- 
- 
- .controls {
-   display: flex;
-   gap: 10px;
-   justify-content: center;
-   padding: 15px;
-   flex-wrap: wrap;
- }
- .controls input {
-   background: #0b1611;
-   color: #fff;
-   border: 2px solid #2f6b44;
-   padding: 10px 14px;
-   border-radius: 10px;
-   font-family: Pixel;
-   box-shadow: inset 0 0 6px #000;
- }
- 
- .controls input::placeholder {
-   color: #8bcf9c;
- }
-@@ -185,86 +192,121 @@ header h2 {
-   position: fixed;
-   inset: 0;
-   background: rgba(0,0,0,0.7);
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   z-index: 888;
- }
- 
- .hidden {
-   display: none;
- }
+@@ -204,85 +204,94 @@ header h2 {
  
  .modal-content {
    max-height: 80vh;
@@ -465,24 +16,32 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
    color: #fff;
  }
  
-+
-+
-+.filter-main-title {
-+  text-align: center;
-+  font-family: "Pokemon";
-+  letter-spacing: 2px;
-+  color: #f8d030;
-+  margin-top: 0;
-+}
-+
+ 
+ 
+ .filter-main-title {
+   text-align: center;
+   font-family: "Pokemon";
+   letter-spacing: 2px;
+   color: #f8d030;
+   margin-top: 0;
+ }
+ 
  .modal-sections {
    display: flex;
-   justify-content: space-between;
-   gap: 30px;
+-  justify-content: space-between;
+-  gap: 30px;
++  gap: 14px;
++  overflow-x: auto;
++  padding-bottom: 4px;
  }
  
  .modal-section {
    flex: 1;
++  min-width: 220px;
++  background: rgba(255,255,255,0.03);
++  border: 1px solid rgba(123,220,101,0.3);
++  border-radius: 12px;
++  padding: 10px;
  }
  
  .modal-section h4 {
@@ -496,12 +55,13 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
  .filter-types,
  .filter-gens,
  .filter-habitats {
-   display: flex;
-   flex-wrap: wrap;
+-  display: flex;
+-  flex-wrap: wrap;
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
    gap: 8px;
  }
  
--.filter-types label,
  .filter-gens label,
  .filter-habitats label {
    font-family: Pixel;
@@ -509,60 +69,40 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
    border-radius: 8px;
    cursor: pointer;
    background: rgba(255,255,255,0.05);
- }
- 
-+.filter-types label {
-+  width: 48px;
-+  height: 48px;
-+  border-radius: 12px;
-+  border: 2px solid rgba(255, 255, 255, 0.15);
 +  display: inline-flex;
 +  align-items: center;
-+  justify-content: center;
-+  background: rgba(255,255,255,0.06);
-+  cursor: pointer;
-+}
-+
-+.filter-types label img {
-+  width: 30px;
-+  height: 30px;
-+}
-+
-+.filter-types input {
-+  display: none;
-+}
-+
-+.filter-types label.is-selected {
-+  border-color: #7bdc65;
-+  box-shadow: 0 0 0 2px rgba(123,220,101,0.25), 0 0 10px rgba(123,220,101,0.45);
-+}
-+
- .filter-btn {
-   background: linear-gradient(180deg, #2f6b44, #1f4d2b);
-   color: #fff;
-   border: 2px solid #7bdc65;
-   padding: 10px 16px;
-   border-radius: 10px;
-   font-family: Pixel;
++  gap: 6px;
+ }
+ 
+ .filter-types label {
+-  width: 48px;
++  width: 100%;
+   height: 48px;
+   border-radius: 12px;
+   border: 2px solid rgba(255, 255, 255, 0.15);
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   background: rgba(255,255,255,0.06);
    cursor: pointer;
-   box-shadow: 0 0 10px #000;
  }
  
- .filter-btn:hover {
-   box-shadow: 0 0 12px #7bdc65;
+ .filter-types label img {
+   width: 30px;
+   height: 30px;
  }
  
- .sprite {
-   image-rendering: pixelated;
-   aspect-ratio: 1 / 1;
-   object-fit: contain;
+ .filter-types input {
+   display: none;
  }
  
- .name {
-   font-weight: bold;
-   margin-top: 6px;
+ .filter-types label.is-selected {
+   border-color: #7bdc65;
+   box-shadow: 0 0 0 2px rgba(123,220,101,0.25), 0 0 10px rgba(123,220,101,0.45);
  }
-@@ -290,119 +332,109 @@ header h2 {
+ 
+ .filter-btn {
+@@ -332,52 +341,53 @@ header h2 {
  }
  
  .list {
@@ -588,21 +128,20 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
  }
  
  .type-pill {
--  min-width: 96px;
-+  min-width: 112px;
-   height: 32px;
+-  min-width: 112px;
+-  height: 32px;
++  min-width: 0;
++  max-width: 100%;
++  height: 30px;
    padding: 0 10px;
    border-radius: 16px;
    display: inline-flex;
    align-items: center;
    justify-content: center;
--  border: 2px solid rgba(47, 107, 68, 0.5);
--  color: rgba(23, 67, 59, 0.78);
--  background: rgba(232, 255, 248, 0.12);
-+  gap: 6px;
-+  border: 2px solid rgba(var(--type-rgb, 47, 107, 68), 0.55);
-+  color: #f5fff8;
-+  background: rgba(var(--type-rgb, 47, 107, 68), 0.2);
+   gap: 6px;
+   border: 2px solid rgba(var(--type-rgb, 47, 107, 68), 0.55);
+   color: #f5fff8;
+   background: rgba(var(--type-rgb, 47, 107, 68), 0.2);
    font-family: Arial, sans-serif;
    font-size: 11px;
    font-weight: 700;
@@ -619,75 +158,72 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
  .type-dragon { color: #7038f8; }
  .type-fairy { color: #ee99ac; }
  .type-steel { color: #b8b8d0; }
- .type-ghost { color: #705898; }
- .type-ice { color: #98d8d8; }
- .type-fighting { color: #c03028; }
- .type-ground { color: #e0c068; }
- .type-rock { color: #b8a038; }
- .type-poison { color: #a040a0; }
- .type-flying { color: #a890f0; }
- .type-bug { color: #a8b820; }
- .type-normal { color: #a8a878; }
+@@ -492,67 +502,82 @@ header h2 {
  
- .list .image-box {
-   width: 72px;
-   height: 72px;
-   position: relative;
+ .habitat {
+   font-size: 0.7rem;
+   opacity: 0.7;
+   margin-top: 4px;
  }
  
- .list .image-box {
-   width: 90px;
-   height: 90px;
-   flex-shrink: 0;
+ #habitat-filter option {
+   background: #0b1611;
+   color: #7bdc65;
+   font-family: Pixel;
  }
  
- .list .official-art {
-   width: 80px;
-   height: 80px;
-   border-radius: 50%;
-   padding: 6px;
-   background: #0f2e1d;
-   border: 3px solid var(--type-border-soft, rgba(123, 220, 101, 0.45));
+ .habitat {
+   font-family: Pixel;
+   font-size: 11px;
+   margin-top: 6px;
+   padding: 4px 8px;
+   border-radius: 6px;
+   background: rgba(123,220,101,0.1);
+   border: 1px solid #2f6b44;
+   color: #7bdc65;
+   display: inline-block;
  }
  
- 
--.filter-types label,
--.filter-gens label {
+-.filter-habitats label {
+-  display: block;
+-  margin: 4px 0;
 -  cursor: pointer;
--  padding: 4px 8px;
--  border-radius: 6px;
--  background: rgba(255,255,255,0.05);
--  font-family: Pixel;
--  font-size: 12px;
 -}
--
--.filter-types label:hover,
- .filter-gens label:hover {
-   background: rgba(123,220,101,0.15);
+ 
+ .type-icon {
+   width: 20px;
+ }
+ 
+ .pokemon-card {
+   border: 3px solid rgba(0,0,0,0.6);
+   transition: 0.2s;
  }
  
  
- .catalog .official-art {
-   display: block;
- }
  
- .catalog .sprite {
-   position: absolute;
-   bottom: 6px;
-   right: 6px;
-   width: 34px;
-   padding: 3px;
-   border-radius: 8px;
-   background: rgba(0,0,0,0.65);
-   border: 1px solid #7bdc65;
- }
++.favorite-btn {
++  position: absolute;
++  top: 8px;
++  left: 8px;
++  width: 28px;
++  height: 28px;
++  border: none;
++  background: transparent;
++  padding: 0;
++  cursor: pointer;
++  z-index: 4;
++}
++
++.favorite-btn img {
++  width: 100%;
++  height: 100%;
++  object-fit: contain;
++}
++
++
+ @media (max-width: 768px) {
  
- 
- .image-box {
-   position: relative;
-   display: flex;
-   justify-content: center;
-@@ -505,98 +537,245 @@ header h2 {
+   .list {
      padding: 14px;
      gap: 14px;
    }
@@ -710,30 +246,7 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
      height: 92px;
      display: flex;
      align-items: center;
-     justify-content: center;
-     flex-shrink: 0;
-     border-radius: 50%;
--    background: rgba(224, 248, 244, 0.8);
-+    background: transparent;
-   }
- 
-   .list .official-art {
-     width: 82px;
-     height: 82px;
-     padding: 0;
-     object-fit: contain;
-     background: transparent;
-     border: 2px solid var(--type-border-soft, rgba(51, 117, 98, 0.4));
-   }
- 
-   .list .info {
-     order: 1;
-     min-width: 0;
-     flex: 1;
-   }
- 
-   .list .name {
-     margin-top: 0;
+@@ -582,58 +607,65 @@ header h2 {
      margin-bottom: 8px;
      font-size: 14px;
      line-height: 1;
@@ -759,16 +272,26 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
    }
  
    .list .type-icon {
-     width: 20px;
-     height: 20px;
+-    width: 20px;
+-    height: 20px;
++    width: 16px;
++    height: 16px;
    }
  
    .list .type-pill {
--    min-width: 110px;
--    height: 34px;
-+    min-width: 86px;
-+    height: 28px;
-+    font-size: 10px;
+-    min-width: 86px;
+-    height: 28px;
+-    font-size: 10px;
++    min-width: 74px;
++    height: 26px;
++    font-size: 9px;
++    padding: 0 7px;
++  }
++
++  .favorite-btn {
++    left: auto;
++    right: 8px;
++    top: 8px;
    }
  
    header {
@@ -776,13 +299,12 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
      padding: 16px 16px 14px;
    }
  
--  .logo {
-+  .logo-button {
+   .logo-button {
      top: 8px;
      left: 10px;
-+  }
-+
-+  .logo {
+   }
+ 
+   .logo {
      width: 56px;
    }
  
@@ -794,969 +316,198 @@ index 2ab6d8a4fdf28e2b41b6143dd4792746c2c81b07..59526b1756f9f4c598e9cbd66f39ae63
      font-size: 22px;
    }
  }
-+
-+
-+.dex-search {
-+  display: flex;
-+  gap: 10px;
-+  justify-content: center;
-+  width: min(100%, 820px);
+ 
+@@ -695,87 +727,138 @@ header h2 {
+   background: rgba(8, 18, 13, 0.93);
+ }
+ 
+ .search-preview .preview-card {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   padding: 8px 14px;
+   border: 2px solid #2f6b44;
+   border-radius: 12px;
+   background: #08120d;
+   color: #eaffea;
+   width: 100%;
+   font-family: Pixel;
+   text-align: left;
+ }
+ 
+ .search-preview .preview-card img {
+   width: 52px;
+ }
+ 
+ .side-menu {
+   position: fixed;
+   top: 0;
+   left: 0;
+-  width: min(320px, 82vw);
++  width: min(300px, 42vw);
+   height: 100vh;
+   background: #08120d;
+   border-right: 2px solid #2f6b44;
+   z-index: 1000;
+-  padding: 18px 14px;
++  padding: 14px 12px;
+   transform: translateX(-102%);
+   transition: transform 0.25s ease;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+ }
+ 
+ .side-menu.open {
+   transform: translateX(0);
+ }
+ 
+ .side-menu-header {
+   font-family: Pokemon;
+   color: #f8d030;
+   text-align: center;
+-  margin-bottom: 14px;
++  margin-bottom: 8px;
 +}
 +
-+#dexInput {
-+  width: 110px;
-+  text-align: center;
-+}
-+
-+
-+.dex-search .filter-btn {
-+  margin: 0;
-+  box-shadow: none;
-+  border-color: #4fae78;
-+  background: #2f6b44;
-+}
-+
-+.dex-search .filter-btn:hover {
-+  box-shadow: 0 0 10px rgba(79, 174, 120, 0.45);
-+}
-+
-+.search-btn,
-+.modal-actions button {
-+  background: #2f6b44;
-+  border: 2px solid #4fae78;
-+  color: #eaffea;
-+  padding: 8px 16px;
-+  border-radius: 10px;
-+  font-family: Pixel;
-+  cursor: pointer;
-+}
-+
-+#closeFiltersBtn {
-+  background: #2a2a2a;
-+  border-color: #7a7a7a;
-+}
-+
-+.search-preview {
-+  display: flex;
-+  justify-content: center;
-+  width: min(100%, 820px);
-+}
-+
-+.search-preview .preview-list {
-+  width: 100%;
-+  display: grid;
-+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
++.side-menu-divider {
++  height: 2px;
++  background: rgba(123,220,101,0.45);
++  margin-bottom: 12px;
+ }
+ 
+ .side-menu-actions {
+   display: flex;
+   flex-direction: column;
+-  gap: 10px;
 +  gap: 8px;
-+  padding: 10px;
-+  border: 1px solid #214830;
-+  border-radius: 14px;
-+  background: rgba(8, 18, 13, 0.93);
-+}
++  justify-content: flex-start;
+ }
+ 
+ .side-menu-btn {
+   width: 100%;
+   min-height: 44px;
+   background: linear-gradient(180deg, #2f6b44, #1f4d2b);
+   border: 2px solid #7bdc65;
+   color: #fff;
+   border-radius: 10px;
+   font-family: Pixel;
+   text-decoration: none;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+ }
+ 
+ .side-menu-backdrop {
+   position: fixed;
+   inset: 0;
+   background: rgba(0,0,0,0.45);
+   z-index: 999;
+ }
+ 
+ @media (max-width: 768px) {
+   .dex-search {
+     width: 100%;
+     flex-wrap: wrap;
+   }
+ 
+   .dex-search input,
+   .dex-search button {
+     width: 100%;
+   }
 +
-+.search-preview .preview-card {
-+  display: flex;
-+  align-items: center;
-+  gap: 10px;
-+  padding: 8px 14px;
-+  border: 2px solid #2f6b44;
-+  border-radius: 12px;
-+  background: #08120d;
-+  color: #eaffea;
-+  width: 100%;
-+  font-family: Pixel;
-+  text-align: left;
-+}
-+
-+.search-preview .preview-card img {
-+  width: 52px;
-+}
-+
-+.side-menu {
-+  position: fixed;
-+  top: 0;
-+  left: 0;
-+  width: min(320px, 82vw);
-+  height: 100vh;
-+  background: #08120d;
-+  border-right: 2px solid #2f6b44;
-+  z-index: 1000;
-+  padding: 18px 14px;
-+  transform: translateX(-102%);
-+  transition: transform 0.25s ease;
-+  display: flex;
-+  flex-direction: column;
-+  justify-content: space-between;
-+}
-+
-+.side-menu.open {
-+  transform: translateX(0);
-+}
-+
-+.side-menu-header {
-+  font-family: Pokemon;
-+  color: #f8d030;
-+  text-align: center;
-+  margin-bottom: 14px;
-+}
-+
-+.side-menu-actions {
-+  display: flex;
-+  flex-direction: column;
-+  gap: 10px;
-+}
-+
-+.side-menu-btn {
-+  width: 100%;
-+  min-height: 44px;
-+  background: linear-gradient(180deg, #2f6b44, #1f4d2b);
-+  border: 2px solid #7bdc65;
-+  color: #fff;
-+  border-radius: 10px;
-+  font-family: Pixel;
-+  text-decoration: none;
-+  display: inline-flex;
-+  align-items: center;
-+  justify-content: center;
-+}
-+
-+.side-menu-backdrop {
-+  position: fixed;
-+  inset: 0;
-+  background: rgba(0,0,0,0.45);
-+  z-index: 999;
-+}
-+
-+@media (max-width: 768px) {
-+  .dex-search {
-+    width: 100%;
-+    flex-wrap: wrap;
++  .side-menu {
++    width: min(240px, 48vw);
++    min-width: 190px;
 +  }
 +
-+  .dex-search input,
-+  .dex-search button {
-+    width: 100%;
++  .modal-content {
++    width: 94%;
++    padding: 14px;
++    max-height: 86vh;
++  }
++
++  .modal-sections {
++    gap: 10px;
++  }
++
++  .modal-section {
++    min-width: 200px;
 +  }
 +}
-diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index 2c69801b990cf7798e07c80aa9572722d8936cdc..9194dcfae1fa3efad91299248aba180d68db1afb 100644
---- a/js/pokemon-view.js
-+++ b/js/pokemon-view.js
-@@ -1785,66 +1785,89 @@ document.getElementById("copyDexBtn").addEventListener("click", () => {
-   const text = document.getElementById("dex-entry").textContent;
-   if (!text || text === "Carregando biologia...") return;
-   const formatted = `
- ◄ 『${name}』【${dex}】
- ╔═════════╡✠╞═════════╗
- ${text}
- ╚═════════╡✠╞═════════╝
- `;
-   navigator.clipboard.writeText(formatted).then(() => showCopyToast());
- });
- /* ===== BOTÃO DE CHORO ===== */
- document.querySelector(".cry-btn")?.addEventListener("click", playCry);
- /* ===== NAVEGAÇÃO ===== */
- document.querySelector(".nav-btn.left")?.addEventListener("click", goPrev);
- document.querySelector(".nav-btn.right")?.addEventListener("click", goNext);
- document.getElementById("toggleShinyBtn")?.addEventListener("click", () => {
-   isShinyActive = !isShinyActive;
-   updateArtworkImage();
- });
- document.querySelectorAll("[data-mobile-nav]").forEach((btn) => {
-   btn.addEventListener("click", () => {
-     if (btn.dataset.mobileNav === "prev") goPrev();
-     if (btn.dataset.mobileNav === "next") goNext();
-   });
- });
 +
-+function setupSideMenu() {
-+  const btn = document.getElementById("logoMenuBtn");
-+  const menu = document.getElementById("sideMenu");
-+  const backdrop = document.getElementById("sideMenuBackdrop");
-+  if (!btn || !menu || !backdrop) return;
 +
-+  const close = () => {
-+    menu.classList.remove("open");
-+    backdrop.classList.add("hidden");
-+    menu.setAttribute("aria-hidden", "true");
-+  };
-+
-+  btn.addEventListener("click", () => {
-+    menu.classList.add("open");
-+    backdrop.classList.remove("hidden");
-+    menu.setAttribute("aria-hidden", "false");
-+  });
-+
-+  backdrop.addEventListener("click", close);
++.catalog .pokemon-card .name {
++  font-size: 14px;
 +}
 +
- function setupSiteTitleAnimation() {
-   const homeLink = document.querySelector(".site-home-link");
-   if (!homeLink) return;
-   homeLink.addEventListener("click", (event) => {
-     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-     event.preventDefault();
-     homeLink.classList.remove("expanding");
-     void homeLink.offsetWidth;
-     homeLink.classList.add("expanding");
-     setTimeout(() => {
-       window.location.href = homeLink.getAttribute("href") || "index.html";
-     }, 360);
-   });
- }
- document.addEventListener("DOMContentLoaded", () => {
-   setupSiteTitleAnimation();
-+  setupSideMenu();
-   [nameInput, dexInput].forEach((input) =>
-     input.addEventListener("input", updateSearchPreview),
-   );
-   document.querySelectorAll(".move-tab-buttons .tab-btn").forEach((btn) => {
-     btn.addEventListener("click", () => {
-       const tab = btn.dataset.movetab;
-       document
-         .querySelectorAll("#level-tab, #other-tab")
-         .forEach((t) => t.classList.remove("active"));
-       document
-         .querySelectorAll(".move-tab-buttons .tab-btn")
-         .forEach((b) => b.classList.remove("active"));
-       document.getElementById(`${tab}-tab`)?.classList.add("active");
-       btn.classList.add("active");
-     });
-   });
- 
-   const quickButtons = document.querySelectorAll(".quick-nav-btn");
-   quickButtons.forEach((button) => {
-     button.addEventListener("click", () => {
-       const target = document.querySelector(button.dataset.scrollTarget || "");
-       if (!target) return;
-       target.scrollIntoView({ behavior: "smooth", block: "start" });
-       quickButtons.forEach((btn) => btn.classList.remove("active"));
-       button.classList.add("active");
-diff --git a/js/pokemon.js b/js/pokemon.js
-index 07f5c9b57e6b5f23e16b6272b73c88d1c985d637..8502165199af0031a0aab45e51841337f2310c53 100644
---- a/js/pokemon.js
-+++ b/js/pokemon.js
-@@ -1,360 +1,331 @@
- import { HABITATS } from "./habitats.js";
--const BASE_PATH = window.location.hostname.includes("github.io")
--  ? "/Instituto_Serperior"
--  : "";
- 
- const PAGE_SIZE = 24;
-+const MAX_POKEMON_ID = 1025;
- let index = 0;
--
- let pokemons = [];
- let filtered = [];
-+let pokemonIndex = [];
-+const pokemonDataCache = new Map();
-+
-+const TYPE_OPTIONS = [
-+  "normal","fire","water","electric","grass","ice","fighting","poison","ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy",
-+];
-+
-+const TYPE_ICON_PATHS = {
-+  bug: "assets/types block/bug Type.png",
-+  steel: "assets/types block/Steel.png",
-+};
-+
-+const TYPE_COLORS = {
-+  grass: ["120,200,80", "rgba(120,200,80,0.16)"],
-+  fire: ["240,120,40", "rgba(240,120,40,0.16)"],
-+  water: ["100,150,240", "rgba(100,150,240,0.16)"],
-+  electric: ["248,208,48", "rgba(248,208,48,0.16)"],
-+  psychic: ["248,88,136", "rgba(248,88,136,0.16)"],
-+  dark: ["112,88,72", "rgba(112,88,72,0.16)"],
-+  dragon: ["112,56,248", "rgba(112,56,248,0.16)"],
-+  fairy: ["238,153,172", "rgba(238,153,172,0.16)"],
-+  steel: ["184,184,208", "rgba(184,184,208,0.16)"],
-+  ghost: ["112,88,152", "rgba(112,88,152,0.16)"],
-+  ice: ["152,216,216", "rgba(152,216,216,0.16)"],
-+  fighting: ["192,48,40", "rgba(192,48,40,0.16)"],
-+  ground: ["224,192,104", "rgba(224,192,104,0.16)"],
-+  rock: ["184,160,56", "rgba(184,160,56,0.16)"],
-+  poison: ["160,64,160", "rgba(160,64,160,0.16)"],
-+  flying: ["168,144,240", "rgba(168,144,240,0.16)"],
-+  bug: ["168,184,32", "rgba(168,184,32,0.16)"],
-+  normal: ["168,168,120", "rgba(168,168,120,0.16)"],
-+};
-+
-+function getTypeIconPath(type) {
-+  return TYPE_ICON_PATHS[type] || `assets/types block/${type}.png`;
++.catalog .pokemon-card .official-art {
++  width: 96px;
++  height: 96px;
 +}
 +
-+async function getPokemonData(pokemon) {
-+  if (pokemonDataCache.has(pokemon.url)) return pokemonDataCache.get(pokemon.url);
-+  const data = await fetch(pokemon.url).then((res) => res.json());
-+  pokemonDataCache.set(pokemon.url, data);
-+  return data;
-+}
- 
- async function loadPokemons() {
--  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
-+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${MAX_POKEMON_ID}`);
-   const data = await res.json();
- 
-   pokemons = data.results.map((p, i) => ({
-     dex: i + 1,
-     name: capitalize(p.name),
-     url: p.url,
-     generation: getGeneration(i + 1),
--    types: null, // carregaremos sob demanda
-+    types: null,
-   }));
- 
-+  pokemonIndex = pokemons.map((p) => ({ id: p.dex, name: p.name.toLowerCase() }));
-   filtered = [...pokemons];
-   render(true);
- }
- 
--async function loadTypes(pokemon, cardElement) {
--  if (!pokemon.types) {
--    const res = await fetch(pokemon.url);
--    const data = await res.json();
--    pokemon.types = data.types.map((t) => t.type.name);
--    applyTypeColor(cardElement, pokemon.types);
--  }
--
--  const typesContainer = cardElement.querySelector(".types");
--  typesContainer.innerHTML = renderTypes(pokemon.types);
-+function renderFilterTypes() {
-+  const container = document.getElementById("filter-types");
-+  container.innerHTML = TYPE_OPTIONS.map((type) => `
-+    <label data-type="${type}">
-+      <input type="checkbox" value="${type}">
-+      <img src="${getTypeIconPath(type)}" alt="${type}">
-+    </label>
-+  `).join("");
-+
-+  container.querySelectorAll("label").forEach((label) => {
-+    const input = label.querySelector("input");
-+    input.addEventListener("change", () => {
-+      label.classList.toggle("is-selected", input.checked);
-+    });
-+  });
- }
- 
- function loadHabitats() {
-   const container = document.getElementById("filter-habitats");
--
-   HABITATS.forEach((h) => {
-     const label = document.createElement("label");
--    label.innerHTML = `
--      <input type="checkbox" value="${h.id}">
--      ${h.nome}
--    `;
-+    label.innerHTML = `<input type="checkbox" value="${h.id}"> ${h.nome}`;
-     container.appendChild(label);
-   });
- }
- 
-+async function loadTypes(pokemon, cardElement) {
-+  if (!pokemon.types) {
-+    const data = await getPokemonData(pokemon);
-+    pokemon.types = data.types.map((t) => t.type.name);
-+  }
-+  applyTypeColor(cardElement, pokemon.types);
-+  const typesContainer = cardElement.querySelector(".types");
-+  typesContainer.innerHTML = renderTypes(pokemon.types);
++.catalog .pokemon-card .type-pill {
++  font-size: 10px;
++  height: 26px;
++  padding: 0 8px;
 +}
 +
- async function preloadAllTypes() {
--  const promises = pokemons.map(async (p) => {
-+  await Promise.all(pokemons.map(async (p) => {
-     if (!p.types) {
--      const res = await fetch(p.url);
--      const data = await res.json();
-+      const data = await getPokemonData(p);
-       p.types = data.types.map((t) => t.type.name);
-     }
--  });
--
--  await Promise.all(promises);
-+  }));
- }
- 
- function render(reset) {
-   const list = document.getElementById("pokemon-list");
-   applyResponsiveView();
--
-   if (reset) {
-     list.innerHTML = "";
-     index = 0;
-   }
- 
-   const slice = filtered.slice(index, index + PAGE_SIZE);
-   index += PAGE_SIZE;
- 
-   slice.forEach((p) => {
-     list.insertAdjacentHTML("beforeend", createCard(p));
--
-     const card = list.lastElementChild;
--
-     card.addEventListener("click", () => {
-       window.location.href = `pokemon-view.html?id=${p.dex}`;
-     });
-     loadTypes(p, card);
-   });
- 
-   document.querySelectorAll(".load-more").forEach((b) => b.remove());
--
-   if (index < filtered.length) {
--    list.insertAdjacentHTML(
--      "beforeend",
--      `
--      <button class="load-more">
--        Carregar mais Pokémon
--      </button>
--    `,
--    );
--
-+    list.insertAdjacentHTML("beforeend", `<button class="load-more">Carregar mais Pokémon</button>`);
-     list.querySelector(".load-more").addEventListener("click", (e) => {
-       e.stopPropagation();
-       render(false);
-     });
-   }
- }
- 
- function applyResponsiveView() {
-   const list = document.getElementById("pokemon-list");
-   if (!list) return;
--
-   const isMobile = window.matchMedia("(max-width: 768px)").matches;
-   list.classList.toggle("list", isMobile);
-   list.classList.toggle("catalog", !isMobile);
- }
- 
- function renderTypes(types) {
--  const isMobile = window.matchMedia("(max-width: 768px)").matches;
--
--  if (isMobile) {
--    return types
--      .map(
--        (t) =>
--          `<span class="type-pill type-pill-${t}">${t.toUpperCase()}</span>`,
--      )
--      .join("");
--  }
--
--  return types
--    .map(
--      (t) =>
--        `<img class="type-icon"
--          src="assets/types/${t}.png"
--          alt="${t}"
--          loading="lazy">`,
--    )
--    .join("");
-+  return types.map((t) => `
-+    <span class="type-pill type-pill-${t}" style="--type-rgb:${TYPE_COLORS[t]?.[0] || "80,80,80"}">
-+      <img class="type-icon" src="${getTypeIconPath(t)}" alt="${t}" loading="lazy">${t.toUpperCase()}
-+    </span>`).join("");
- }
- 
- function createCard(p) {
--  return `
--    <div class="pokemon-card">
--      <div class="image-box">
--        <img class="official-art"
--          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png"
--          loading="lazy"
--          alt="${p.name}">
--      </div>
--
--      <div class="info">
--        <div class="name">
--          #${String(p.dex).padStart(3, "0")} ${p.name}
--        </div>
--        <div class="types"></div>
--      </div>
--    </div>
--  `;
-+  return `<div class="pokemon-card"><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
- }
- 
- function applyTypeColor(card, types) {
-   const primary = types[0];
--
--  const colors = {
--    grass: ["120,200,80", "rgba(120,200,80,0.16)"],
--    fire: ["240,120,40", "rgba(240,120,40,0.16)"],
--    water: ["100,150,240", "rgba(100,150,240,0.16)"],
--    electric: ["248,208,48", "rgba(248,208,48,0.16)"],
--    psychic: ["248,88,136", "rgba(248,88,136,0.16)"],
--    dark: ["112,88,72", "rgba(112,88,72,0.16)"],
--    dragon: ["112,56,248", "rgba(112,56,248,0.16)"],
--    fairy: ["238,153,172", "rgba(238,153,172,0.16)"],
--    steel: ["184,184,208", "rgba(184,184,208,0.16)"],
--    ghost: ["112,88,152", "rgba(112,88,152,0.16)"],
--    ice: ["152,216,216", "rgba(152,216,216,0.16)"],
--    fighting: ["192,48,40", "rgba(192,48,40,0.16)"],
--    ground: ["224,192,104", "rgba(224,192,104,0.16)"],
--    rock: ["184,160,56", "rgba(184,160,56,0.16)"],
--    poison: ["160,64,160", "rgba(160,64,160,0.16)"],
--    flying: ["168,144,240", "rgba(168,144,240,0.16)"],
--    bug: ["168,184,32", "rgba(168,184,32,0.16)"],
--    normal: ["168,168,120", "rgba(168,168,120,0.16)"],
--  };
--
--  if (!colors[primary]) return;
--
--  const [rgb, background] = colors[primary];
--
-+  if (!TYPE_COLORS[primary]) return;
-+  const [rgb, background] = TYPE_COLORS[primary];
-   card.style.borderColor = `rgba(${rgb}, 0.55)`;
-   card.style.background = background;
-   card.style.setProperty("--type-border-soft", `rgba(${rgb}, 0.45)`);
- }
- 
- function searchPokemon(text) {
-   const value = text.trim().toLowerCase();
--
-   if (!value) {
-     filtered = [...pokemons];
-     render(true);
-     return;
-   }
-+  filtered = pokemons.filter((p) => p.name.toLowerCase().includes(value) || String(p.dex).startsWith(value));
-+  render(true);
++.catalog .pokemon-card .type-icon {
++  width: 16px;
++  height: 16px;
 +}
 +
-+function goToPokemonBySearch() {
-+  const nameValue = document.getElementById("searchInput").value.trim().toLowerCase();
-+  const dexValue = document.getElementById("dexInput").value.trim();
-+  const query = nameValue || dexValue;
-+  if (!query) return;
- 
--  // Se for número → navegar direto
--  if (!isNaN(value)) {
--    const id = Number(value);
--    if (id >= 1 && id <= 1025) {
-+  if (!Number.isNaN(Number(query))) {
-+    const id = Number(query);
-+    if (id >= 1 && id <= MAX_POKEMON_ID) {
-       window.location.href = `pokemon-view.html?id=${id}`;
-       return;
-     }
-   }
- 
--  // Se nome exato → navegar
--  const exact = pokemons.find((p) => p.name.toLowerCase() === value);
--
--  if (exact) {
--    window.location.href = `pokemon-view.html?id=${exact.dex}`;
--    return;
--  }
--
--  // Caso contrário → filtrar normalmente
--  filtered = pokemons.filter((p) => p.name.toLowerCase().includes(value));
-+  const found = pokemons.find((p) => p.name.toLowerCase() === query);
-+  if (found) window.location.href = `pokemon-view.html?id=${found.dex}`;
-+}
- 
--  render(true);
-+function updateSearchPreview() {
-+  const nameInput = document.getElementById("searchInput");
-+  const dexInput = document.getElementById("dexInput");
-+  const preview = document.getElementById("search-preview");
-+  const query = nameInput.value.trim().toLowerCase() || dexInput.value.trim();
-+  preview.innerHTML = "";
-+  if (!query) return;
-+
-+  const candidates = pokemonIndex.filter((p) => p.name.includes(query) || String(p.id).startsWith(query)).slice(0, 6);
-+  if (!candidates.length) return;
-+
-+  const list = document.createElement("div");
-+  list.className = "preview-list";
-+  candidates.forEach((found) => {
-+    const card = document.createElement("button");
-+    card.className = "preview-card";
-+    card.type = "button";
-+    card.innerHTML = `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${found.id}.png" alt="${found.name}"><span>#${String(found.id).padStart(4, "0")} ${capitalize(found.name)}</span>`;
-+    card.onclick = () => {
-+      window.location.href = `pokemon-view.html?id=${found.id}`;
-+    };
-+    list.appendChild(card);
-+  });
-+  preview.appendChild(list);
++.catalog .pokemon-card .types {
++  flex-wrap: wrap;
  }
- 
- function openFilters() {
-   document.getElementById("filter-modal").classList.remove("hidden");
- }
- 
- function closeFilters() {
-   document.getElementById("filter-modal").classList.add("hidden");
- }
- 
- async function applyFilters() {
-   await preloadAllTypes();
--
--  const types = [
--    ...document.querySelectorAll(".filter-types input:checked"),
--  ].map((i) => i.value);
--
--  const gens = [...document.querySelectorAll(".filter-gens input:checked")].map(
--    (i) => Number(i.value),
--  );
--
--  const habitats = [
--    ...document.querySelectorAll(".filter-habitats input:checked"),
--  ].map((i) => i.value);
-+  const types = [...document.querySelectorAll(".filter-types input:checked")].map((i) => i.value);
-+  const gens = [...document.querySelectorAll(".filter-gens input:checked")].map((i) => Number(i.value));
-+  const habitats = [...document.querySelectorAll(".filter-habitats input:checked")].map((i) => i.value);
- 
-   filtered = pokemons.filter((p) => {
--    const matchType =
--      types.length === 0 || p.types.some((t) => types.includes(t));
--
-+    const matchType = types.length === 0 || p.types.some((t) => types.includes(t));
-     const matchGen = gens.length === 0 || gens.includes(p.generation);
--
--    const matchHabitat =
--      habitats.length === 0 ||
--      HABITATS.filter((h) => habitats.includes(h.id)).some((h) =>
--        h.pokedex.includes(p.dex),
--      );
--
-+    const matchHabitat = habitats.length === 0 || HABITATS.filter((h) => habitats.includes(h.id)).some((h) => h.pokedex.includes(p.dex));
-     return matchType && matchGen && matchHabitat;
-   });
- 
-   render(true);
-   closeFilters();
- }
- 
--/* filtro por geração */
--function filterByGen(gen) {
--  filtered = gen ? pokemons.filter((p) => p.generation == gen) : [...pokemons];
--  render(true);
-+function setupSiteTitleAnimation() {
-+  const homeLink = document.querySelector(".site-home-link");
-+  if (!homeLink) return;
-+  homeLink.addEventListener("click", (event) => {
-+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-+    event.preventDefault();
-+    homeLink.classList.remove("expanding");
-+    void homeLink.offsetWidth;
-+    homeLink.classList.add("expanding");
-+    setTimeout(() => {
-+      window.location.href = homeLink.getAttribute("href") || "index.html";
-+    }, 360);
-+  });
- }
- 
--/* filtro por tipo */
--function filterByType(select) {
--  const selected = [...select.selectedOptions].map((o) => o.value);
--
--  if (!selected.length) {
--    filtered = [...pokemons];
--  } else {
--    filtered = pokemons.filter((p) =>
--      selected.every((t) => p.types.includes(t)),
--    );
--  }
--
--  render(true);
--}
-+function setupSideMenu() {
-+  const btn = document.getElementById("logoMenuBtn");
-+  const menu = document.getElementById("sideMenu");
-+  const backdrop = document.getElementById("sideMenuBackdrop");
-+  if (!btn || !menu || !backdrop) return;
- 
--function goToPokemon(dex) {
--  const id = Number(dex);
-+  const close = () => {
-+    menu.classList.remove("open");
-+    backdrop.classList.add("hidden");
-+    menu.setAttribute("aria-hidden", "true");
-+  };
- 
--  if (!id || id < 1 || id > 1025) return;
-+  btn.addEventListener("click", () => {
-+    menu.classList.add("open");
-+    backdrop.classList.remove("hidden");
-+    menu.setAttribute("aria-hidden", "false");
-+  });
- 
--  window.location.href = `pokemon-view.html?id=${id}`;
-+  backdrop.addEventListener("click", close);
- }
- 
- function capitalize(text) {
-   return text.charAt(0).toUpperCase() + text.slice(1);
- }
- 
- function getGeneration(dex) {
-   if (dex <= 151) return 1;
-   if (dex <= 251) return 2;
-   if (dex <= 386) return 3;
-   if (dex <= 493) return 4;
-   if (dex <= 649) return 5;
-   if (dex <= 721) return 6;
-   if (dex <= 809) return 7;
-   if (dex <= 905) return 8;
-   return 9;
- }
- 
--function setupSiteTitleAnimation() {
--  const homeLink = document.querySelector(".site-home-link");
--  if (!homeLink) return;
--
--  homeLink.addEventListener("click", (event) => {
--    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
--
--    event.preventDefault();
--    homeLink.classList.remove("expanding");
--    void homeLink.offsetWidth;
--    homeLink.classList.add("expanding");
--
--    setTimeout(() => {
--      window.location.href = homeLink.getAttribute("href") || "index.html";
--    }, 360);
--  });
--}
--
- document.addEventListener("DOMContentLoaded", () => {
-   setupSiteTitleAnimation();
-+  setupSideMenu();
-+  renderFilterTypes();
-   loadHabitats();
-   applyResponsiveView();
-   loadPokemons();
-   window.addEventListener("resize", applyResponsiveView);
- 
--  // Pesquisa por nome
--  document.getElementById("searchInput").addEventListener("input", (e) => {
-+  const nameInput = document.getElementById("searchInput");
-+  const dexInput = document.getElementById("dexInput");
-+  nameInput.addEventListener("input", (e) => {
-     searchPokemon(e.target.value);
-+    updateSearchPreview();
-   });
--
--  // Pesquisa por número
--  document.getElementById("dexInput").addEventListener("keydown", (e) => {
--    if (e.key === "Enter") {
--      goToPokemon(e.target.value);
--    }
-+  dexInput.addEventListener("input", updateSearchPreview);
-+  dexInput.addEventListener("keydown", (e) => {
-+    if (e.key === "Enter") goToPokemonBySearch();
-+  });
-+  nameInput.addEventListener("keydown", (e) => {
-+    if (e.key === "Enter") goToPokemonBySearch();
-   });
- 
--  // Botões
--  document
--    .getElementById("openFiltersBtn")
--    .addEventListener("click", openFilters);
--
--  document
--    .getElementById("applyFiltersBtn")
--    .addEventListener("click", applyFilters);
--
--  document
--    .getElementById("closeFiltersBtn")
--    .addEventListener("click", closeFilters);
-+  document.getElementById("searchBtn").addEventListener("click", goToPokemonBySearch);
-+  document.getElementById("openFiltersBtn").addEventListener("click", openFilters);
-+  document.getElementById("applyFiltersBtn").addEventListener("click", applyFilters);
-+  document.getElementById("closeFiltersBtn").addEventListener("click", closeFilters);
- });
-diff --git a/pokemon-view.html b/pokemon-view.html
-index e7bd64144a2457236c06812ff5e855135fa7fbb9..699140f38df663ebbf5255c2a017de9fd650d96d 100644
---- a/pokemon-view.html
-+++ b/pokemon-view.html
-@@ -1,51 +1,63 @@
- 
- 
- <!DOCTYPE html>
- <html lang="pt-br">
- <head>
-   <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Registro Pokémon</title>
- 
-   <link rel="stylesheet" href="css/pokemon.css">
-   <link rel="stylesheet" href="css/pokemon-view.css">
-   <link rel="icon" href="assets/logo.png">
- 
- 
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <script type="module" src="js/pokemon-view.js"></script>
- </head>
- 
- <body>
-+<aside id="sideMenu" class="side-menu" aria-hidden="true">
-+  <div class="side-menu-header">Menu</div>
-+  <div class="side-menu-actions top">
-+    <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
-+    <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
-+    <button class="side-menu-btn" type="button">Lista de habilidades</button>
-+  </div>
-+  <button class="side-menu-btn side-menu-login" type="button">Logar</button>
-+</aside>
-+<div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
-  <div class="nav-zone left" data-nav="prev"></div>
-  <button class="nav-btn left" data-nav="prev" type="button" aria-label="Pokémon anterior">
-   <span class="nav-btn-arrow">◀</span>
-   <span class="nav-btn-dex" id="desktop-prev-dex">#1025</span>
-  </button>
- <header>
--  <img src="assets/logo.png" class="logo">
-+  <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
-+    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
-+  </button>
- 
-   <div class="title-container">
-     <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
-     <h2><a href="pokemon.html" class="section-home-link">Registro Pokémon</a></h2>
-   </div>
- </header>
- 
- <div class="dex-search">
-   <input
-     type="number"
-     id="dexNumberInput"
-     min="1"
-     placeholder="Nº Dex"
-   />
- 
-   <input 
-     type="text" 
-     id="dexSearchInput" 
-     placeholder="Nome do Pokémon"
-   />
- 
-   <button id="dexSearchBtn">Buscar</button>
- </div>
- <div id="search-preview" class="search-preview"></div>
- 
-diff --git a/pokemon.html b/pokemon.html
-index a3d42e6a1fbba4f4658b4375977e049777493886..95155e652bbc598ff79b720278853be6e6d0c069 100644
---- a/pokemon.html
-+++ b/pokemon.html
-@@ -1,104 +1,85 @@
- <!DOCTYPE html>
- <html lang="pt-br">
- <head>
-   <meta charset="UTF-8">
--<meta name="viewport" content="width=device-width, initial-scale=1.0">
+diff --git a/favoritos.html b/favoritos.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..3b5c4acb9b5ad06e56f15d9208f22d80bb60036d
+--- /dev/null
++++ b/favoritos.html
+@@ -0,0 +1,87 @@
++<!DOCTYPE html>
++<html lang="pt-br">
++<head>
++  <meta charset="UTF-8">
 +  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Pokémon RPG</title>
--
-   <link rel="stylesheet" href="css/pokemon.css">
--<script type="module" src="js/pokemon.js"></script>
--
++  <title>Pokémon RPG</title>
++  <link rel="stylesheet" href="css/pokemon.css">
 +  <script type="module" src="js/pokemon.js"></script>
- </head>
--
- <body>
- 
++</head>
++<body>
++
 +<aside id="sideMenu" class="side-menu" aria-hidden="true">
 +  <div class="side-menu-header">Menu</div>
++  <div class="side-menu-divider"></div>
 +  <div class="side-menu-actions top">
 +    <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
 +    <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
 +    <button class="side-menu-btn" type="button">Lista de habilidades</button>
++    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
 +  </div>
 +  <button class="side-menu-btn side-menu-login" type="button">Logar</button>
 +</aside>
 +<div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
 +
- <header>
--  <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
++<header>
 +  <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
 +    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
 +  </button>
- 
-   <div class="title-container">
-     <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
-     <h2><a href="pokemon.html" class="section-home-link">Registro Pokémon</a></h2>
-   </div>
- </header>
- 
--
- <section class="controls">
--<input
--  type="text"
--  id="searchInput"
--  placeholder="Pesquisar Pokémon"
-->
--
--<input
--  id="dexInput"
--  type="number"
--  min="1"
--  placeholder="Nº Dex"
-->
--
--<button class="filter-btn" id="openFiltersBtn">Filtros</button>
--
--<div id="filter-modal" class="modal hidden">
--  <div class="modal-content">
--  <h4>Filtrar Pokémon</h4>
--
--  <div class="modal-sections">
--
--    <div class="modal-section">
--      <h4>Tipos</h4>
--      <div class="filter-types">   
--<label class="type-normal"><input type="checkbox" value="normal"> Normal</label>
--  <label class="type-fire"><input type="checkbox" value="fire"> Fire</label>
--  <label class="type-water"><input type="checkbox" value="water"> Water</label>
--  <label class="type-electric"><input type="checkbox" value="electric"> Electric</label>
--  <label class="type-grass"><input type="checkbox" value="grass"> Grass</label>
--  <label class="type-ice"><input type="checkbox" value="ice"> Ice</label>
--  <label class="type-fighting"><input type="checkbox" value="fighting"> Fighting</label>
--  <label class="type-poison"><input type="checkbox" value="poison"> Poison</label>
--  <label class="type-ground"><input type="checkbox" value="ground"> Ground</label>
--  <label class="type-flying"><input type="checkbox" value="flying"> Flying</label>
--  <label class="type-psychic"><input type="checkbox" value="psychic"> Psychic</label>
--  <label class="type-bug"><input type="checkbox" value="bug"> Bug</label>
--  <label class="type-rock"><input type="checkbox" value="rock"> Rock</label>
--  <label class="type-ghost"><input type="checkbox" value="ghost"> Ghost</label>
--  <label class="type-dragon"><input type="checkbox" value="dragon"> Dragon</label>
--  <label class="type-dark"><input type="checkbox" value="dark"> Dark</label>
--  <label class="type-steel"><input type="checkbox" value="steel"> Steel</label>
--  <label class="type-fairy"><input type="checkbox" value="fairy"> Fairy</label>
--    </div>
--
--    <div class="modal-section">
--      <h4>Gerações</h4>
--      <div class="filter-gens">   
--<label><input type="checkbox" value="1"> Gen I</label>
--  <label><input type="checkbox" value="2"> Gen II</label>
--  <label><input type="checkbox" value="3"> Gen III</label>
--  <label><input type="checkbox" value="4"> Gen IV</label>
--  <label><input type="checkbox" value="5"> Gen V</label>
--  <label><input type="checkbox" value="6"> Gen VI</label>
--  <label><input type="checkbox" value="7"> Gen VII</label>
--  <label><input type="checkbox" value="8"> Gen VIII</label>
--  <label><input type="checkbox" value="9"> Gen IX</label>
--    </div>
--
--    <div class="modal-section">
--      <h4>Habitat</h4>
--      <div class="filter-habitats" id="filter-habitats"></div>
--    </div>
--
++
++  <div class="title-container">
++    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
++    <h2><a href="favoritos.html" class="section-home-link">Favoritos</a></h2>
++  </div>
++</header>
++
++<section class="controls">
 +  <div class="dex-search">
 +    <input id="dexInput" type="number" min="1" placeholder="Nº Dex">
 +    <input type="text" id="searchInput" placeholder="Pesquisar Pokémon">
 +    <button id="searchBtn" class="search-btn" type="button">Buscar</button>
 +    <button class="filter-btn" id="openFiltersBtn" type="button">Filtros</button>
-   </div>
--
--  <div class="modal-actions">
--<button id="applyFiltersBtn">Buscar</button>
--<button id="closeFiltersBtn">Cancelar</button>
++  </div>
 +  <div id="search-preview" class="search-preview"></div>
 +
 +  <div id="filter-modal" class="modal hidden">
@@ -1795,14 +546,474 @@ index a3d42e6a1fbba4f4658b4375977e049777493886..95155e652bbc598ff79b720278853be6
 +        <button id="closeFiltersBtn" type="button">Cancelar</button>
 +      </div>
 +    </div>
-   </div>
--</div>
++  </div>
++</section>
++
++<div id="pokemon-list" class="catalog"></div>
++
++</body>
++</html>
+diff --git a/js/pokemon.js b/js/pokemon.js
+index 8502165199af0031a0aab45e51841337f2310c53..09241d8150ee7a4b8f3ed09e1f2ae1d7290b0cae 100644
+--- a/js/pokemon.js
++++ b/js/pokemon.js
+@@ -1,269 +1,330 @@
+ import { HABITATS } from "./habitats.js";
+ 
+ const PAGE_SIZE = 24;
+ const MAX_POKEMON_ID = 1025;
++const FAVORITES_KEY = "favoritePokemons";
+ let index = 0;
+ let pokemons = [];
+ let filtered = [];
+ let pokemonIndex = [];
++let favorites = new Set();
+ const pokemonDataCache = new Map();
++const typePokemonIdsCache = new Map();
++const habitatPokemonMap = new Map(HABITATS.map((h) => [h.id, new Set(h.pokedex)]));
++const favoritesMode = window.location.pathname.endsWith("favoritos.html");
+ 
+ const TYPE_OPTIONS = [
+-  "normal","fire","water","electric","grass","ice","fighting","poison","ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy",
++  "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy",
+ ];
+ 
+ const TYPE_ICON_PATHS = {
+   bug: "assets/types block/bug Type.png",
+   steel: "assets/types block/Steel.png",
+ };
+ 
+ const TYPE_COLORS = {
+   grass: ["120,200,80", "rgba(120,200,80,0.16)"],
+   fire: ["240,120,40", "rgba(240,120,40,0.16)"],
+   water: ["100,150,240", "rgba(100,150,240,0.16)"],
+   electric: ["248,208,48", "rgba(248,208,48,0.16)"],
+   psychic: ["248,88,136", "rgba(248,88,136,0.16)"],
+   dark: ["112,88,72", "rgba(112,88,72,0.16)"],
+   dragon: ["112,56,248", "rgba(112,56,248,0.16)"],
+   fairy: ["238,153,172", "rgba(238,153,172,0.16)"],
+   steel: ["184,184,208", "rgba(184,184,208,0.16)"],
+   ghost: ["112,88,152", "rgba(112,88,152,0.16)"],
+   ice: ["152,216,216", "rgba(152,216,216,0.16)"],
+   fighting: ["192,48,40", "rgba(192,48,40,0.16)"],
+   ground: ["224,192,104", "rgba(224,192,104,0.16)"],
+   rock: ["184,160,56", "rgba(184,160,56,0.16)"],
+   poison: ["160,64,160", "rgba(160,64,160,0.16)"],
+   flying: ["168,144,240", "rgba(168,144,240,0.16)"],
+   bug: ["168,184,32", "rgba(168,184,32,0.16)"],
+   normal: ["168,168,120", "rgba(168,168,120,0.16)"],
+ };
+ 
+ function getTypeIconPath(type) {
+   return TYPE_ICON_PATHS[type] || `assets/types block/${type}.png`;
+ }
+ 
++function loadFavorites() {
++  try {
++    const stored = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
++    favorites = new Set(stored.filter((id) => Number.isInteger(id)));
++  } catch {
++    favorites = new Set();
++  }
++}
++
++function persistFavorites() {
++  localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
++}
++
+ async function getPokemonData(pokemon) {
+   if (pokemonDataCache.has(pokemon.url)) return pokemonDataCache.get(pokemon.url);
+   const data = await fetch(pokemon.url).then((res) => res.json());
+   pokemonDataCache.set(pokemon.url, data);
+   return data;
+ }
+ 
++async function getIdsByType(type) {
++  if (typePokemonIdsCache.has(type)) return typePokemonIdsCache.get(type);
++  const typeData = await fetch(`https://pokeapi.co/api/v2/type/${type}`).then((res) => res.json());
++  const ids = new Set(
++    typeData.pokemon
++      .map((entry) => Number(entry.pokemon.url.split("/").filter(Boolean).pop()))
++      .filter((id) => Number.isInteger(id) && id <= MAX_POKEMON_ID),
++  );
++  typePokemonIdsCache.set(type, ids);
++  return ids;
++}
++
+ async function loadPokemons() {
+   const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${MAX_POKEMON_ID}`);
+   const data = await res.json();
+ 
+   pokemons = data.results.map((p, i) => ({
+     dex: i + 1,
+     name: capitalize(p.name),
+     url: p.url,
+     generation: getGeneration(i + 1),
+     types: null,
+   }));
+ 
+   pokemonIndex = pokemons.map((p) => ({ id: p.dex, name: p.name.toLowerCase() }));
+-  filtered = [...pokemons];
++  filtered = favoritesMode ? pokemons.filter((p) => favorites.has(p.dex)) : [...pokemons];
+   render(true);
+ }
+ 
+ function renderFilterTypes() {
+   const container = document.getElementById("filter-types");
+   container.innerHTML = TYPE_OPTIONS.map((type) => `
+     <label data-type="${type}">
+       <input type="checkbox" value="${type}">
+       <img src="${getTypeIconPath(type)}" alt="${type}">
+     </label>
+   `).join("");
+ 
+   container.querySelectorAll("label").forEach((label) => {
+     const input = label.querySelector("input");
+     input.addEventListener("change", () => {
+       label.classList.toggle("is-selected", input.checked);
+     });
+   });
+ }
+ 
+ function loadHabitats() {
+   const container = document.getElementById("filter-habitats");
+   HABITATS.forEach((h) => {
+     const label = document.createElement("label");
+     label.innerHTML = `<input type="checkbox" value="${h.id}"> ${h.nome}`;
+     container.appendChild(label);
+   });
+ }
+ 
+ async function loadTypes(pokemon, cardElement) {
+   if (!pokemon.types) {
+     const data = await getPokemonData(pokemon);
+     pokemon.types = data.types.map((t) => t.type.name);
+   }
+   applyTypeColor(cardElement, pokemon.types);
+   const typesContainer = cardElement.querySelector(".types");
+   typesContainer.innerHTML = renderTypes(pokemon.types);
+ }
+ 
+-async function preloadAllTypes() {
+-  await Promise.all(pokemons.map(async (p) => {
+-    if (!p.types) {
+-      const data = await getPokemonData(p);
+-      p.types = data.types.map((t) => t.type.name);
+-    }
+-  }));
+-}
 -
--</div>
--</div>
- </section>
+ function render(reset) {
+   const list = document.getElementById("pokemon-list");
+   applyResponsiveView();
+   if (reset) {
+     list.innerHTML = "";
+     index = 0;
+   }
  
- <div id="pokemon-list" class="catalog"></div>
+   const slice = filtered.slice(index, index + PAGE_SIZE);
+   index += PAGE_SIZE;
  
- </body>
- </html>
+   slice.forEach((p) => {
+     list.insertAdjacentHTML("beforeend", createCard(p));
+     const card = list.lastElementChild;
+     card.addEventListener("click", () => {
+       window.location.href = `pokemon-view.html?id=${p.dex}`;
+     });
++
++    const favoriteBtn = card.querySelector(".favorite-btn");
++    favoriteBtn.addEventListener("click", (event) => {
++      event.stopPropagation();
++      toggleFavorite(p.dex, favoriteBtn);
++    });
++
+     loadTypes(p, card);
+   });
+ 
+   document.querySelectorAll(".load-more").forEach((b) => b.remove());
+   if (index < filtered.length) {
+     list.insertAdjacentHTML("beforeend", `<button class="load-more">Carregar mais Pokémon</button>`);
+     list.querySelector(".load-more").addEventListener("click", (e) => {
+       e.stopPropagation();
+       render(false);
+     });
+   }
+ }
+ 
++function toggleFavorite(dex, button) {
++  if (favorites.has(dex)) {
++    favorites.delete(dex);
++  } else {
++    favorites.add(dex);
++  }
++  persistFavorites();
++  if (button) {
++    button.querySelector("img").src = favorites.has(dex) ? "assets/favorit.png" : "assets/nofavorit.png";
++  }
++
++  if (favoritesMode) {
++    filtered = filtered.filter((pokemon) => favorites.has(pokemon.dex));
++    render(true);
++  }
++}
++
+ function applyResponsiveView() {
+   const list = document.getElementById("pokemon-list");
+   if (!list) return;
+   const isMobile = window.matchMedia("(max-width: 768px)").matches;
+   list.classList.toggle("list", isMobile);
+   list.classList.toggle("catalog", !isMobile);
+ }
+ 
+ function renderTypes(types) {
+   return types.map((t) => `
+     <span class="type-pill type-pill-${t}" style="--type-rgb:${TYPE_COLORS[t]?.[0] || "80,80,80"}">
+       <img class="type-icon" src="${getTypeIconPath(t)}" alt="${t}" loading="lazy">${t.toUpperCase()}
+     </span>`).join("");
+ }
+ 
+ function createCard(p) {
+-  return `<div class="pokemon-card"><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
++  const favoriteIcon = favorites.has(p.dex) ? "assets/favorit.png" : "assets/nofavorit.png";
++  return `<div class="pokemon-card"><button class="favorite-btn" aria-label="Favoritar ${p.name}" type="button"><img src="${favoriteIcon}" alt="Favorito"></button><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
+ }
+ 
+ function applyTypeColor(card, types) {
+   const primary = types[0];
+   if (!TYPE_COLORS[primary]) return;
+   const [rgb, background] = TYPE_COLORS[primary];
+   card.style.borderColor = `rgba(${rgb}, 0.55)`;
+   card.style.background = background;
+   card.style.setProperty("--type-border-soft", `rgba(${rgb}, 0.45)`);
+ }
+ 
+ function searchPokemon(text) {
+   const value = text.trim().toLowerCase();
++  const source = favoritesMode ? pokemons.filter((p) => favorites.has(p.dex)) : pokemons;
+   if (!value) {
+-    filtered = [...pokemons];
++    filtered = [...source];
+     render(true);
+     return;
+   }
+-  filtered = pokemons.filter((p) => p.name.toLowerCase().includes(value) || String(p.dex).startsWith(value));
++  filtered = source.filter((p) => p.name.toLowerCase().includes(value) || String(p.dex).startsWith(value));
+   render(true);
+ }
+ 
+ function goToPokemonBySearch() {
+   const nameValue = document.getElementById("searchInput").value.trim().toLowerCase();
+   const dexValue = document.getElementById("dexInput").value.trim();
+   const query = nameValue || dexValue;
+   if (!query) return;
+ 
+   if (!Number.isNaN(Number(query))) {
+     const id = Number(query);
+-    if (id >= 1 && id <= MAX_POKEMON_ID) {
++    const allowed = !favoritesMode || favorites.has(id);
++    if (id >= 1 && id <= MAX_POKEMON_ID && allowed) {
+       window.location.href = `pokemon-view.html?id=${id}`;
+       return;
+     }
+   }
+ 
+-  const found = pokemons.find((p) => p.name.toLowerCase() === query);
++  const found = pokemons.find((p) => p.name.toLowerCase() === query && (!favoritesMode || favorites.has(p.dex)));
+   if (found) window.location.href = `pokemon-view.html?id=${found.dex}`;
+ }
+ 
+ function updateSearchPreview() {
+   const nameInput = document.getElementById("searchInput");
+   const dexInput = document.getElementById("dexInput");
+   const preview = document.getElementById("search-preview");
+   const query = nameInput.value.trim().toLowerCase() || dexInput.value.trim();
+   preview.innerHTML = "";
+   if (!query) return;
+ 
+-  const candidates = pokemonIndex.filter((p) => p.name.includes(query) || String(p.id).startsWith(query)).slice(0, 6);
++  const candidates = pokemonIndex
++    .filter((p) => (!favoritesMode || favorites.has(p.id)) && (p.name.includes(query) || String(p.id).startsWith(query)))
++    .slice(0, 6);
+   if (!candidates.length) return;
+ 
+   const list = document.createElement("div");
+   list.className = "preview-list";
+   candidates.forEach((found) => {
+     const card = document.createElement("button");
+     card.className = "preview-card";
+     card.type = "button";
+     card.innerHTML = `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${found.id}.png" alt="${found.name}"><span>#${String(found.id).padStart(4, "0")} ${capitalize(found.name)}</span>`;
+     card.onclick = () => {
+       window.location.href = `pokemon-view.html?id=${found.id}`;
+     };
+     list.appendChild(card);
+   });
+   preview.appendChild(list);
+ }
+ 
+ function openFilters() {
+   document.getElementById("filter-modal").classList.remove("hidden");
+ }
+ 
+ function closeFilters() {
+   document.getElementById("filter-modal").classList.add("hidden");
+ }
+ 
+ async function applyFilters() {
+-  await preloadAllTypes();
+   const types = [...document.querySelectorAll(".filter-types input:checked")].map((i) => i.value);
+   const gens = [...document.querySelectorAll(".filter-gens input:checked")].map((i) => Number(i.value));
+   const habitats = [...document.querySelectorAll(".filter-habitats input:checked")].map((i) => i.value);
++  const baseList = favoritesMode ? pokemons.filter((p) => favorites.has(p.dex)) : pokemons;
++
++  let typeAllowedIds = null;
++  if (types.length) {
++    const sets = await Promise.all(types.map((type) => getIdsByType(type)));
++    typeAllowedIds = new Set();
++    sets.forEach((set) => set.forEach((id) => typeAllowedIds.add(id)));
++  }
+ 
+-  filtered = pokemons.filter((p) => {
+-    const matchType = types.length === 0 || p.types.some((t) => types.includes(t));
++  const habitatAllowedIds = habitats.length
++    ? new Set(habitats.flatMap((habitatId) => [...(habitatPokemonMap.get(habitatId) || [])]))
++    : null;
++
++  filtered = baseList.filter((p) => {
++    const matchType = !typeAllowedIds || typeAllowedIds.has(p.dex);
+     const matchGen = gens.length === 0 || gens.includes(p.generation);
+-    const matchHabitat = habitats.length === 0 || HABITATS.filter((h) => habitats.includes(h.id)).some((h) => h.pokedex.includes(p.dex));
++    const matchHabitat = !habitatAllowedIds || habitatAllowedIds.has(p.dex);
+     return matchType && matchGen && matchHabitat;
+   });
+ 
+   render(true);
+   closeFilters();
+ }
+ 
+ function setupSiteTitleAnimation() {
+   const homeLink = document.querySelector(".site-home-link");
+   if (!homeLink) return;
+   homeLink.addEventListener("click", (event) => {
+     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+     event.preventDefault();
+     homeLink.classList.remove("expanding");
+     void homeLink.offsetWidth;
+     homeLink.classList.add("expanding");
+     setTimeout(() => {
+       window.location.href = homeLink.getAttribute("href") || "index.html";
+     }, 360);
+   });
+ }
+ 
+ function setupSideMenu() {
+   const btn = document.getElementById("logoMenuBtn");
+   const menu = document.getElementById("sideMenu");
+@@ -280,52 +341,58 @@ function setupSideMenu() {
+     menu.classList.add("open");
+     backdrop.classList.remove("hidden");
+     menu.setAttribute("aria-hidden", "false");
+   });
+ 
+   backdrop.addEventListener("click", close);
+ }
+ 
+ function capitalize(text) {
+   return text.charAt(0).toUpperCase() + text.slice(1);
+ }
+ 
+ function getGeneration(dex) {
+   if (dex <= 151) return 1;
+   if (dex <= 251) return 2;
+   if (dex <= 386) return 3;
+   if (dex <= 493) return 4;
+   if (dex <= 649) return 5;
+   if (dex <= 721) return 6;
+   if (dex <= 809) return 7;
+   if (dex <= 905) return 8;
+   return 9;
+ }
+ 
+ document.addEventListener("DOMContentLoaded", () => {
++  loadFavorites();
+   setupSiteTitleAnimation();
+   setupSideMenu();
+   renderFilterTypes();
+   loadHabitats();
+   applyResponsiveView();
+   loadPokemons();
+   window.addEventListener("resize", applyResponsiveView);
+ 
++  const pageTitle = document.querySelector(".section-home-link");
++  if (favoritesMode && pageTitle) {
++    pageTitle.textContent = "Favoritos";
++  }
++
+   const nameInput = document.getElementById("searchInput");
+   const dexInput = document.getElementById("dexInput");
+   nameInput.addEventListener("input", (e) => {
+     searchPokemon(e.target.value);
+     updateSearchPreview();
+   });
+   dexInput.addEventListener("input", updateSearchPreview);
+   dexInput.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") goToPokemonBySearch();
+   });
+   nameInput.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") goToPokemonBySearch();
+   });
+ 
+   document.getElementById("searchBtn").addEventListener("click", goToPokemonBySearch);
+   document.getElementById("openFiltersBtn").addEventListener("click", openFilters);
+   document.getElementById("applyFiltersBtn").addEventListener("click", applyFilters);
+   document.getElementById("closeFiltersBtn").addEventListener("click", closeFilters);
+ });
+diff --git a/pokemon.html b/pokemon.html
+index 95155e652bbc598ff79b720278853be6e6d0c069..c2e5a8b25cd041342770d1610293e34ff38ae310 100644
+--- a/pokemon.html
++++ b/pokemon.html
+@@ -1,42 +1,44 @@
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Pokémon RPG</title>
+   <link rel="stylesheet" href="css/pokemon.css">
+   <script type="module" src="js/pokemon.js"></script>
+ </head>
+ <body>
+ 
+ <aside id="sideMenu" class="side-menu" aria-hidden="true">
+   <div class="side-menu-header">Menu</div>
++  <div class="side-menu-divider"></div>
+   <div class="side-menu-actions top">
+     <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
+     <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
+     <button class="side-menu-btn" type="button">Lista de habilidades</button>
++    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
+   </div>
+   <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+ </aside>
+ <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
+ 
+ <header>
+   <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
+     <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
+   </button>
+ 
+   <div class="title-container">
+     <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+     <h2><a href="pokemon.html" class="section-home-link">Registro Pokémon</a></h2>
+   </div>
+ </header>
+ 
+ <section class="controls">
+   <div class="dex-search">
+     <input id="dexInput" type="number" min="1" placeholder="Nº Dex">
+     <input type="text" id="searchInput" placeholder="Pesquisar Pokémon">
+     <button id="searchBtn" class="search-btn" type="button">Buscar</button>
+     <button class="filter-btn" id="openFiltersBtn" type="button">Filtros</button>
+   </div>
+   <div id="search-preview" class="search-preview"></div>
+ 
