@@ -48,10 +48,11 @@
 
 <div id="moveSheetOverlay" class="move-sheet-overlay" hidden>
   <div id="moveSheet" class="move-sheet" role="dialog" aria-modal="true" aria-labelledby="moveSheetTitle">
-    <div class="move-sheet-header">
+    <div id="moveSheetHeader" class="move-sheet-header">
       <h3 id="moveSheetTitle"></h3>
       <button class="move-sheet-close" type="button" data-close-move-sheet>✕</button>
     </div>
+    <div class="move-sheet-divider"></div>
     <div class="move-sheet-type-icons">
       <div class="move-sheet-icon-item">
         <img id="moveSheetTypeIcon" alt="Tipo do golpe">
@@ -66,8 +67,33 @@
       <span id="moveSheetPower"></span>
       <span id="moveSheetPp"></span>
       <span id="moveSheetAcc"></span>
+      <span id="moveSheetPriority"></span>
+    </div>
+
+    <div class="move-sheet-desc-actions">
+      <button type="button" id="moveDescBasicBtn" class="desc-btn active">Descrição básica</button>
+      <button type="button" id="moveDescFullBtn" class="desc-btn">Descrição completa</button>
     </div>
     <p id="moveSheetDescription" class="move-sheet-description"></p>
+
+    <div class="move-sheet-actions">
+      <button type="button" id="copyMoveBtn" class="sheet-action-btn">Copiar golpe</button>
+      <button type="button" id="showLearnersBtn" class="sheet-action-btn">pokemon que aprende</button>
+    </div>
+  </div>
+</div>
+
+<div id="learnersOverlay" class="move-sheet-overlay" hidden>
+  <div class="move-sheet learners-sheet" role="dialog" aria-modal="true" aria-labelledby="learnersTitle">
+    <div class="move-sheet-header learners-header">
+      <h3 id="learnersTitle">Pokémon que aprendem</h3>
+      <button class="move-sheet-close" type="button" data-close-learners>✕</button>
+    </div>
+    <div class="learners-actions">
+      <button type="button" id="learnByLevelBtn" class="desc-btn active">Por nível</button>
+      <button type="button" id="learnByOtherBtn" class="desc-btn">TM / Ovo / Tutor</button>
+    </div>
+    <div id="learnersList" class="learners-list"></div>
   </div>
 </div>
 
