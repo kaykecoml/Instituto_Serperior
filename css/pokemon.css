@@ -226,14 +226,11 @@ header h2 {
 
 .modal-sections {
   display: flex;
+  flex-direction: column;
   gap: 14px;
-  overflow-x: auto;
-  padding-bottom: 4px;
 }
 
 .modal-section {
-  flex: 1;
-  min-width: 220px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(123,220,101,0.3);
   border-radius: 12px;
@@ -252,7 +249,7 @@ header h2 {
 .filter-gens,
 .filter-habitats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -266,6 +263,14 @@ header h2 {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 40px;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+
+.filter-habitats label {
+  align-items: flex-start;
 }
 
 .filter-types label {
@@ -317,7 +322,15 @@ header h2 {
 
 .name {
   font-weight: bold;
-  margin-top: 6px;
+  margin-top: 0;
+}
+
+.dex-number {
+  font-family: Pixel;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  color: rgba(234, 234, 234, 0.7);
+  margin-bottom: 4px;
 }
 
 .load-more {
@@ -527,6 +540,7 @@ header h2 {
 
 .type-icon {
   width: 20px;
+  height: 20px;
 }
 
 .pokemon-card {
@@ -538,8 +552,8 @@ header h2 {
 
 .favorite-btn {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 10px;
+  right: 10px;
   width: 28px;
   height: 28px;
   border: none;
@@ -629,21 +643,23 @@ header h2 {
   }
 
   .list .type-icon {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 
   .list .type-pill {
-    min-width: 74px;
-    height: 26px;
-    font-size: 9px;
-    padding: 0 7px;
+    min-width: 68px;
+    height: 24px;
+    font-size: 8px;
+    padding: 0 6px;
+    gap: 4px;
   }
 
   .favorite-btn {
-    left: auto;
-    right: 8px;
-    top: 8px;
+    right: 10px;
+    top: 10px;
+    width: 24px;
+    height: 24px;
   }
 
   header {
@@ -754,12 +770,13 @@ header h2 {
   background: #08120d;
   border-right: 2px solid #2f6b44;
   z-index: 1000;
-  padding: 14px 12px;
+  padding: 14px 12px 16px;
   transform: translateX(-102%);
   transition: transform 0.25s ease;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  overflow-y: auto;
 }
 
 .side-menu.open {
@@ -800,6 +817,10 @@ header h2 {
   justify-content: center;
 }
 
+.side-menu-login {
+  margin-top: auto;
+}
+
 .side-menu-backdrop {
   position: fixed;
   inset: 0;
@@ -833,11 +854,23 @@ header h2 {
     gap: 10px;
   }
 
-  .modal-section {
-    min-width: 200px;
+  .filter-types,
+  .filter-gens,
+  .filter-habitats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
+
+.catalog .pokemon-card .info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.catalog .pokemon-card .dex-number {
+  font-size: 11px;
+}
 
 .catalog .pokemon-card .name {
   font-size: 14px;

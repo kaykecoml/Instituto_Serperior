@@ -203,7 +203,8 @@ function renderTypes(types) {
 
 function createCard(p) {
   const favoriteIcon = favorites.has(p.dex) ? "assets/favorit.png" : "assets/nofavorit.png";
-  return `<div class="pokemon-card"><button class="favorite-btn" aria-label="Favoritar ${p.name}" type="button"><img src="${favoriteIcon}" alt="Favorito"></button><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
+  const dexNumber = `#${String(p.dex).padStart(3, "0")}`;
+  return `<div class="pokemon-card"><button class="favorite-btn" aria-label="Favoritar ${p.name}" type="button"><img src="${favoriteIcon}" alt="Favorito"></button><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="dex-number">${dexNumber}</div><div class="name">${p.name}</div><div class="types"></div></div></div>`;
 }
 
 function applyTypeColor(card, types) {
