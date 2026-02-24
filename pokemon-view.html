@@ -17,13 +17,25 @@
 </head>
 
 <body>
+<aside id="sideMenu" class="side-menu" aria-hidden="true">
+  <div class="side-menu-header">Menu</div>
+  <div class="side-menu-actions top">
+    <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
+    <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
+    <button class="side-menu-btn" type="button">Lista de habilidades</button>
+  </div>
+  <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+</aside>
+<div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
  <div class="nav-zone left" data-nav="prev"></div>
  <button class="nav-btn left" data-nav="prev" type="button" aria-label="Pokémon anterior">
   <span class="nav-btn-arrow">◀</span>
   <span class="nav-btn-dex" id="desktop-prev-dex">#1025</span>
  </button>
 <header>
-  <img src="assets/logo.png" class="logo">
+  <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
+    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
+  </button>
 
   <div class="title-container">
     <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>

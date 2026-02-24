@@ -1,16 +1,56 @@
 import { HABITATS } from "./habitats.js";
-const BASE_PATH = window.location.hostname.includes("github.io")
-  ? "/Instituto_Serperior"
-  : "";
 
 const PAGE_SIZE = 24;
+const MAX_POKEMON_ID = 1025;
 let index = 0;
-
 let pokemons = [];
 let filtered = [];
+let pokemonIndex = [];
+const pokemonDataCache = new Map();
+
+const TYPE_OPTIONS = [
+  "normal","fire","water","electric","grass","ice","fighting","poison","ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy",
+];
+
+const TYPE_ICON_PATHS = {
+  bug: "assets/types block/bug Type.png",
+  steel: "assets/types block/Steel.png",
+};
+
+const TYPE_COLORS = {
+  grass: ["120,200,80", "rgba(120,200,80,0.16)"],
+  fire: ["240,120,40", "rgba(240,120,40,0.16)"],
+  water: ["100,150,240", "rgba(100,150,240,0.16)"],
+  electric: ["248,208,48", "rgba(248,208,48,0.16)"],
+  psychic: ["248,88,136", "rgba(248,88,136,0.16)"],
+  dark: ["112,88,72", "rgba(112,88,72,0.16)"],
+  dragon: ["112,56,248", "rgba(112,56,248,0.16)"],
+  fairy: ["238,153,172", "rgba(238,153,172,0.16)"],
+  steel: ["184,184,208", "rgba(184,184,208,0.16)"],
+  ghost: ["112,88,152", "rgba(112,88,152,0.16)"],
+  ice: ["152,216,216", "rgba(152,216,216,0.16)"],
+  fighting: ["192,48,40", "rgba(192,48,40,0.16)"],
+  ground: ["224,192,104", "rgba(224,192,104,0.16)"],
+  rock: ["184,160,56", "rgba(184,160,56,0.16)"],
+  poison: ["160,64,160", "rgba(160,64,160,0.16)"],
+  flying: ["168,144,240", "rgba(168,144,240,0.16)"],
+  bug: ["168,184,32", "rgba(168,184,32,0.16)"],
+  normal: ["168,168,120", "rgba(168,168,120,0.16)"],
+};
+
+function getTypeIconPath(type) {
+  return TYPE_ICON_PATHS[type] || `assets/types block/${type}.png`;
+}
+
+async function getPokemonData(pokemon) {
+  if (pokemonDataCache.has(pokemon.url)) return pokemonDataCache.get(pokemon.url);
+  const data = await fetch(pokemon.url).then((res) => res.json());
+  pokemonDataCache.set(pokemon.url, data);
+  return data;
+}
 
 async function loadPokemons() {
-  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${MAX_POKEMON_ID}`);
   const data = await res.json();
 
   pokemons = data.results.map((p, i) => ({
@@ -18,54 +58,62 @@ async function loadPokemons() {
     name: capitalize(p.name),
     url: p.url,
     generation: getGeneration(i + 1),
-    types: null, // carregaremos sob demanda
+    types: null,
   }));
 
+  pokemonIndex = pokemons.map((p) => ({ id: p.dex, name: p.name.toLowerCase() }));
   filtered = [...pokemons];
   render(true);
 }
 
-async function loadTypes(pokemon, cardElement) {
-  if (!pokemon.types) {
-    const res = await fetch(pokemon.url);
-    const data = await res.json();
-    pokemon.types = data.types.map((t) => t.type.name);
-    applyTypeColor(cardElement, pokemon.types);
-  }
+function renderFilterTypes() {
+  const container = document.getElementById("filter-types");
+  container.innerHTML = TYPE_OPTIONS.map((type) => `
+    <label data-type="${type}">
+      <input type="checkbox" value="${type}">
+      <img src="${getTypeIconPath(type)}" alt="${type}">
+    </label>
+  `).join("");
 
-  const typesContainer = cardElement.querySelector(".types");
-  typesContainer.innerHTML = renderTypes(pokemon.types);
+  container.querySelectorAll("label").forEach((label) => {
+    const input = label.querySelector("input");
+    input.addEventListener("change", () => {
+      label.classList.toggle("is-selected", input.checked);
+    });
+  });
 }
 
 function loadHabitats() {
   const container = document.getElementById("filter-habitats");
-
   HABITATS.forEach((h) => {
     const label = document.createElement("label");
-    label.innerHTML = `
-      <input type="checkbox" value="${h.id}">
-      ${h.nome}
-    `;
+    label.innerHTML = `<input type="checkbox" value="${h.id}"> ${h.nome}`;
     container.appendChild(label);
   });
 }
 
+async function loadTypes(pokemon, cardElement) {
+  if (!pokemon.types) {
+    const data = await getPokemonData(pokemon);
+    pokemon.types = data.types.map((t) => t.type.name);
+  }
+  applyTypeColor(cardElement, pokemon.types);
+  const typesContainer = cardElement.querySelector(".types");
+  typesContainer.innerHTML = renderTypes(pokemon.types);
+}
+
 async function preloadAllTypes() {
-  const promises = pokemons.map(async (p) => {
+  await Promise.all(pokemons.map(async (p) => {
     if (!p.types) {
-      const res = await fetch(p.url);
-      const data = await res.json();
+      const data = await getPokemonData(p);
       p.types = data.types.map((t) => t.type.name);
     }
-  });
-
-  await Promise.all(promises);
+  }));
 }
 
 function render(reset) {
   const list = document.getElementById("pokemon-list");
   applyResponsiveView();
-
   if (reset) {
     list.innerHTML = "";
     index = 0;
@@ -76,9 +124,7 @@ function render(reset) {
 
   slice.forEach((p) => {
     list.insertAdjacentHTML("beforeend", createCard(p));
-
     const card = list.lastElementChild;
-
     card.addEventListener("click", () => {
       window.location.href = `pokemon-view.html?id=${p.dex}`;
     });
@@ -86,17 +132,8 @@ function render(reset) {
   });
 
   document.querySelectorAll(".load-more").forEach((b) => b.remove());
-
   if (index < filtered.length) {
-    list.insertAdjacentHTML(
-      "beforeend",
-      `
-      <button class="load-more">
-        Carregar mais Pokémon
-      </button>
-    `,
-    );
-
+    list.insertAdjacentHTML("beforeend", `<button class="load-more">Carregar mais Pokémon</button>`);
     list.querySelector(".load-more").addEventListener("click", (e) => {
       e.stopPropagation();
       render(false);
@@ -107,83 +144,26 @@ function render(reset) {
 function applyResponsiveView() {
   const list = document.getElementById("pokemon-list");
   if (!list) return;
-
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
   list.classList.toggle("list", isMobile);
   list.classList.toggle("catalog", !isMobile);
 }
 
 function renderTypes(types) {
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-  if (isMobile) {
-    return types
-      .map(
-        (t) =>
-          `<span class="type-pill type-pill-${t}">${t.toUpperCase()}</span>`,
-      )
-      .join("");
-  }
-
-  return types
-    .map(
-      (t) =>
-        `<img class="type-icon"
-          src="assets/types/${t}.png"
-          alt="${t}"
-          loading="lazy">`,
-    )
-    .join("");
+  return types.map((t) => `
+    <span class="type-pill type-pill-${t}" style="--type-rgb:${TYPE_COLORS[t]?.[0] || "80,80,80"}">
+      <img class="type-icon" src="${getTypeIconPath(t)}" alt="${t}" loading="lazy">${t.toUpperCase()}
+    </span>`).join("");
 }
 
 function createCard(p) {
-  return `
-    <div class="pokemon-card">
-      <div class="image-box">
-        <img class="official-art"
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png"
-          loading="lazy"
-          alt="${p.name}">
-      </div>
-
-      <div class="info">
-        <div class="name">
-          #${String(p.dex).padStart(3, "0")} ${p.name}
-        </div>
-        <div class="types"></div>
-      </div>
-    </div>
-  `;
+  return `<div class="pokemon-card"><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
 }
 
 function applyTypeColor(card, types) {
   const primary = types[0];
-
-  const colors = {
-    grass: ["120,200,80", "rgba(120,200,80,0.16)"],
-    fire: ["240,120,40", "rgba(240,120,40,0.16)"],
-    water: ["100,150,240", "rgba(100,150,240,0.16)"],
-    electric: ["248,208,48", "rgba(248,208,48,0.16)"],
-    psychic: ["248,88,136", "rgba(248,88,136,0.16)"],
-    dark: ["112,88,72", "rgba(112,88,72,0.16)"],
-    dragon: ["112,56,248", "rgba(112,56,248,0.16)"],
-    fairy: ["238,153,172", "rgba(238,153,172,0.16)"],
-    steel: ["184,184,208", "rgba(184,184,208,0.16)"],
-    ghost: ["112,88,152", "rgba(112,88,152,0.16)"],
-    ice: ["152,216,216", "rgba(152,216,216,0.16)"],
-    fighting: ["192,48,40", "rgba(192,48,40,0.16)"],
-    ground: ["224,192,104", "rgba(224,192,104,0.16)"],
-    rock: ["184,160,56", "rgba(184,160,56,0.16)"],
-    poison: ["160,64,160", "rgba(160,64,160,0.16)"],
-    flying: ["168,144,240", "rgba(168,144,240,0.16)"],
-    bug: ["168,184,32", "rgba(168,184,32,0.16)"],
-    normal: ["168,168,120", "rgba(168,168,120,0.16)"],
-  };
-
-  if (!colors[primary]) return;
-
-  const [rgb, background] = colors[primary];
-
+  if (!TYPE_COLORS[primary]) return;
+  const [rgb, background] = TYPE_COLORS[primary];
   card.style.borderColor = `rgba(${rgb}, 0.55)`;
   card.style.background = background;
   card.style.setProperty("--type-border-soft", `rgba(${rgb}, 0.45)`);
@@ -191,34 +171,57 @@ function applyTypeColor(card, types) {
 
 function searchPokemon(text) {
   const value = text.trim().toLowerCase();
-
   if (!value) {
     filtered = [...pokemons];
     render(true);
     return;
   }
+  filtered = pokemons.filter((p) => p.name.toLowerCase().includes(value) || String(p.dex).startsWith(value));
+  render(true);
+}
 
-  // Se for número → navegar direto
-  if (!isNaN(value)) {
-    const id = Number(value);
-    if (id >= 1 && id <= 1025) {
+function goToPokemonBySearch() {
+  const nameValue = document.getElementById("searchInput").value.trim().toLowerCase();
+  const dexValue = document.getElementById("dexInput").value.trim();
+  const query = nameValue || dexValue;
+  if (!query) return;
+
+  if (!Number.isNaN(Number(query))) {
+    const id = Number(query);
+    if (id >= 1 && id <= MAX_POKEMON_ID) {
       window.location.href = `pokemon-view.html?id=${id}`;
       return;
     }
   }
 
-  // Se nome exato → navegar
-  const exact = pokemons.find((p) => p.name.toLowerCase() === value);
+  const found = pokemons.find((p) => p.name.toLowerCase() === query);
+  if (found) window.location.href = `pokemon-view.html?id=${found.dex}`;
+}
 
-  if (exact) {
-    window.location.href = `pokemon-view.html?id=${exact.dex}`;
-    return;
-  }
+function updateSearchPreview() {
+  const nameInput = document.getElementById("searchInput");
+  const dexInput = document.getElementById("dexInput");
+  const preview = document.getElementById("search-preview");
+  const query = nameInput.value.trim().toLowerCase() || dexInput.value.trim();
+  preview.innerHTML = "";
+  if (!query) return;
 
-  // Caso contrário → filtrar normalmente
-  filtered = pokemons.filter((p) => p.name.toLowerCase().includes(value));
+  const candidates = pokemonIndex.filter((p) => p.name.includes(query) || String(p.id).startsWith(query)).slice(0, 6);
+  if (!candidates.length) return;
 
-  render(true);
+  const list = document.createElement("div");
+  list.className = "preview-list";
+  candidates.forEach((found) => {
+    const card = document.createElement("button");
+    card.className = "preview-card";
+    card.type = "button";
+    card.innerHTML = `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${found.id}.png" alt="${found.name}"><span>#${String(found.id).padStart(4, "0")} ${capitalize(found.name)}</span>`;
+    card.onclick = () => {
+      window.location.href = `pokemon-view.html?id=${found.id}`;
+    };
+    list.appendChild(card);
+  });
+  preview.appendChild(list);
 }
 
 function openFilters() {
@@ -231,31 +234,14 @@ function closeFilters() {
 
 async function applyFilters() {
   await preloadAllTypes();
-
-  const types = [
-    ...document.querySelectorAll(".filter-types input:checked"),
-  ].map((i) => i.value);
-
-  const gens = [...document.querySelectorAll(".filter-gens input:checked")].map(
-    (i) => Number(i.value),
-  );
-
-  const habitats = [
-    ...document.querySelectorAll(".filter-habitats input:checked"),
-  ].map((i) => i.value);
+  const types = [...document.querySelectorAll(".filter-types input:checked")].map((i) => i.value);
+  const gens = [...document.querySelectorAll(".filter-gens input:checked")].map((i) => Number(i.value));
+  const habitats = [...document.querySelectorAll(".filter-habitats input:checked")].map((i) => i.value);
 
   filtered = pokemons.filter((p) => {
-    const matchType =
-      types.length === 0 || p.types.some((t) => types.includes(t));
-
+    const matchType = types.length === 0 || p.types.some((t) => types.includes(t));
     const matchGen = gens.length === 0 || gens.includes(p.generation);
-
-    const matchHabitat =
-      habitats.length === 0 ||
-      HABITATS.filter((h) => habitats.includes(h.id)).some((h) =>
-        h.pokedex.includes(p.dex),
-      );
-
+    const matchHabitat = habitats.length === 0 || HABITATS.filter((h) => habitats.includes(h.id)).some((h) => h.pokedex.includes(p.dex));
     return matchType && matchGen && matchHabitat;
   });
 
@@ -263,33 +249,40 @@ async function applyFilters() {
   closeFilters();
 }
 
-/* filtro por geração */
-function filterByGen(gen) {
-  filtered = gen ? pokemons.filter((p) => p.generation == gen) : [...pokemons];
-  render(true);
+function setupSiteTitleAnimation() {
+  const homeLink = document.querySelector(".site-home-link");
+  if (!homeLink) return;
+  homeLink.addEventListener("click", (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    homeLink.classList.remove("expanding");
+    void homeLink.offsetWidth;
+    homeLink.classList.add("expanding");
+    setTimeout(() => {
+      window.location.href = homeLink.getAttribute("href") || "index.html";
+    }, 360);
+  });
 }
 
-/* filtro por tipo */
-function filterByType(select) {
-  const selected = [...select.selectedOptions].map((o) => o.value);
+function setupSideMenu() {
+  const btn = document.getElementById("logoMenuBtn");
+  const menu = document.getElementById("sideMenu");
+  const backdrop = document.getElementById("sideMenuBackdrop");
+  if (!btn || !menu || !backdrop) return;
 
-  if (!selected.length) {
-    filtered = [...pokemons];
-  } else {
-    filtered = pokemons.filter((p) =>
-      selected.every((t) => p.types.includes(t)),
-    );
-  }
+  const close = () => {
+    menu.classList.remove("open");
+    backdrop.classList.add("hidden");
+    menu.setAttribute("aria-hidden", "true");
+  };
 
-  render(true);
-}
+  btn.addEventListener("click", () => {
+    menu.classList.add("open");
+    backdrop.classList.remove("hidden");
+    menu.setAttribute("aria-hidden", "false");
+  });
 
-function goToPokemon(dex) {
-  const id = Number(dex);
-
-  if (!id || id < 1 || id > 1025) return;
-
-  window.location.href = `pokemon-view.html?id=${id}`;
+  backdrop.addEventListener("click", close);
 }
 
 function capitalize(text) {
@@ -308,53 +301,31 @@ function getGeneration(dex) {
   return 9;
 }
 
-function setupSiteTitleAnimation() {
-  const homeLink = document.querySelector(".site-home-link");
-  if (!homeLink) return;
-
-  homeLink.addEventListener("click", (event) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-    event.preventDefault();
-    homeLink.classList.remove("expanding");
-    void homeLink.offsetWidth;
-    homeLink.classList.add("expanding");
-
-    setTimeout(() => {
-      window.location.href = homeLink.getAttribute("href") || "index.html";
-    }, 360);
-  });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   setupSiteTitleAnimation();
+  setupSideMenu();
+  renderFilterTypes();
   loadHabitats();
   applyResponsiveView();
   loadPokemons();
   window.addEventListener("resize", applyResponsiveView);
 
-  // Pesquisa por nome
-  document.getElementById("searchInput").addEventListener("input", (e) => {
+  const nameInput = document.getElementById("searchInput");
+  const dexInput = document.getElementById("dexInput");
+  nameInput.addEventListener("input", (e) => {
     searchPokemon(e.target.value);
+    updateSearchPreview();
+  });
+  dexInput.addEventListener("input", updateSearchPreview);
+  dexInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") goToPokemonBySearch();
+  });
+  nameInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") goToPokemonBySearch();
   });
 
-  // Pesquisa por número
-  document.getElementById("dexInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      goToPokemon(e.target.value);
-    }
-  });
-
-  // Botões
-  document
-    .getElementById("openFiltersBtn")
-    .addEventListener("click", openFilters);
-
-  document
-    .getElementById("applyFiltersBtn")
-    .addEventListener("click", applyFilters);
-
-  document
-    .getElementById("closeFiltersBtn")
-    .addEventListener("click", closeFilters);
+  document.getElementById("searchBtn").addEventListener("click", goToPokemonBySearch);
+  document.getElementById("openFiltersBtn").addEventListener("click", openFilters);
+  document.getElementById("applyFiltersBtn").addEventListener("click", applyFilters);
+  document.getElementById("closeFiltersBtn").addEventListener("click", closeFilters);
 });

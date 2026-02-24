@@ -1807,6 +1807,28 @@ document.querySelectorAll("[data-mobile-nav]").forEach((btn) => {
     if (btn.dataset.mobileNav === "next") goNext();
   });
 });
+
+function setupSideMenu() {
+  const btn = document.getElementById("logoMenuBtn");
+  const menu = document.getElementById("sideMenu");
+  const backdrop = document.getElementById("sideMenuBackdrop");
+  if (!btn || !menu || !backdrop) return;
+
+  const close = () => {
+    menu.classList.remove("open");
+    backdrop.classList.add("hidden");
+    menu.setAttribute("aria-hidden", "true");
+  };
+
+  btn.addEventListener("click", () => {
+    menu.classList.add("open");
+    backdrop.classList.remove("hidden");
+    menu.setAttribute("aria-hidden", "false");
+  });
+
+  backdrop.addEventListener("click", close);
+}
+
 function setupSiteTitleAnimation() {
   const homeLink = document.querySelector(".site-home-link");
   if (!homeLink) return;
@@ -1823,6 +1845,7 @@ function setupSiteTitleAnimation() {
 }
 document.addEventListener("DOMContentLoaded", () => {
   setupSiteTitleAnimation();
+  setupSideMenu();
   [nameInput, dexInput].forEach((input) =>
     input.addEventListener("input", updateSearchPreview),
   );
