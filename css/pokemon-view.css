@@ -1109,6 +1109,40 @@ body {
   object-fit: contain;
 }
 
+
+.quick-nav {
+  display: none;
+}
+
+.move-sheet-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.move-sheet-tab-btn {
+  flex: 1;
+  border: 1px solid #2f6b44;
+  background: #10261b;
+  color: #cdeec2;
+  border-radius: 8px;
+  padding: 8px;
+  font-family: Pixel;
+  font-size: 11px;
+}
+
+.move-sheet-tab-btn.active {
+  background: #2f6b44;
+  color: #f5fff3;
+}
+
+.move-sheet-description {
+  display: none;
+}
+
+.move-sheet-description.active {
+  display: block;
+}
 .move-sheet-overlay {
   position: fixed;
   inset: 0;
@@ -1611,6 +1645,33 @@ body.move-sheet-open {
 
   .type-panel.immune {
     width: 100%;
+  }
+
+  .quick-nav {
+    display: flex;
+    gap: 8px;
+    padding: 0 12px 8px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 8;
+    background: #0a1a12;
+  }
+
+  .quick-nav-btn {
+    border: 1px solid #2f6b44;
+    background: #10261b;
+    color: #d8f1d0;
+    border-radius: 8px;
+    padding: 7px 10px;
+    white-space: nowrap;
+    font-family: Pixel;
+    font-size: 10px;
+  }
+
+  .quick-nav-btn.active {
+    background: #2f6b44;
+    color: #f8fff6;
   }
 
   .tab-buttons {

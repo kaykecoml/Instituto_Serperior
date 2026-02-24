@@ -49,6 +49,13 @@
 </div>
 <div id="search-preview" class="search-preview"></div>
 
+<nav class="quick-nav" aria-label="Navegação rápida do Pokémon">
+  <button class="quick-nav-btn active" data-scroll-target=".image-panel" type="button">Visão Geral</button>
+  <button class="quick-nav-btn" data-scroll-target=".stats-panel" type="button">Status</button>
+  <button class="quick-nav-btn" data-scroll-target=".move-tabs" type="button">Golpes</button>
+  <button class="quick-nav-btn" data-scroll-target=".evolution-panel" type="button">Evolução</button>
+</nav>
+
 <div class="copy-buttons">
   <button id="copyPokemonBtn" class="pixel-button">Copiar Pokémon</button>
   <button id="copyMovesBtn" class="pixel-button">Copiar Golpes</button>
@@ -296,7 +303,12 @@
       <span id="moveSheetAcc"></span>
     </div>
     <div class="move-sheet-description-box">
-      <p id="moveSheetDescription" class="move-sheet-description"></p>
+      <div class="move-sheet-tabs" role="tablist" aria-label="Detalhes do golpe">
+        <button id="moveSheetTabFlavor" class="move-sheet-tab-btn active" data-move-sheet-tab="flavor" type="button">Descrição</button>
+        <button id="moveSheetTabEffect" class="move-sheet-tab-btn" data-move-sheet-tab="effect" type="button">Mecânica</button>
+      </div>
+      <p id="moveSheetDescription" class="move-sheet-description active" data-move-sheet-panel="flavor"></p>
+      <p id="moveSheetEffect" class="move-sheet-description" data-move-sheet-panel="effect"></p>
     </div>
   </div>
 </div>

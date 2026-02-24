@@ -1,82 +1,8 @@
 diff --git a/css/pokemon-view.css b/css/pokemon-view.css
-index e8c0ead1599ebeb6da1b739702e74aaa332391f5..23e1c1b9818c017794e2ae36154e281e218067d3 100644
+index 23e1c1b9818c017794e2ae36154e281e218067d3..845b526262ac3343b4e3b39ba97ff5ac53dfdb19 100644
 --- a/css/pokemon-view.css
 +++ b/css/pokemon-view.css
-@@ -532,50 +532,56 @@ body {
-   border-collapse: collapse;
-   font-family: Pixel;
-   font-size: 12px;
- }
- 
- .move-table-scroll {
-   width: 100%;
-   overflow-x: auto;
- }
- 
- .move-table-scroll::-webkit-scrollbar {
-   height: 7px;
- }
- 
- .move-table-scroll::-webkit-scrollbar-thumb {
-   background: #2f6b44;
-   border-radius: 6px;
- }
- 
- .move-table th {
-   border-bottom: 2px solid #2f6b44;
-   padding: 6px;
-   color: #7bdc65;
- }
- 
-+.move-table th:nth-child(2),
-+.move-table td:nth-child(2) {
-+  width: 220px;
-+  min-width: 220px;
-+}
-+
- .move-table td {
-   padding: 6px;
-   text-align: center;
-   border-bottom: 1px solid #163826;
- }
- 
- .move-table img {
-   width: 26px;
-   height: 26px;
- }
- 
- .move-table .status-icon {
-   width: 22px;
-   height: 22px;
-   opacity: 0.9;
- }
- 
- .battle-section {
-   display: grid;
-   gap: 40px;
-   margin-top: 24px;
-   align-items: flex-start;
- }
- 
- .left-column {
-@@ -1064,50 +1070,191 @@ body {
-   margin-top: 2px;
- }
- 
- .move-description {
-   margin-top: 10px;
-   padding: 10px;
-   background: #08120d;
-   border: 1px solid #2f6b44;
-   border-radius: 8px;
-   font-size: 13px;
-   line-height: 1.4;
-   min-height: 50px;
- }
- 
- .move-description-row {
-   display: none;
-   background: #08120d;
+@@ -1087,50 +1087,84 @@ body {
  }
  
  .move-description-cell {
@@ -85,340 +11,165 @@ index e8c0ead1599ebeb6da1b739702e74aaa332391f5..23e1c1b9818c017794e2ae36154e281e
    font-size: 12px;
    line-height: 1.4;
    border-top: 1px solid #2f6b44;
-+  white-space: pre-wrap;
-+  word-break: break-word;
+   white-space: pre-wrap;
+   word-break: break-word;
+ }
+ 
+ .move-name-cell {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 6px;
+ }
+ 
+ .zmove-icon {
+   width: 58px;
+   height: 18px;
+   object-fit: contain;
+ }
+ 
++
++.quick-nav {
++  display: none;
 +}
 +
-+.move-name-cell {
-+  display: inline-flex;
-+  align-items: center;
-+  justify-content: center;
-+  gap: 6px;
-+}
-+
-+.zmove-icon {
-+  width: 58px;
-+  height: 18px;
-+  object-fit: contain;
-+}
-+
-+.move-sheet-overlay {
-+  position: fixed;
-+  inset: 0;
-+  background: rgba(0, 0, 0, 0.45);
++.move-sheet-tabs {
 +  display: flex;
-+  align-items: flex-end;
-+  justify-content: center;
-+  z-index: 1000;
-+  opacity: 0;
-+  pointer-events: none;
-+  transition: opacity 0.18s ease;
++  gap: 8px;
++  margin-bottom: 12px;
 +}
 +
-+.move-sheet-overlay.open {
-+  opacity: 1;
-+  pointer-events: auto;
-+}
-+
-+.move-sheet {
-+  width: min(100%, 680px);
-+  background: #08120d;
-+  border-top: 2px solid #2f6b44;
-+  border-left: 2px solid #2f6b44;
-+  border-right: 2px solid #2f6b44;
-+  border-radius: 16px 16px 0 0;
-+  padding: 14px;
-+  transform: translateY(100%);
-+  transition: transform 0.18s ease;
-+  max-height: 85vh;
-+  overflow-y: auto;
-+}
-+
-+.move-sheet-overlay.open .move-sheet {
-+  transform: translateY(0);
-+}
-+
-+.move-sheet-header {
-+  display: flex;
-+  align-items: center;
-+  justify-content: center;
-+  padding: 10px 12px;
-+  border-radius: 12px;
-+}
-+
-+#moveSheetTitle {
-+  margin: 0;
-+  font-family: Pixel;
-+  font-size: 16px;
-+  color: #f6fff1;
-+}
-+
-+.move-sheet-priority,
-+.move-sheet-stats,
-+.move-sheet-description {
-+  font-family: Pixel;
-+  text-align: center;
-+}
-+
-+.move-sheet-priority {
-+  display: block;
-+  margin-top: 8px;
-+  font-size: 12px;
++.move-sheet-tab-btn {
++  flex: 1;
++  border: 1px solid #2f6b44;
++  background: #10261b;
 +  color: #cdeec2;
-+}
-+
-+.move-sheet-type-icons {
-+  display: flex;
-+  justify-content: center;
-+  gap: 14px;
-+  margin-bottom: 10px;
-+  flex-wrap: wrap;
-+}
-+
-+.move-sheet-icon-item {
-+  display: flex;
-+  flex-direction: column;
-+  align-items: center;
-+  gap: 4px;
-+  min-width: 110px;
-+}
-+
-+.move-sheet-icon-item img {
-+  width: 54px;
-+  height: 24px;
-+  object-fit: contain;
-+}
-+
-+.move-sheet-icon-item span {
++  border-radius: 8px;
++  padding: 8px;
 +  font-family: Pixel;
 +  font-size: 11px;
 +}
 +
-+.move-sheet-divider {
-+  border: 0;
-+  border-top: 1px solid #2f6b44;
-+  margin: 10px 0;
-+}
-+
-+.move-sheet-type-row,
-+.move-sheet-stats {
-+  display: flex;
-+  justify-content: center;
-+  gap: 12px;
-+  flex-wrap: wrap;
-+}
-+
-+.move-sheet-description-box {
-+  margin-top: 12px;
-+  padding: 12px;
-+  background: #0d1c14;
-+  border: 1px solid #2f6b44;
-+  border-radius: 12px;
++.move-sheet-tab-btn.active {
++  background: #2f6b44;
++  color: #f5fff3;
 +}
 +
 +.move-sheet-description {
-+  margin: 0;
-+  white-space: pre-wrap;
-+  font-family: Arial, sans-serif;
-+  line-height: 1.45;
-+  color: #f0f6ee;
++  display: none;
 +}
 +
-+body.move-sheet-open {
-+  overflow: hidden;
- }
- 
- .move-expanded {
-   background-color: rgba(123, 220, 101, 0.1);
- }
- 
- .gender-bar {
-   width: 100%;
-   height: 10px;
-   border-radius: 10px;
-   overflow: hidden;
++.move-sheet-description.active {
++  display: block;
++}
+ .move-sheet-overlay {
+   position: fixed;
+   inset: 0;
+   background: rgba(0, 0, 0, 0.45);
    display: flex;
-   margin-top: 6px;
-   border: 2px solid #2f6b44;
+   align-items: flex-end;
+   justify-content: center;
+   z-index: 1000;
+   opacity: 0;
+   pointer-events: none;
+   transition: opacity 0.18s ease;
  }
  
- .gender-bar .male {
-   background: #3aa6ff;
-   height: 100%;
-   transition: width 0.3s ease;
+ .move-sheet-overlay.open {
+   opacity: 1;
+   pointer-events: auto;
  }
  
- .gender-bar .female {
-   background: #ff6ad5;
-   height: 100%;
-@@ -1515,57 +1662,84 @@ body {
-   .stats-panel .tab-buttons {
-     justify-content: center;
+ .move-sheet {
+   width: min(100%, 680px);
+   background: #08120d;
+   border-top: 2px solid #2f6b44;
+   border-left: 2px solid #2f6b44;
+   border-right: 2px solid #2f6b44;
+   border-radius: 16px 16px 0 0;
+@@ -1591,50 +1625,77 @@ body.move-sheet-open {
+     display: block;
    }
  
-   .stats-panel .stats-container,
-   .stats-panel #contest-tab .radar-column {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
+   .pokemon-image img {
+     width: clamp(160px, 48vw, 240px);
    }
  
-   .stats-tabs canvas,
-   .radar-column canvas {
-     width: clamp(160px, 48vw, 220px) !important;
-     height: clamp(160px, 48vw, 220px) !important;
-     max-width: 100%;
+   .types img,
+   #weaknesses img,
+   #resistances img,
+   #immunities img,
+   .type-panel img {
+     width: clamp(36px, 8.6vw, 46px);
+     height: clamp(36px, 8.6vw, 46px);
+     object-fit: contain;
    }
  
-   .stats-list {
+   .type-dual-row {
+     grid-template-columns: 1fr;
+   }
+ 
+   .type-panel.immune {
      width: 100%;
-     font-size: clamp(10px, 2.8vw, 13px);
    }
  
-   .move-table {
--    min-width: 620px;
-+    min-width: 0;
-+    width: 100%;
-+    table-layout: fixed;
-     font-size: 10px;
-   }
- 
-+  .move-table th:nth-child(5),
-+  .move-table td:nth-child(5),
-+  .move-table th:nth-child(6),
-+  .move-table td:nth-child(6),
-+  .move-table th:nth-child(7),
-+  .move-table td:nth-child(7) {
-+    display: none;
++  .quick-nav {
++    display: flex;
++    gap: 8px;
++    padding: 0 12px 8px;
++    overflow-x: auto;
++    position: sticky;
++    top: 0;
++    z-index: 8;
++    background: #0a1a12;
 +  }
 +
-   .move-table th,
-   .move-table td {
--    white-space: nowrap;
-+    white-space: normal;
-+    word-break: break-word;
++  .quick-nav-btn {
++    border: 1px solid #2f6b44;
++    background: #10261b;
++    color: #d8f1d0;
++    border-radius: 8px;
++    padding: 7px 10px;
++    white-space: nowrap;
++    font-family: Pixel;
++    font-size: 10px;
 +  }
 +
-+  .move-table-scroll {
-+    overflow-x: hidden;
++  .quick-nav-btn.active {
++    background: #2f6b44;
++    color: #f8fff6;
 +  }
 +
-+  .move-table th:nth-child(1),
-+  .move-table td:nth-child(1) {
-+    width: 62px;
-+  }
-+
-+  .move-table th:nth-child(2),
-+  .move-table td:nth-child(2) {
-+    width: auto;
-+    min-width: 0;
+   .tab-buttons {
+     flex-wrap: nowrap;
+     gap: 6px;
+     overflow-x: auto;
+     justify-content: flex-start;
+     padding-bottom: 8px;
    }
  
-   .capacities-wrapper {
-     gap: 8px;
-     flex-wrap: wrap;
+   .tab-btn {
+     flex: 1 1 auto;
+     min-width: clamp(110px, 35vw, 180px);
+     text-align: center;
+     padding: 8px 10px;
+     font-size: clamp(10px, 2.6vw, 12px);
+     white-space: nowrap;
    }
  
-   .capacity {
-     min-width: 74px;
-     flex: 1 1 30%;
+   .move-tab-buttons .tab-btn {
+     min-width: clamp(130px, 44vw, 220px);
    }
  
-   #form-buttons {
-     width: min(100%, 420px);
-     margin: 10px auto 0;
-     padding: 6px;
-     border: 2px solid #2f6b44;
-     border-radius: 10px;
-     background: #08120d;
-     gap: 4px;
-     -webkit-overflow-scrolling: touch;
-     touch-action: pan-x;
+   .tab-content {
+     width: 100%;
+     overflow: hidden;
    }
- 
-   .form-base-btn,
 diff --git a/js/pokemon-view.js b/js/pokemon-view.js
-index 07db37ee052bdcbb758419863e9a465c77c0c8ac..f520329cb08bc46076e2109b1047a6c99f9495ab 100644
+index f520329cb08bc46076e2109b1047a6c99f9495ab..2c69801b990cf7798e07c80aa9572722d8936cdc 100644
 --- a/js/pokemon-view.js
 +++ b/js/pokemon-view.js
-@@ -3,92 +3,126 @@ import { powerToDamage, accuracyToRPG, ppToRPG } from "./utils.js";
- import { abilitiesData } from "./abilities.js";
- const moveCache = new Map();
- const pokemonSpriteCache = new Map();
- const itemSpriteCache = new Map();
- const speciesVarietyCache = new Map();
- const pokemonDataCache = new Map();
- const evolutionChainCache = new Map();
- let statsChart = null;
- let contestChart = null;
- let damageToken = 0;
- let currentPokemonData = null;
- let currentMovesData = null;
- const translationCache = {};
- const SPECIES_DESCRIPTION_LANG_PRIORITY = ["pt-BR", "pt", "en"];
- const RPG_VERSION_PRIORITY = [
-   "scarlet-violet",
-   "sword-shield",
-   "ultra-sun-ultra-moon",
-   "sun-moon",
-   "omega-ruby-alpha-sapphire",
-   "x-y",
-   "black-2-white-2",
-   "black-white",
- ];
- const EXCLUDED_VERSION_GROUPS = ["legends-za"];
-+const EXCLUDED_DESCRIPTION_VERSION_GROUPS = ["legends-arceus", "legends-za"];
-+const TYPE_COLORS = {
-+  normal: "#a8a878",
-+  fire: "#f08030",
-+  water: "#6890f0",
-+  electric: "#f8d030",
-+  grass: "#78c850",
-+  ice: "#98d8d8",
-+  fighting: "#c03028",
-+  poison: "#a040a0",
-+  ground: "#e0c068",
-+  flying: "#a890f0",
-+  psychic: "#f85888",
-+  bug: "#a8b820",
-+  rock: "#b8a038",
-+  ghost: "#705898",
-+  dragon: "#7038f8",
-+  dark: "#705848",
-+  steel: "#b8b8d0",
-+  fairy: "#ee99ac",
-+};
- const INT_LABELS = [
-   "Instintivo",
-   "Consciente",
-   "Racional",
-   "Estrategista",
-   "Gênio",
- ];
- const STR_LABELS = [
-   "Frágil",
-   "Subdesenvolvida",
-   "Robusta",
-   "Poderosa",
-   "Titânica",
- ];
- const MOV_LABELS = ["Estático", "Lento", "Ágil", "Atlético", "Veloz"];
- let moveRenderToken = 0;
- let pokemonRenderToken = 0;
- function convertStat(value) {
-   const base = Math.floor(value / 10);
-   return value % 10 >= 9 ? base + 1 : base;
- }
- function half(v) {
-   return Math.floor(v / 2);
- }
- function getInitialPokemonId() {
-   const params = new URLSearchParams(window.location.search);
-   const id = params.get("id");
-   if (!id) return 1;
-   const num = Number(id);
-   if (isNaN(num) || num < 1) return 1;
+@@ -79,50 +79,51 @@ function getInitialPokemonId() {
    return num;
  }
  let currentId = getInitialPokemonId();
@@ -431,19 +182,20 @@ index 07db37ee052bdcbb758419863e9a465c77c0c8ac..f520329cb08bc46076e2109b1047a6c9
  const dexInput = document.getElementById("dexNumberInput");
  const btn = document.getElementById("dexSearchBtn");
  const preview = document.getElementById("search-preview");
-+const isMobileViewport = window.matchMedia("(max-width: 1024px)");
-+const moveSheetOverlay = document.getElementById("moveSheetOverlay");
-+const moveSheetTitle = document.getElementById("moveSheetTitle");
-+const moveSheetHeader = document.getElementById("moveSheetHeader");
-+const moveSheetPriority = document.getElementById("moveSheetPriority");
-+const moveSheetTypeIcon = document.getElementById("moveSheetTypeIcon");
-+const moveSheetCategoryIcon = document.getElementById("moveSheetCategoryIcon");
-+const moveSheetType = document.getElementById("moveSheetType");
-+const moveSheetCategory = document.getElementById("moveSheetCategory");
-+const moveSheetPower = document.getElementById("moveSheetPower");
-+const moveSheetPp = document.getElementById("moveSheetPp");
-+const moveSheetAcc = document.getElementById("moveSheetAcc");
-+const moveSheetDescription = document.getElementById("moveSheetDescription");
+ const isMobileViewport = window.matchMedia("(max-width: 1024px)");
+ const moveSheetOverlay = document.getElementById("moveSheetOverlay");
+ const moveSheetTitle = document.getElementById("moveSheetTitle");
+ const moveSheetHeader = document.getElementById("moveSheetHeader");
+ const moveSheetPriority = document.getElementById("moveSheetPriority");
+ const moveSheetTypeIcon = document.getElementById("moveSheetTypeIcon");
+ const moveSheetCategoryIcon = document.getElementById("moveSheetCategoryIcon");
+ const moveSheetType = document.getElementById("moveSheetType");
+ const moveSheetCategory = document.getElementById("moveSheetCategory");
+ const moveSheetPower = document.getElementById("moveSheetPower");
+ const moveSheetPp = document.getElementById("moveSheetPp");
+ const moveSheetAcc = document.getElementById("moveSheetAcc");
+ const moveSheetDescription = document.getElementById("moveSheetDescription");
++const moveSheetEffect = document.getElementById("moveSheetEffect");
  function formatPokemonName(name) {
    return name
      .split("-")
@@ -469,160 +221,91 @@ index 07db37ee052bdcbb758419863e9a465c77c0c8ac..f520329cb08bc46076e2109b1047a6c9
      pokemon?.sprites?.front_default ||
      ""
    );
-@@ -597,99 +631,184 @@ async function applyPokemonData(p, displayDexId = currentBaseDexId) {
-     attack: pokemonData.stats.atk,
-     defense: pokemonData.stats.def,
-     spAttack: pokemonData.stats.spAtk,
-     spDefense: pokemonData.stats.spDef,
-     speed: pokemonData.stats.speed,
-   });
-   renderDamageRelations(types);
-   renderAbilities(p.abilities);
-   renderHabitats(displayDexId);
-   renderMoves(p.moves);
-   renderEvolutionChain(chainData);
-   document.getElementById("name").textContent = formatPokemonName(p.name);
-   document.getElementById("dex").textContent =
-     `#${String(displayDexId).padStart(3, "0")}`;
-   document.getElementById("size").textContent =
-     `${p.height / 10} m • ${p.weight / 10} kg`;
-   if (artFrame) {
-     requestAnimationFrame(() => {
-       artFrame.classList.remove("is-transitioning");
-     });
+@@ -682,60 +683,80 @@ function buildMoveNameCell(move) {
+   return wrapper;
+ }
+ function openMoveSheet(move, dmg, acc, pp, isStatus) {
+   if (!moveSheetOverlay) return;
+   const typeColor = TYPE_COLORS[move.type.name] || "#7bdc65";
+   moveSheetTitle.textContent = normalizeMoveName(move.name);
+   if (moveSheetHeader) {
+     moveSheetHeader.style.background = typeColor;
    }
- }
- function getCategoryIcon(damageClass) {
-   return `<img src="assets/icons/${damageClass}.png" class="status-icon">`;
- }
-+function getMoveZIconPath(moveName) {
-+  return `assets/zmove/${moveName}.png`;
-+}
-+function getTypeBlockIconPath(typeName) {
-+  return `assets/types block/${typeName}.png`;
-+}
-+function normalizeMoveName(moveName) {
-+  return moveName
-+    .split("-")
-+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-+    .join(" ");
-+}
-+function buildMoveNameCell(move) {
-+  const wrapper = document.createElement("div");
-+  wrapper.className = "move-name-cell";
-+  const nameSpan = document.createElement("span");
-+  nameSpan.textContent = normalizeMoveName(move.name);
-+  wrapper.appendChild(nameSpan);
-+  const zIcon = document.createElement("img");
-+  zIcon.className = "zmove-icon";
-+  zIcon.alt = `Z-Move ${normalizeMoveName(move.name)}`;
-+  zIcon.src = getMoveZIconPath(move.name);
-+  zIcon.addEventListener("error", () => {
-+    zIcon.remove();
-+  });
-+  wrapper.appendChild(zIcon);
-+  return wrapper;
-+}
-+function openMoveSheet(move, dmg, acc, pp, isStatus) {
-+  if (!moveSheetOverlay) return;
-+  const typeColor = TYPE_COLORS[move.type.name] || "#7bdc65";
-+  moveSheetTitle.textContent = normalizeMoveName(move.name);
-+  if (moveSheetHeader) {
-+    moveSheetHeader.style.background = typeColor;
+   moveSheetPriority.textContent = `Prioridade ${move.priority > 0 ? "+" : ""}${move.priority || 0}`;
+   moveSheetType.textContent = move.type.name.toUpperCase();
+   moveSheetCategory.textContent = move.damage_class.name.toUpperCase();
+   if (moveSheetTypeIcon) {
+     moveSheetTypeIcon.src = getTypeBlockIconPath(move.type.name);
+     moveSheetTypeIcon.onerror = () => {
+       moveSheetTypeIcon.src = `assets/types/${move.type.name}.png`;
+       moveSheetTypeIcon.onerror = null;
+     };
+   }
+   if (moveSheetCategoryIcon) {
+     moveSheetCategoryIcon.src = `assets/icons/${move.damage_class.name}.png`;
+   }
+   moveSheetPower.textContent = `${isStatus ? "Dados" : "Dano"}: ${isStatus ? "—" : dmg}`;
+   moveSheetPp.textContent = `PP: ${pp}`;
+   moveSheetAcc.textContent = `ACC: ${acc}`;
+-  moveSheetDescription.textContent = "Carregando descrição...";
++  if (moveSheetDescription) {
++    moveSheetDescription.textContent = "Carregando descrição...";
 +  }
-+  moveSheetPriority.textContent = `Prioridade ${move.priority > 0 ? "+" : ""}${move.priority || 0}`;
-+  moveSheetType.textContent = move.type.name.toUpperCase();
-+  moveSheetCategory.textContent = move.damage_class.name.toUpperCase();
-+  if (moveSheetTypeIcon) {
-+    moveSheetTypeIcon.src = getTypeBlockIconPath(move.type.name);
-+    moveSheetTypeIcon.onerror = () => {
-+      moveSheetTypeIcon.src = `assets/types/${move.type.name}.png`;
-+      moveSheetTypeIcon.onerror = null;
-+    };
++  if (moveSheetEffect) {
++    moveSheetEffect.textContent = "Carregando detalhes mecânicos...";
 +  }
-+  if (moveSheetCategoryIcon) {
-+    moveSheetCategoryIcon.src = `assets/icons/${move.damage_class.name}.png`;
-+  }
-+  moveSheetPower.textContent = `${isStatus ? "Dados" : "Dano"}: ${isStatus ? "—" : dmg}`;
-+  moveSheetPp.textContent = `PP: ${pp}`;
-+  moveSheetAcc.textContent = `ACC: ${acc}`;
-+  moveSheetDescription.textContent = "Carregando descrição...";
-+  document.body.classList.add("move-sheet-open");
-+  moveSheetOverlay.hidden = false;
-+  requestAnimationFrame(() => moveSheetOverlay.classList.add("open"));
-+  getMoveDescription(move).then((description) => {
-+    if (!moveSheetOverlay.hidden) {
-+      moveSheetDescription.textContent = description;
++  setMoveSheetTab("flavor");
+   document.body.classList.add("move-sheet-open");
+   moveSheetOverlay.hidden = false;
+   requestAnimationFrame(() => moveSheetOverlay.classList.add("open"));
+   getMoveDescription(move).then((description) => {
+-    if (!moveSheetOverlay.hidden) {
++    if (!moveSheetOverlay.hidden && moveSheetDescription) {
+       moveSheetDescription.textContent = description;
+     }
+   });
++  getMoveMechanicalDescription(move).then((effectDescription) => {
++    if (!moveSheetOverlay.hidden && moveSheetEffect) {
++      moveSheetEffect.textContent = effectDescription;
 +    }
 +  });
+ }
++function setMoveSheetTab(tabName) {
++  document.querySelectorAll("[data-move-sheet-tab]").forEach((button) => {
++    button.classList.toggle("active", button.dataset.moveSheetTab === tabName);
++  });
++  document.querySelectorAll("[data-move-sheet-panel]").forEach((panel) => {
++    panel.classList.toggle("active", panel.dataset.moveSheetPanel === tabName);
++  });
 +}
-+function closeMoveSheet() {
-+  if (!moveSheetOverlay || moveSheetOverlay.hidden) return;
-+  moveSheetOverlay.classList.remove("open");
-+  document.body.classList.remove("move-sheet-open");
-+  setTimeout(() => {
-+    moveSheetOverlay.hidden = true;
-+  }, 180);
-+}
++
+ function closeMoveSheet() {
+   if (!moveSheetOverlay || moveSheetOverlay.hidden) return;
+   moveSheetOverlay.classList.remove("open");
+   document.body.classList.remove("move-sheet-open");
+   setTimeout(() => {
+     moveSheetOverlay.hidden = true;
+   }, 180);
+ }
  function addRow(tbody, col1, move, typeIcon, categoryIcon, dmg, acc, pp) {
    const isStatus = move.damage_class.name === "status";
    // Linha principal
    const tr = document.createElement("tr");
    tr.style.cursor = "pointer";
--  tr.innerHTML = `
--    <td>${col1}</td>
--    <td>${move.name.replace("-", " ")}</td>
--    <td>${typeIcon}</td>
--    <td>${categoryIcon}</td>
--    <td>${isStatus ? "—" : dmg}</td>
--    <td>${acc}</td>
--    <td>${pp}</td>
--  `;
-+  const methodCell = document.createElement("td");
-+  methodCell.textContent = col1;
-+  const nameCell = document.createElement("td");
-+  nameCell.appendChild(buildMoveNameCell(move));
-+  const typeCell = document.createElement("td");
-+  typeCell.innerHTML = typeIcon;
-+  const categoryCell = document.createElement("td");
-+  categoryCell.innerHTML = categoryIcon;
-+  const damageCell = document.createElement("td");
-+  damageCell.textContent = isStatus ? "—" : dmg;
-+  const accCell = document.createElement("td");
-+  accCell.textContent = acc;
-+  const ppCell = document.createElement("td");
-+  ppCell.textContent = pp;
-+  tr.append(
-+    methodCell,
-+    nameCell,
-+    typeCell,
-+    categoryCell,
-+    damageCell,
-+    accCell,
-+    ppCell,
-+  );
-   // Linha da descrição
-   const descRow = document.createElement("tr");
-   descRow.classList.add("move-description-row");
-   const descCell = document.createElement("td");
-   descCell.colSpan = 7; // número total de colunas da tabela
-   descCell.classList.add("move-description-cell");
--  // pegar descrição
--  const effectEntry = move.effect_entries.find((e) => e.language.name === "en");
--  let description = effectEntry
--    ? effectEntry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "")
--    : "Sem descrição disponível.";
--  let priorityText = "";
--  if (move.priority && move.priority !== 0) {
--    priorityText = `\n\nPrioridade: ${move.priority > 0 ? "+" : ""}${move.priority}`;
--  }
-   descCell.textContent = getMoveDescription(move);
-   descRow.appendChild(descCell);
-   tr.addEventListener("click", async () => {
-+    if (isMobileViewport.matches) {
-+      openMoveSheet(move, dmg, acc, pp, isStatus);
-+      return;
-+    }
+   const methodCell = document.createElement("td");
+   methodCell.textContent = col1;
+   const nameCell = document.createElement("td");
+   nameCell.appendChild(buildMoveNameCell(move));
+   const typeCell = document.createElement("td");
+   typeCell.innerHTML = typeIcon;
+   const categoryCell = document.createElement("td");
+   categoryCell.innerHTML = categoryIcon;
+   const damageCell = document.createElement("td");
+   damageCell.textContent = isStatus ? "—" : dmg;
+   const accCell = document.createElement("td");
+   accCell.textContent = acc;
+@@ -765,50 +786,55 @@ function addRow(tbody, col1, move, typeIcon, categoryIcon, dmg, acc, pp) {
+     }
      const isOpen = descRow.style.display === "table-row";
      document
        .querySelectorAll(".move-description-row")
@@ -640,13 +323,18 @@ index 07db37ee052bdcbb758419863e9a465c77c0c8ac..f520329cb08bc46076e2109b1047a6c9
    tbody.appendChild(tr);
    tbody.appendChild(descRow);
  }
-+if (moveSheetOverlay) {
-+  moveSheetOverlay.addEventListener("click", (event) => {
-+    if (event.target === moveSheetOverlay) {
-+      closeMoveSheet();
-+    }
+ if (moveSheetOverlay) {
+   moveSheetOverlay.addEventListener("click", (event) => {
+     if (event.target === moveSheetOverlay) {
+       closeMoveSheet();
+     }
+   });
+ }
++document.querySelectorAll("[data-move-sheet-tab]").forEach((button) => {
++  button.addEventListener("click", () => {
++    setMoveSheetTab(button.dataset.moveSheetTab || "flavor");
 +  });
-+}
++});
  function renderDamageRelations(types) {
    const token = ++damageToken;
    const relations = {};
@@ -672,72 +360,72 @@ index 07db37ee052bdcbb758419863e9a465c77c0c8ac..f520329cb08bc46076e2109b1047a6c9
              apply(type2.damage_relations.no_damage_from, 0);
              renderRelations(relations);
            });
-@@ -839,59 +958,76 @@ function renderRelations(rel) {
-   Object.entries(rel).forEach(([type, value]) => {
-     if (value === 1) return;
-     if (value === 0) immune.push(type);
-     else if (value > 1) weak.push({ type, value });
-     else if (value < 1) resist.push({ type, value });
-   });
-   document.getElementById("weaknesses").innerHTML = weak
-     .map(
-       (w) =>
-         `<img src="assets/types/${w.type}.png"
-        class="${w.value >= 4 ? "x4-weak" : ""}">`,
-     )
-     .join("");
-   document.getElementById("resistances").innerHTML = resist
-     .map(
-       (r) =>
-         `<img src="assets/types/${r.type}.png"
-        class="${r.value <= 0.25 ? "x4-resist" : ""}">`,
-     )
+@@ -977,64 +1003,87 @@ function renderRelations(rel) {
      .join("");
    document.getElementById("immunities").innerHTML = immune
      .map((t) => `<img src="assets/types/${t}.png">`)
      .join("");
  }
  async function getMoveDescription(move) {
--  let entry = move.effect_entries.find((e) => e.language.name === "pt-br");
-+  const flavorEntries = move.flavor_text_entries || [];
-+  const flavorCandidates = flavorEntries.filter(
-+    (entry) => entry.language.name === "pt-br" || entry.language.name === "en",
-+  );
-+  const nonExcludedFlavor = flavorCandidates.find(
-+    (entry) =>
-+      !EXCLUDED_DESCRIPTION_VERSION_GROUPS.includes(entry.version_group.name),
-+  );
-+  const selectedFlavor = nonExcludedFlavor || flavorCandidates[0];
+   const flavorEntries = move.flavor_text_entries || [];
+   const flavorCandidates = flavorEntries.filter(
+     (entry) => entry.language.name === "pt-br" || entry.language.name === "en",
+   );
+   const nonExcludedFlavor = flavorCandidates.find(
+     (entry) =>
+       !EXCLUDED_DESCRIPTION_VERSION_GROUPS.includes(entry.version_group.name),
+   );
+   const selectedFlavor = nonExcludedFlavor || flavorCandidates[0];
    let text;
--  if (entry) {
--    text = entry.effect;
-+  if (selectedFlavor) {
-+    const sanitizedText = selectedFlavor.flavor_text.replace(/[\n\f]/g, " ");
-+    text =
-+      selectedFlavor.language.name === "pt-br"
-+        ? sanitizedText
-+        : await translateToPortuguese(sanitizedText);
+   if (selectedFlavor) {
+     const sanitizedText = selectedFlavor.flavor_text.replace(/[\n\f]/g, " ");
+     text =
+       selectedFlavor.language.name === "pt-br"
+         ? sanitizedText
+         : await translateToPortuguese(sanitizedText);
    } else {
--    entry = move.effect_entries.find((e) => e.language.name === "en");
--    if (!entry) return "Descrição não disponível.";
--    text = entry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "");
--    text = await translateToPortuguese(text);
-+    let entry = move.effect_entries.find((e) => e.language.name === "pt-br");
-+    if (entry) {
-+      text = entry.effect;
-+    } else {
-+      entry = move.effect_entries.find((e) => e.language.name === "en");
-+      if (!entry) return "Descrição não disponível.";
-+      text = entry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "");
-+      text = await translateToPortuguese(text);
-+    }
+     let entry = move.effect_entries.find((e) => e.language.name === "pt-br");
+     if (entry) {
+-      text = entry.effect;
++      text = entry.short_effect || entry.effect;
+     } else {
+       entry = move.effect_entries.find((e) => e.language.name === "en");
+       if (!entry) return "Descrição não disponível.";
+-      text = entry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "");
++      text = (entry.short_effect || entry.effect).replace(
++        /\$effect_chance/g,
++        move.effect_chance ?? "",
++      );
+       text = await translateToPortuguese(text);
+     }
    }
-   // prioridade
+-  // prioridade
    if (move.priority && move.priority !== 0) {
      text += `\n\nPrioridade: ${move.priority > 0 ? "+" : ""}${move.priority}`;
    }
    return text;
  }
++async function getMoveMechanicalDescription(move) {
++  const effects = move.effect_entries || [];
++  let entry = effects.find((e) => e.language.name === "pt-br");
++  let text = "";
++  if (entry) {
++    text = entry.effect || entry.short_effect || "";
++  } else {
++    const english = effects.find((e) => e.language.name === "en");
++    if (!english) return "Detalhes mecânicos não disponíveis.";
++    text = (english.effect || english.short_effect || "").replace(
++      /\$effect_chance/g,
++      move.effect_chance ?? "",
++    );
++    text = await translateToPortuguese(text);
++  }
++  if (!text) return "Detalhes mecânicos não disponíveis.";
++  if (move.effect_chance !== null && move.effect_chance !== undefined) {
++    text += `\n\nChance de efeito secundário: ${move.effect_chance}%`;
++  }
++  return text;
++}
  async function translateToPortuguese(text) {
    if (!text) return "";
    if (translationCache[text]) {
@@ -756,64 +444,150 @@ index 07db37ee052bdcbb758419863e9a465c77c0c8ac..f520329cb08bc46076e2109b1047a6c9
      console.error("Erro na tradução:", error);
      return text; // fallback seguro
    }
+ }
+ function renderCapacities(pokemon) {
+   const intVal = calcIntelligence(pokemon);
+   const strVal = calcStrength(pokemon);
+   const movVal = calcMovement(pokemon);
+   document.getElementById("cap-int").textContent = intVal;
+   document.getElementById("cap-int-label").textContent = INT_LABELS[intVal];
+@@ -1768,26 +1817,37 @@ function setupSiteTitleAnimation() {
+     void homeLink.offsetWidth;
+     homeLink.classList.add("expanding");
+     setTimeout(() => {
+       window.location.href = homeLink.getAttribute("href") || "index.html";
+     }, 360);
+   });
+ }
+ document.addEventListener("DOMContentLoaded", () => {
+   setupSiteTitleAnimation();
+   [nameInput, dexInput].forEach((input) =>
+     input.addEventListener("input", updateSearchPreview),
+   );
+   document.querySelectorAll(".move-tab-buttons .tab-btn").forEach((btn) => {
+     btn.addEventListener("click", () => {
+       const tab = btn.dataset.movetab;
+       document
+         .querySelectorAll("#level-tab, #other-tab")
+         .forEach((t) => t.classList.remove("active"));
+       document
+         .querySelectorAll(".move-tab-buttons .tab-btn")
+         .forEach((b) => b.classList.remove("active"));
+       document.getElementById(`${tab}-tab`)?.classList.add("active");
+       btn.classList.add("active");
+     });
+   });
++
++  const quickButtons = document.querySelectorAll(".quick-nav-btn");
++  quickButtons.forEach((button) => {
++    button.addEventListener("click", () => {
++      const target = document.querySelector(button.dataset.scrollTarget || "");
++      if (!target) return;
++      target.scrollIntoView({ behavior: "smooth", block: "start" });
++      quickButtons.forEach((btn) => btn.classList.remove("active"));
++      button.classList.add("active");
++    });
++  });
+ });
 diff --git a/pokemon-view.html b/pokemon-view.html
-index 9520c3e078112819f7698eafa715958d4ad8db0f..425fee8de80c5f000f07ece00b7243f7eec4fbfe 100644
+index 425fee8de80c5f000f07ece00b7243f7eec4fbfe..6775af9ccb43045249f01943edd0d8f2d511ae14 100644
 --- a/pokemon-view.html
 +++ b/pokemon-view.html
-@@ -251,33 +251,61 @@
-               <th>Golpe</th>
-               <th>Tipo</th>
-               <th>Categ.</th>
-               <th>Dano</th>
-               <th>Acerto</th>
-               <th>Uso</th>
-             </tr>
-           </thead>
-           <tbody id="other-moves"></tbody>
-         </table>
-       </div>
+@@ -27,50 +27,57 @@
+ 
+   <div class="title-container">
+     <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+     <h2>Registro Pokémon</h2>
+   </div>
+ </header>
+ 
+ <div class="dex-search">
+   <input
+     type="number"
+     id="dexNumberInput"
+     min="1"
+     placeholder="Nº Dex"
+   />
+ 
+   <input 
+     type="text" 
+     id="dexSearchInput" 
+     placeholder="Nome do Pokémon"
+   />
+ 
+   <button id="dexSearchBtn">Buscar</button>
+ </div>
+ <div id="search-preview" class="search-preview"></div>
+ 
++<nav class="quick-nav" aria-label="Navegação rápida do Pokémon">
++  <button class="quick-nav-btn active" data-scroll-target=".image-panel" type="button">Visão Geral</button>
++  <button class="quick-nav-btn" data-scroll-target=".stats-panel" type="button">Status</button>
++  <button class="quick-nav-btn" data-scroll-target=".move-tabs" type="button">Golpes</button>
++  <button class="quick-nav-btn" data-scroll-target=".evolution-panel" type="button">Evolução</button>
++</nav>
++
+ <div class="copy-buttons">
+   <button id="copyPokemonBtn" class="pixel-button">Copiar Pokémon</button>
+   <button id="copyMovesBtn" class="pixel-button">Copiar Golpes</button>
+ </div>
+ 
+ <div id="copyToast" class="copy-toast">
+   Copiado com sucesso!
+ </div>
+ 
+ <main class="pokemon-view">
+ 
+ <div class="left-column">
+   <section class="image-panel">
+     <div class="dex-title">
+       <span id="dex"></span>
+       <span id="name"></span>
      </div>
  
-   </section>
+ <div class="art-wrapper">
+   <button class="mobile-art-nav mobile-art-nav-left" data-mobile-nav="prev" type="button">
+     <span class="mobile-art-nav-arrow">◀</span>
+     <span class="mobile-art-nav-dex" id="mobile-prev-dex">#0000</span>
+   </button>
  
- </section>
- 
- <section class="info-panel evolution-panel">
-   <h3 class="evolution-title">Linha Evolutiva</h3>
-   <div id="evolution-chain" class="evolution-chain vertical"></div>
- </section>
- 
- 
+   <div class="art-frame">
+@@ -274,38 +281,43 @@
  </main>
  
-+<div id="moveSheetOverlay" class="move-sheet-overlay" hidden>
-+  <div id="moveSheet" class="move-sheet" role="dialog" aria-modal="true" aria-labelledby="moveSheetTitle">
-+    <div id="moveSheetHeader" class="move-sheet-header">
-+      <h3 id="moveSheetTitle"></h3>
-+    </div>
-+    <span id="moveSheetPriority" class="move-sheet-priority"></span>
-+    <hr class="move-sheet-divider">
-+    <div class="move-sheet-type-icons">
-+      <div class="move-sheet-icon-item">
-+        <img id="moveSheetTypeIcon" alt="Tipo do golpe">
-+        <span id="moveSheetType"></span>
+ <div id="moveSheetOverlay" class="move-sheet-overlay" hidden>
+   <div id="moveSheet" class="move-sheet" role="dialog" aria-modal="true" aria-labelledby="moveSheetTitle">
+     <div id="moveSheetHeader" class="move-sheet-header">
+       <h3 id="moveSheetTitle"></h3>
+     </div>
+     <span id="moveSheetPriority" class="move-sheet-priority"></span>
+     <hr class="move-sheet-divider">
+     <div class="move-sheet-type-icons">
+       <div class="move-sheet-icon-item">
+         <img id="moveSheetTypeIcon" alt="Tipo do golpe">
+         <span id="moveSheetType"></span>
+       </div>
+       <div class="move-sheet-icon-item">
+         <img id="moveSheetCategoryIcon" alt="Categoria do golpe">
+         <span id="moveSheetCategory"></span>
+       </div>
+     </div>
+     <div class="move-sheet-stats">
+       <span id="moveSheetPower"></span>
+       <span id="moveSheetPp"></span>
+       <span id="moveSheetAcc"></span>
+     </div>
+     <div class="move-sheet-description-box">
+-      <p id="moveSheetDescription" class="move-sheet-description"></p>
++      <div class="move-sheet-tabs" role="tablist" aria-label="Detalhes do golpe">
++        <button id="moveSheetTabFlavor" class="move-sheet-tab-btn active" data-move-sheet-tab="flavor" type="button">Descrição</button>
++        <button id="moveSheetTabEffect" class="move-sheet-tab-btn" data-move-sheet-tab="effect" type="button">Mecânica</button>
 +      </div>
-+      <div class="move-sheet-icon-item">
-+        <img id="moveSheetCategoryIcon" alt="Categoria do golpe">
-+        <span id="moveSheetCategory"></span>
-+      </div>
-+    </div>
-+    <div class="move-sheet-stats">
-+      <span id="moveSheetPower"></span>
-+      <span id="moveSheetPp"></span>
-+      <span id="moveSheetAcc"></span>
-+    </div>
-+    <div class="move-sheet-description-box">
-+      <p id="moveSheetDescription" class="move-sheet-description"></p>
-+    </div>
-+  </div>
-+</div>
-+
++      <p id="moveSheetDescription" class="move-sheet-description active" data-move-sheet-panel="flavor"></p>
++      <p id="moveSheetEffect" class="move-sheet-description" data-move-sheet-panel="effect"></p>
+     </div>
+   </div>
+ </div>
+ 
  <div class="nav-zone right" data-nav="next"></div>
  <button class="nav-btn right" data-nav="next" type="button" aria-label="Próximo Pokémon">
    <span class="nav-btn-arrow">▶</span>

@@ -101,6 +101,7 @@ const moveSheetPower = document.getElementById("moveSheetPower");
 const moveSheetPp = document.getElementById("moveSheetPp");
 const moveSheetAcc = document.getElementById("moveSheetAcc");
 const moveSheetDescription = document.getElementById("moveSheetDescription");
+const moveSheetEffect = document.getElementById("moveSheetEffect");
 function formatPokemonName(name) {
   return name
     .split("-")
@@ -704,16 +705,36 @@ function openMoveSheet(move, dmg, acc, pp, isStatus) {
   moveSheetPower.textContent = `${isStatus ? "Dados" : "Dano"}: ${isStatus ? "—" : dmg}`;
   moveSheetPp.textContent = `PP: ${pp}`;
   moveSheetAcc.textContent = `ACC: ${acc}`;
-  moveSheetDescription.textContent = "Carregando descrição...";
+  if (moveSheetDescription) {
+    moveSheetDescription.textContent = "Carregando descrição...";
+  }
+  if (moveSheetEffect) {
+    moveSheetEffect.textContent = "Carregando detalhes mecânicos...";
+  }
+  setMoveSheetTab("flavor");
   document.body.classList.add("move-sheet-open");
   moveSheetOverlay.hidden = false;
   requestAnimationFrame(() => moveSheetOverlay.classList.add("open"));
   getMoveDescription(move).then((description) => {
-    if (!moveSheetOverlay.hidden) {
+    if (!moveSheetOverlay.hidden && moveSheetDescription) {
       moveSheetDescription.textContent = description;
     }
   });
+  getMoveMechanicalDescription(move).then((effectDescription) => {
+    if (!moveSheetOverlay.hidden && moveSheetEffect) {
+      moveSheetEffect.textContent = effectDescription;
+    }
+  });
 }
+function setMoveSheetTab(tabName) {
+  document.querySelectorAll("[data-move-sheet-tab]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.moveSheetTab === tabName);
+  });
+  document.querySelectorAll("[data-move-sheet-panel]").forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.moveSheetPanel === tabName);
+  });
+}
+
 function closeMoveSheet() {
   if (!moveSheetOverlay || moveSheetOverlay.hidden) return;
   moveSheetOverlay.classList.remove("open");
@@ -787,6 +808,11 @@ if (moveSheetOverlay) {
     }
   });
 }
+document.querySelectorAll("[data-move-sheet-tab]").forEach((button) => {
+  button.addEventListener("click", () => {
+    setMoveSheetTab(button.dataset.moveSheetTab || "flavor");
+  });
+});
 function renderDamageRelations(types) {
   const token = ++damageToken;
   const relations = {};
@@ -999,17 +1025,40 @@ async function getMoveDescription(move) {
   } else {
     let entry = move.effect_entries.find((e) => e.language.name === "pt-br");
     if (entry) {
-      text = entry.effect;
+      text = entry.short_effect || entry.effect;
     } else {
       entry = move.effect_entries.find((e) => e.language.name === "en");
       if (!entry) return "Descrição não disponível.";
-      text = entry.effect.replace(/\$effect_chance/g, move.effect_chance ?? "");
+      text = (entry.short_effect || entry.effect).replace(
+        /\$effect_chance/g,
+        move.effect_chance ?? "",
+      );
       text = await translateToPortuguese(text);
     }
   }
-  // prioridade
   if (move.priority && move.priority !== 0) {
     text += `\n\nPrioridade: ${move.priority > 0 ? "+" : ""}${move.priority}`;
+  }
+  return text;
+}
+async function getMoveMechanicalDescription(move) {
+  const effects = move.effect_entries || [];
+  let entry = effects.find((e) => e.language.name === "pt-br");
+  let text = "";
+  if (entry) {
+    text = entry.effect || entry.short_effect || "";
+  } else {
+    const english = effects.find((e) => e.language.name === "en");
+    if (!english) return "Detalhes mecânicos não disponíveis.";
+    text = (english.effect || english.short_effect || "").replace(
+      /\$effect_chance/g,
+      move.effect_chance ?? "",
+    );
+    text = await translateToPortuguese(text);
+  }
+  if (!text) return "Detalhes mecânicos não disponíveis.";
+  if (move.effect_chance !== null && move.effect_chance !== undefined) {
+    text += `\n\nChance de efeito secundário: ${move.effect_chance}%`;
   }
   return text;
 }
@@ -1788,6 +1837,17 @@ document.addEventListener("DOMContentLoaded", () => {
         .forEach((b) => b.classList.remove("active"));
       document.getElementById(`${tab}-tab`)?.classList.add("active");
       btn.classList.add("active");
+    });
+  });
+
+  const quickButtons = document.querySelectorAll(".quick-nav-btn");
+  quickButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = document.querySelector(button.dataset.scrollTarget || "");
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      quickButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
     });
   });
 });
