@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criação Pokémon</title>
+  <link rel="stylesheet" href="css/pokemon.css">
+  <link rel="stylesheet" href="css/creation.css">
+  <link rel="icon" href="assets/logo.png">
+  <script type="module" src="js/creation.js"></script>
+</head>
+<body>
+  <aside id="sideMenu" class="side-menu" aria-hidden="true">
+    <div class="side-menu-header">Menu</div>
+    <div class="side-menu-divider"></div>
+    <div class="side-menu-actions top">
+      <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
+      <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
+      <a class="side-menu-btn" href="creation.html">Criação</a>
+      <a class="side-menu-btn" href="favoritos.html">Favorito</a>
+    </div>
+    <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+  </aside>
+  <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
+
+  <header>
+    <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
+      <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
+    </button>
+    <div class="title-container">
+      <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
+      <h2>Criação</h2>
+    </div>
+  </header>
+
+  <main class="creation-layout">
+    <section class="builder-panel">
+      <div class="mode-switch" role="tablist" aria-label="Modo de criação">
+        <button class="mode-btn active" data-mode="wild" type="button">Pokémon Selvagem</button>
+        <button class="mode-btn" data-mode="trained" type="button">Pokémon Adestrado</button>
+        <button class="mode-btn" data-mode="quick" type="button">Geração Rápida</button>
+      </div>
+
+      <div class="builder-block search-block">
+        <h3>Espécie</h3>
+        <div class="search-controls">
+          <input id="speciesSearch" type="text" placeholder="Nome ou ID do Pokémon">
+          <button id="speciesSearchBtn" type="button">Buscar</button>
+        </div>
+        <div id="speciesPreview" class="search-preview"></div>
+      </div>
+
+      <div class="builder-block" id="basicControls" hidden>
+        <h3>Configuração básica</h3>
+        <label>Gênero
+          <select id="genderSelect"></select>
+        </label>
+        <label class="inline-toggle"><input id="shinyToggle" type="checkbox"> Shiny</label>
+        <label>Nível
+          <input id="levelInput" type="number" min="1" max="100" value="5">
+        </label>
+        <div class="ability-grid">
+          <label>Habilidade 1
+            <select id="ability1"></select>
+          </label>
+          <label id="ability2Wrap">Habilidade 2
+            <select id="ability2"></select>
+          </label>
+        </div>
+        <label>Natureza
+          <select id="natureSelect"></select>
+        </label>
+      </div>
+
+      <div id="trainedControls" class="builder-block mode-only" data-mode-only="trained" hidden>
+        <h3>Regras de Adestrado</h3>
+        <label>Apelido (opcional)
+          <input id="nicknameInput" type="text" maxlength="30" placeholder="Ex.: Tempestade">
+        </label>
+        <label>Lealdade (0 a 4)
+          <input id="loyaltyInput" type="number" min="0" max="4" value="0">
+        </label>
+      </div>
+
+      <div id="wildControls" class="builder-block mode-only" data-mode-only="wild" hidden>
+        <h3>Regras de Selvagem</h3>
+        <label class="inline-toggle"><input id="alphaToggle" type="checkbox"> Alpha</label>
+        <p class="helper-text">Distribuição automática por relação basal.</p>
+      </div>
+
+      <div id="quickControls" class="builder-block mode-only" data-mode-only="quick" hidden>
+        <h3>Geração Rápida</h3>
+        <button id="quickGenerateBtn" type="button">Gerar configuração aleatória</button>
+      </div>
+
+      <div class="builder-block moves-selectors" id="movesSection" hidden>
+        <h3>Golpes</h3>
+        <div class="move-builder-grid">
+          <div>
+            <h4>Level Moves (máx. 4)</h4>
+            <div class="inline-row">
+              <select id="levelMoveSelect"></select>
+              <button id="addLevelMoveBtn" type="button">Adicionar</button>
+            </div>
+            <ul id="levelMoveSlots" class="move-slots"></ul>
+          </div>
+          <div>
+            <h4>TM / Tutor / Egg (máx. 4)</h4>
+            <div class="inline-row">
+              <select id="tmMoveSelect"></select>
+              <button id="addTmMoveBtn" type="button">Adicionar</button>
+            </div>
+            <ul id="tmMoveSlots" class="move-slots"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet-panel">
+      <h3>Ficha</h3>
+      <div id="sheetEmpty">Selecione um Pokémon para começar.</div>
+      <div id="sheetContent" hidden>
+        <div class="sheet-head">
+          <img id="sheetSprite" alt="Pokémon selecionado">
+          <div>
+            <strong id="sheetName"></strong>
+            <p id="sheetMeta"></p>
+            <p id="sheetModeLabel"></p>
+          </div>
+        </div>
+
+        <div class="stats-columns">
+          <div>
+            <h4>Atributos Basais</h4>
+            <ul id="baseStatsList" class="stat-list"></ul>
+          </div>
+          <div>
+            <h4>Pontos por nível</h4>
+            <ul id="levelStatsList" class="stat-list"></ul>
+          </div>
+          <div>
+            <h4>Atributos Finais</h4>
+            <ul id="finalStatsList" class="stat-list"></ul>
+          </div>
+        </div>
+
+        <div class="health-bars">
+          <div class="hp-item">
+            <span>HP1</span>
+            <div class="hp-bar hp1"><span id="hp1Fill"></span></div>
+            <small id="hp1Text"></small>
+          </div>
+          <div class="hp-item">
+            <span>HP2</span>
+            <div class="hp-bar hp2"><span id="hp2Fill"></span></div>
+            <small id="hp2Text"></small>
+          </div>
+        </div>
+
+        <h4>Golpes selecionados</h4>
+        <ul id="selectedMovesOutput" class="move-output"></ul>
+
+        <div class="actions-row">
+          <button id="copySheetBtn" type="button">Copiar ficha</button>
+          <button id="copyMovesBtn" type="button">Copiar golpes</button>
+          <button id="saveJsonBtn" type="button">Salvar JSON</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
