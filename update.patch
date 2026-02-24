@@ -1,250 +1,413 @@
-diff --git a/css/pokemon.css b/css/pokemon.css
-index 89242d94b155b7091c7c4936bd85ff8525999438..45dd2415ddba10378e30556b7baad703772449ac 100644
---- a/css/pokemon.css
-+++ b/css/pokemon.css
-@@ -204,90 +204,95 @@ header h2 {
- 
- .modal-content {
-   max-height: 80vh;
-   overflow-y: auto;
-   background: #0b1611;
-   border: 2px solid #2f6b44;
-   border-radius: 16px;
-   padding: 18px;
-   width: 90%;
-   max-width: 750px;
-   color: #fff;
- }
- 
- 
- 
- .filter-main-title {
-   text-align: center;
-   font-family: "Pokemon";
-   letter-spacing: 2px;
-   color: #f8d030;
-   margin-top: 0;
- }
- 
- .modal-sections {
+diff --git a/css/moves.css b/css/moves.css
+index 1553ea2d76af3e11e6ca78ce9fd5cab7676ce863..0494beccf173326a3507e96a8c53cf6606febe38 100644
+--- a/css/moves.css
++++ b/css/moves.css
+@@ -1,269 +1,191 @@
+-@font-face {
+-  font-family: "Bully";
+-  src: url("../assets/fonts/bully.ttf");
+-}
+-
+-@font-face {
+-  font-family: "Pokemon";
+-  src: url("../assets/fonts/pokemon.ttf");
+-}
+-
+-@font-face {
+-  font-family: "Pixel";
+-  src: url("../assets/fonts/pixel.ttf");
+-}
+-
+-body {
+-  background: #0e0f0f;
+-  color: #eaeaea;
+-  font-family: Arial, sans-serif;
+-  margin: 0;
+-}
+-
+-body {
+-  background: #0f1b14;
+-  color: #eaeaea;
+-  margin: 0;
+-}
+-
+-header {
++.moves-controls {
    display: flex;
-+  flex-direction: column;
-   gap: 14px;
--  overflow-x: auto;
--  padding-bottom: 4px;
+-  align-items: center;
++  gap: 10px;
+   justify-content: center;
+-  position: relative;
+-  gap: 20px;
+-  padding: 18px 24px;
+-  background: linear-gradient(180deg, #1f4d2b, #102018);
+-  border-bottom: 4px solid #7bdc65;
+-  box-shadow: 0 4px 20px #000;
+-}
+-
+-.logo {
+-  position: absolute;
+-  left: 20px;
+-  width: 90px;
+-  filter: drop-shadow(0 0 6px #7bdc65);
+-}
+-
+-.site-title {
+-  font-family: "Bully";
+-  font-size: 52px;
+-  color: #7bdc65;
+- text-shadow:
+-    0 0 4px rgba(63, 174, 106, 0.6),
+-    0 0 8px rgba(63, 174, 106, 0.4);
+-}
+-
+-.site-subtitle {
+-  font-family: "Pokemon";
+-  font-size: 28px;
+-  letter-spacing: 3px;
+-  color: #f8d030;
+-  text-shadow: 0 0 6px #f8d030;
+-}
+-
+-.site-home-link {
+-  color: inherit;
+-  text-decoration: none;
+-  display: inline-block;
+-  outline: none;
+-  -webkit-tap-highlight-color: transparent;
++  padding: 15px;
++  flex-wrap: wrap;
  }
  
- .modal-section {
--  flex: 1;
--  min-width: 220px;
-   background: rgba(255,255,255,0.03);
-   border: 1px solid rgba(123,220,101,0.3);
-   border-radius: 12px;
-   padding: 10px;
+-.site-home-link:hover {
+-  text-decoration: underline;
+-}
+-
+-.site-home-link:focus,
+-.site-home-link:focus-visible {
+-  outline: none;
+-  box-shadow: none;
+-}
+-
+-.site-home-link.expanding {
+-  animation: titleExpand 0.36s ease forwards;
+-}
+-
+-@keyframes titleExpand {
+-  0% {
+-    transform: scale(1);
+-    letter-spacing: normal;
+-    text-shadow: 0 0 6px rgba(123, 220, 101, 0.4);
+-  }
+-  100% {
+-    transform: scale(1.08);
+-    letter-spacing: 1.5px;
+-    text-shadow: 0 0 16px rgba(123, 220, 101, 0.9);
+-  }
+-}
+-
+-h1 {
+-  font-family: "Bully";
+-  font-size: 48px;
+-  color:  #9ae06f;
+-}
+-
+-h2 {
+-  font-family: "Pokemon";
+-  font-size: 32px;
+-  letter-spacing: 2px;
+-  margin-top: 5px;
+-  text-align: center;
+-}
+-
+-.titles {
+-  text-align: center;
+-}
+-
+-.move-name {
+-  font-family: "Pixel";
+-  font-size: 18px;
+-  letter-spacing: 1px;
+-  text-shadow: 0 0 6px currentColor;
+-}
+-
+-.move-details {
+-  margin-top: 10px;
+-  border-top: 1px dashed #3aff74;
+-  padding-top: 8px;
+-  animation: scanOpen 0.25s ease;
+-}
+-
+-@keyframes scanOpen {
+-  from {
+-    opacity: 0;
+-    transform: translateY(-6px);
+-  }
+-  to {
+-    opacity: 1;
+-    transform: translateY(0);
+-  }
+-
+-}
+-
+-.move-card.open .move-details {
+-  display: block;
++.moves-controls input,
++.moves-controls select {
++  background: #0b1611;
++  color: #fff;
++  border: 2px solid #2f6b44;
++  padding: 10px 12px;
++  border-radius: 10px;
++  font-family: Pixel;
  }
  
- .modal-section h4 {
-   font-family: Pixel;
-   color: #7bdc65;
-   border-bottom: 2px solid #7bdc65;
-   padding-bottom: 6px;
-   margin-bottom: 10px;
+-.move-card {
+-  cursor: pointer;
++.moves-grid {
++  display: grid;
++  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
++  gap: 16px;
++  padding: 20px;
  }
  
- .filter-types,
- .filter-gens,
- .filter-habitats {
-   display: grid;
--  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-+  grid-template-columns: repeat(3, minmax(0, 1fr));
-   gap: 8px;
+ .move-card {
+   background: linear-gradient(160deg, #14261d, #0b1611);
+   border: 2px solid #2f6b44;
+   border-radius: 14px;
+   padding: 14px;
+-  margin: 14px;
+-  box-shadow:
+-    inset 0 0 0 2px #0f2a1c,
+-    0 0 12px #000;
+-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+-}
+-.move-card:hover {
+-  transform: scale(1.01);
+-  box-shadow:
+-    0 0 12px #3aff74,
+-    inset 0 0 0 2px #7bdc65;
++  box-shadow: inset 0 0 0 2px #0f2a1c, 0 0 12px #000;
++  text-align: left;
++  color: inherit;
++  cursor: pointer;
  }
  
- .filter-gens label,
- .filter-habitats label {
-   font-family: Pixel;
-   padding: 6px 10px;
-   border-radius: 8px;
-   cursor: pointer;
-   background: rgba(255,255,255,0.05);
-   display: inline-flex;
+ .move-header {
+   display: flex;
+   align-items: center;
+-  gap: 10px;
++  gap: 8px;
+ }
+ 
+ .type-dot {
+   width: 12px;
+   height: 12px;
+   border-radius: 50%;
+ }
+ 
++.move-name {
++  font-family: Pixel;
++  font-size: 13px;
++  letter-spacing: 0.7px;
++  flex: 1;
++}
++
++.cat-icon {
++  width: 28px;
++  height: 28px;
++}
++
+ .move-info {
+   display: flex;
    align-items: center;
    gap: 6px;
-+  min-height: 40px;
-+  white-space: normal;
-+  line-height: 1.2;
-+}
-+
-+
-+.filter-habitats label {
-+  align-items: flex-start;
- }
- 
- .filter-types label {
-   width: 100%;
-   height: 48px;
-   border-radius: 12px;
-   border: 2px solid rgba(255, 255, 255, 0.15);
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
-   background: rgba(255,255,255,0.06);
-   cursor: pointer;
- }
- 
- .filter-types label img {
-   width: 30px;
-   height: 30px;
- }
- 
- .filter-types input {
-   display: none;
- }
- 
- .filter-types label.is-selected {
-   border-color: #7bdc65;
-@@ -295,51 +300,59 @@ header h2 {
- }
- 
- .filter-btn {
-   background: linear-gradient(180deg, #2f6b44, #1f4d2b);
-   color: #fff;
-   border: 2px solid #7bdc65;
-   padding: 10px 16px;
-   border-radius: 10px;
-   font-family: Pixel;
-   cursor: pointer;
-   box-shadow: 0 0 10px #000;
- }
- 
- .filter-btn:hover {
-   box-shadow: 0 0 12px #7bdc65;
- }
- 
- .sprite {
-   image-rendering: pixelated;
-   aspect-ratio: 1 / 1;
-   object-fit: contain;
- }
- 
- .name {
-   font-weight: bold;
 -  margin-top: 6px;
-+  margin-top: 0;
-+}
-+
-+.dex-number {
++  margin-top: 8px;
+ }
+ 
+-.cat-icon {
+-  width: 36px;
+-  height: 36px;
+-  filter: drop-shadow(0 0 4px #fff);
++.move-details {
++  display: none;
++  margin-top: 10px;
++  border-top: 1px dashed #3aff74;
++  padding-top: 8px;
+ }
+ 
+-.type-icon {
+-    display: flex;
+-    align-items: center;
+-    justify-content: center;
+-    gap: 6px;
+-    margin-top: 6px;
+-}
+-.type-icon img {
+-    width: 28px;
+-    height: 28px;
++.move-card.open .move-details {
++  display: block;
+ }
+-.type-icon span {
+-    font-weight: bold;
+-    font-size: 0.95rem;
+ 
++.move-stats {
++  display: flex;
++  gap: 8px;
++  margin-bottom: 8px;
+ }
+ 
+ .move-stats span {
+   background: #08140f;
+   border: 1px solid #2f6b44;
+-  padding: 4px 8px;
++  padding: 4px 6px;
+   border-radius: 6px;
+-  box-shadow: inset 0 0 4px #000;
 +  font-family: Pixel;
-+  font-size: 12px;
-+  letter-spacing: 0.8px;
-+  color: rgba(234, 234, 234, 0.7);
-+  margin-bottom: 4px;
++  font-size: 11px;
+ }
+ 
+ .desc {
+-  font-size: 14px;
+-  opacity: 0.9;
++  font-size: 13px;
++  margin: 0;
  }
  
  .load-more {
-   grid-column: 1 / -1;
-   background: #1f4d2b;
+-  background: #1f4d2b;
++  grid-column: 1 / -1;
++  justify-self: center;
++  background: #2f6b44;
++  border: 2px solid #4fae78;
    color: #fff;
-   border: none;
-   padding: 12px;
-   border-radius: 10px;
+-  border: none;
+-  padding: 10px;
+-  margin: 20px auto;
+-  display: block;
++  border-radius: 8px;
++  padding: 10px 14px;
    font-family: Pixel;
-   cursor: pointer;
-   box-shadow: 0 0 10px #000;
+-  cursor: pointer;
  }
  
- /* tipos */
- .types {
-   display: flex;
-   justify-content: center;
-   gap: 6px;
-   margin-top: 6px;
+-.type-grass { color: #78c850; }
+-.type-fire { color: #f08030; }
+-.type-water { color: #6890f0; }
+-.type-electric { color: #f8d030; }
+-.type-psychic { color: #f85888; }
+-.type-dark { color: #705848; }
+-.type-dragon { color: #7038f8; }
+-.type-fairy { color: #ee99ac; }
+-.type-steel { color: #b8b8d0; }
+-.type-ghost { color: #705898; }
+-.type-ice { color: #98d8d8; }
+-.type-fighting { color: #c03028; }
+-.type-ground { color: #e0c068; }
+-.type-rock { color: #b8a038; }
+-.type-poison { color: #a040a0; }
+-.type-flying { color: #a890f0; }
+-.type-bug { color: #a8b820; }
+-.type-normal { color: #a8a878; }
++.move-sheet-overlay {
++  position: fixed;
++  inset: 0;
++  background: rgba(0, 0, 0, 0.8);
++  display: flex;
++  align-items: flex-end;
++  justify-content: center;
++  opacity: 0;
++  pointer-events: none;
++  transition: opacity 0.2s ease;
++  z-index: 999;
++}
++
++.move-sheet-overlay.open {
++  opacity: 1;
++  pointer-events: auto;
++}
+ 
+-body {
+-  background:
+-    radial-gradient(circle at top, #1d3b2a, #020403);
+-  min-height: 100vh;
++.move-sheet {
++  width: 100%;
++  max-width: 500px;
++  background: #13241b;
++  border: 2px solid #7bdc65;
++  border-radius: 18px 18px 0 0;
++  padding: 14px;
++  transform: translateY(100%);
++  transition: transform 0.2s ease;
  }
  
- .list {
-   display: flex;
-   flex-direction: column;
-@@ -505,63 +518,64 @@ header h2 {
-   opacity: 0.7;
-   margin-top: 4px;
- }
++.move-sheet-overlay.open .move-sheet {
++  transform: translateY(0);
++}
  
- #habitat-filter option {
-   background: #0b1611;
-   color: #7bdc65;
-   font-family: Pixel;
- }
- 
- .habitat {
-   font-family: Pixel;
-   font-size: 11px;
-   margin-top: 6px;
-   padding: 4px 8px;
-   border-radius: 6px;
-   background: rgba(123,220,101,0.1);
-   border: 1px solid #2f6b44;
-   color: #7bdc65;
-   display: inline-block;
- }
- 
- 
- .type-icon {
-   width: 20px;
-+  height: 20px;
- }
- 
- .pokemon-card {
-   border: 3px solid rgba(0,0,0,0.6);
-   transition: 0.2s;
- }
- 
- 
- 
- .favorite-btn {
-   position: absolute;
--  top: 8px;
--  left: 8px;
-+  top: 10px;
-+  right: 10px;
-   width: 28px;
-   height: 28px;
-   border: none;
-   background: transparent;
-   padding: 0;
-   cursor: pointer;
-   z-index: 4;
- }
- 
- .favorite-btn img {
-   width: 100%;
-   height: 100%;
-   object-fit: contain;
- }
- 
++.move-sheet-header {
++  display: flex;
++  justify-content: space-between;
++  align-items: center;
++}
++
++.move-sheet-close {
++  background: transparent;
++  border: none;
++  color: #fff;
++  font-size: 18px;
++}
++
++.move-sheet-type-icons,
++.move-sheet-stats {
++  display: flex;
++  gap: 10px;
++  margin-top: 10px;
++}
++
++.move-sheet-icon-item {
++  display: flex;
++  align-items: center;
++  gap: 6px;
++}
++
++.move-sheet-icon-item img { width: 22px; height: 22px; }
++.move-sheet-stats span { font-family: Pixel; font-size: 11px; }
++.move-sheet-description { font-size: 13px; margin-top: 12px; }
  
  @media (max-width: 768px) {
- 
-   .list {
-     padding: 14px;
-     gap: 14px;
+-  .logo {
+-    top: 8px;
+-    left: 10px;
+-    width: 56px;
++  .moves-grid {
++    display: flex;
++    flex-direction: column;
++    gap: 14px;
++    padding: 14px;
++  }
++
++  .move-card {
++    border-radius: 18px;
++    border: 2px solid rgba(132, 198, 177, 0.45);
++    background: linear-gradient(140deg, rgba(114, 188, 176, 0.92), rgba(122, 197, 206, 0.9));
++    color: rgba(19, 61, 54, 0.95);
++  }
++
++  .move-details {
++    display: none !important;
    }
- 
-   .list .pokemon-card {
-     position: relative;
-@@ -607,65 +621,67 @@ header h2 {
-     margin-bottom: 8px;
-     font-size: 14px;
-     line-height: 1;
-     color: rgba(31, 76, 73, 0.8);
-     white-space: nowrap;
-     overflow: hidden;
-     text-overflow: ellipsis;
-     letter-spacing: 0.2px;
-   }
- 
-   .list .types {
-     justify-content: flex-start;
-     gap: 8px;
+ }
+diff --git a/css/pokemon.css b/css/pokemon.css
+index 45dd2415ddba10378e30556b7baad703772449ac..f4536b9ae187159715326c6ed60abe44bb530631 100644
+--- a/css/pokemon.css
++++ b/css/pokemon.css
+@@ -634,54 +634,57 @@ header h2 {
      margin-top: 0;
      flex-wrap: nowrap;
      overflow-x: auto;
@@ -257,32 +420,30 @@ index 89242d94b155b7091c7c4936bd85ff8525999438..45dd2415ddba10378e30556b7baad703
    }
  
    .list .type-icon {
--    width: 16px;
--    height: 16px;
-+    width: 14px;
-+    height: 14px;
+     width: 14px;
+     height: 14px;
    }
  
    .list .type-pill {
--    min-width: 74px;
--    height: 26px;
--    font-size: 9px;
--    padding: 0 7px;
-+    min-width: 68px;
-+    height: 24px;
-+    font-size: 8px;
-+    padding: 0 6px;
-+    gap: 4px;
+     min-width: 68px;
+     height: 24px;
+     font-size: 8px;
+     padding: 0 6px;
+     gap: 4px;
    }
  
    .favorite-btn {
--    left: auto;
--    right: 8px;
--    top: 8px;
-+    right: 10px;
-+    top: 10px;
-+    width: 24px;
-+    height: 24px;
+-    right: 10px;
+-    top: 10px;
+-    width: 24px;
+-    height: 24px;
++    right: 6px;
++    top: 6px;
++    width: 26px;
++    height: 26px;
++    background: rgba(255, 255, 255, 0.2);
++    border-radius: 999px;
++    padding: 2px;
    }
  
    header {
@@ -308,216 +469,843 @@ index 89242d94b155b7091c7c4936bd85ff8525999438..45dd2415ddba10378e30556b7baad703
    }
  }
  
-@@ -732,133 +748,150 @@ header h2 {
-   align-items: center;
-   gap: 10px;
-   padding: 8px 14px;
-   border: 2px solid #2f6b44;
-   border-radius: 12px;
-   background: #08120d;
-   color: #eaffea;
-   width: 100%;
-   font-family: Pixel;
-   text-align: left;
- }
+diff --git a/favoritos.html b/favoritos.html
+index 3b5c4acb9b5ad06e56f15d9208f22d80bb60036d..a243dbbb5d865b4764870deb4b8b24de863af5b4 100644
+--- a/favoritos.html
++++ b/favoritos.html
+@@ -2,55 +2,55 @@
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Pokémon RPG</title>
+   <link rel="stylesheet" href="css/pokemon.css">
+   <script type="module" src="js/pokemon.js"></script>
+ </head>
+ <body>
  
- .search-preview .preview-card img {
-   width: 52px;
- }
+ <aside id="sideMenu" class="side-menu" aria-hidden="true">
+   <div class="side-menu-header">Menu</div>
+   <div class="side-menu-divider"></div>
+   <div class="side-menu-actions top">
+     <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
+     <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
+     <button class="side-menu-btn" type="button">Lista de habilidades</button>
+     <a class="side-menu-btn" href="favoritos.html">Favorito</a>
+   </div>
+   <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+ </aside>
+ <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
  
- .side-menu {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: min(300px, 42vw);
-   height: 100vh;
-   background: #08120d;
-   border-right: 2px solid #2f6b44;
-   z-index: 1000;
--  padding: 14px 12px;
-+  padding: 14px 12px 16px;
-   transform: translateX(-102%);
-   transition: transform 0.25s ease;
-   display: flex;
-   flex-direction: column;
--  justify-content: space-between;
-+  justify-content: flex-start;
-+  overflow-y: auto;
- }
+ <header>
+   <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
+-    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
++    <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
+   </button>
  
- .side-menu.open {
-   transform: translateX(0);
- }
+   <div class="title-container">
+-    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
++    <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
+     <h2><a href="favoritos.html" class="section-home-link">Favoritos</a></h2>
+   </div>
+ </header>
  
- .side-menu-header {
-   font-family: Pokemon;
-   color: #f8d030;
-   text-align: center;
-   margin-bottom: 8px;
- }
+ <section class="controls">
+   <div class="dex-search">
+     <input id="dexInput" type="number" min="1" placeholder="Nº Dex">
+     <input type="text" id="searchInput" placeholder="Pesquisar Pokémon">
+     <button id="searchBtn" class="search-btn" type="button">Buscar</button>
+     <button class="filter-btn" id="openFiltersBtn" type="button">Filtros</button>
+   </div>
+   <div id="search-preview" class="search-preview"></div>
  
- .side-menu-divider {
-   height: 2px;
-   background: rgba(123,220,101,0.45);
-   margin-bottom: 12px;
- }
+   <div id="filter-modal" class="modal hidden">
+     <div class="modal-content">
+       <h4 class="filter-main-title">Filtrar Pokémon</h4>
  
- .side-menu-actions {
-   display: flex;
-   flex-direction: column;
-   gap: 8px;
-   justify-content: flex-start;
- }
+       <div class="modal-sections">
+         <div class="modal-section">
+           <h4>Tipos</h4>
+           <div class="filter-types" id="filter-types"></div>
+         </div>
  
- .side-menu-btn {
-   width: 100%;
-   min-height: 44px;
-   background: linear-gradient(180deg, #2f6b44, #1f4d2b);
-   border: 2px solid #7bdc65;
-   color: #fff;
-   border-radius: 10px;
-   font-family: Pixel;
-   text-decoration: none;
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
- }
+         <div class="modal-section">
+           <h4>Gerações</h4>
+diff --git a/index.html b/index.html
+index 2d6563f664b71e90021fff71ed96cb34c75449e3..9ee1ddfdf20b0fc2bfc8f7c8b6ed2d37379cf41c 100644
+--- a/index.html
++++ b/index.html
+@@ -1,31 +1,31 @@
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-  <title>Instituto Serperior</title>
++  <title>Instituo Serperior</title>
+   <link rel="stylesheet" href="css/pokemon.css">
+   <style>
+     .home-actions {
+       min-height: calc(100vh - 160px);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       padding: 24px;
+     }
  
-+.side-menu-login {
-+  margin-top: auto;
+     .home-actions-grid {
+       display: grid;
+       grid-template-columns: repeat(2, minmax(180px, 280px));
+       gap: 14px;
+       width: 100%;
+       max-width: 620px;
+     }
+ 
+     .home-action-btn {
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       text-align: center;
+       min-height: 64px;
+       padding: 12px;
+@@ -34,43 +34,65 @@
+       font-size: 14px;
+       background: linear-gradient(180deg, #2f6b44, #1f4d2b);
+       color: #fff;
+       border: 2px solid #7bdc65;
+       border-radius: 10px;
+       box-shadow: 0 0 10px #000;
+     }
+ 
+     .home-action-btn:hover {
+       box-shadow: 0 0 12px #7bdc65;
+     }
+ 
+     .home-action-btn.is-disabled {
+       opacity: 0.65;
+       cursor: not-allowed;
+     }
+ 
+     @media (max-width: 700px) {
+       .home-actions-grid {
+         grid-template-columns: 1fr;
+       }
+     }
+   </style>
+ </head>
+ <body>
++<aside id="sideMenu" class="side-menu" aria-hidden="true">
++  <div class="side-menu-header">Menu</div>
++  <div class="side-menu-divider"></div>
++  <div class="side-menu-actions top">
++    <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
++    <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
++    <button class="side-menu-btn" type="button">Lista de habilidades</button>
++    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
++  </div>
++  <button class="side-menu-btn side-menu-login" type="button">Logar</button>
++</aside>
++<div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
++
+   <header>
+-    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
++    <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
++      <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
++    </button>
+     <div class="title-container">
+-      <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
++      <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
+       <h2>Painel</h2>
+     </div>
+   </header>
+ 
+   <main class="home-actions">
+     <section class="home-actions-grid" aria-label="Menu principal">
+       <a class="home-action-btn" href="pokemon.html">Registro Pokémon</a>
+       <a class="home-action-btn" href="moves.html">Registro de Golpes</a>
+       <span class="home-action-btn is-disabled">Registro de Habilidade</span>
+       <span class="home-action-btn is-disabled">Logar</span>
+     </section>
+   </main>
++  <script>
++    const btn = document.getElementById("logoMenuBtn");
++    const menu = document.getElementById("sideMenu");
++    const backdrop = document.getElementById("sideMenuBackdrop");
++    btn?.addEventListener("click", () => { menu?.classList.add("open"); backdrop?.classList.remove("hidden"); menu?.setAttribute("aria-hidden", "false"); });
++    backdrop?.addEventListener("click", () => { menu?.classList.remove("open"); backdrop?.classList.add("hidden"); menu?.setAttribute("aria-hidden", "true"); });
++  </script>
+ </body>
+ </html>
+diff --git a/js/moves.js b/js/moves.js
+index 801acadacdd16a57694a28e4d29106dea1edf221..c02bb1d2071077a03f2041bccac0c77694ff3cf3 100644
+--- a/js/moves.js
++++ b/js/moves.js
+@@ -1,187 +1,297 @@
++import { powerToDamage, accuracyToRPG, ppToRPG } from "./utils.js";
++
+ const PAGE_SIZE = 30;
+-let currentIndex = 0;
++const DETAIL_CONCURRENCY = 8;
+ 
+ const typeColors = {
+-  grass: "#78c850",
+-  fire: "#f08030",
+-  water: "#6890f0",
+-  electric: "#f8d030",
+-  psychic: "#f85888",
+-  dark: "#705848",
+-  dragon: "#7038f8",
+-  fairy: "#ee99ac",
+-  steel: "#b8b8d0",
+-  ghost: "#705898",
+-  ice: "#98d8d8",
+-  fighting: "#c03028",
+-  ground: "#e0c068",
+-  rock: "#b8a038",
+-  poison: "#a040a0",
+-  flying: "#a890f0",
+-  bug: "#a8b820",
+-  normal: "#a8a878"
++  grass: "#78c850", fire: "#f08030", water: "#6890f0", electric: "#f8d030",
++  psychic: "#f85888", dark: "#705848", dragon: "#7038f8", fairy: "#ee99ac",
++  steel: "#b8b8d0", ghost: "#705898", ice: "#98d8d8", fighting: "#c03028",
++  ground: "#e0c068", rock: "#b8a038", poison: "#a040a0", flying: "#a890f0",
++  bug: "#a8b820", normal: "#a8a878", stellar: "#7fd1ff"
++};
++
++const state = {
++  query: "",
++  sort: "alpha",
++  index: 0,
++  entries: [],
++  filtered: [],
++  detailCache: new Map(),
++  queued: new Set(),
++  activeRequests: 0,
+ };
+ 
+-let moves = [];
+-let filtered = [];
+-
+-/* CARREGAR O JSON */
+-fetch("json/moves.json")
+-  .then(res => res.json())
+-  .then(data => {
+-    moves = data;
+-    filtered = [...moves];
+-    render();
+-  })
+-  .catch(err => console.error("Erro ao carregar moves.json", err));
+-
+-/* PESQUISA */
+-function searchMoves(text) {
+-  filtered = moves.filter(m =>
+-    m.name_en.toLowerCase().includes(text.toLowerCase()) ||
+-    m.name_pt.toLowerCase().includes(text.toLowerCase())
+-  );
+-  render();
++const movesEl = document.getElementById("moves");
++const searchInput = document.getElementById("moveSearchInput");
++const sortSelect = document.getElementById("moveSortSelect");
++
++const moveSheetOverlay = document.getElementById("moveSheetOverlay");
++const moveSheetTitle = document.getElementById("moveSheetTitle");
++const moveSheetTypeIcon = document.getElementById("moveSheetTypeIcon");
++const moveSheetCategoryIcon = document.getElementById("moveSheetCategoryIcon");
++const moveSheetType = document.getElementById("moveSheetType");
++const moveSheetCategory = document.getElementById("moveSheetCategory");
++const moveSheetPower = document.getElementById("moveSheetPower");
++const moveSheetPp = document.getElementById("moveSheetPp");
++const moveSheetAcc = document.getElementById("moveSheetAcc");
++const moveSheetDescription = document.getElementById("moveSheetDescription");
++
++function normalizeMoveName(name = "") {
++  return name.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
 +}
 +
- .side-menu-backdrop {
-   position: fixed;
-   inset: 0;
-   background: rgba(0,0,0,0.45);
-   z-index: 999;
++async function fetchMoveList() {
++  const res = await fetch("https://pokeapi.co/api/v2/move?limit=10000");
++  const data = await res.json();
++  state.entries = data.results.map((entry, index) => ({
++    id: index + 1,
++    name_en: entry.name,
++    url: entry.url,
++  }));
  }
  
- @media (max-width: 768px) {
-   .dex-search {
-     width: 100%;
-     flex-wrap: wrap;
-   }
+-/* ORDENAÇÃO */
+-function sortMoves(type) {
+-  const map = {
+-    alpha: (a,b)=>a.name_en.localeCompare(b.name_en),
+-    power: (a,b)=>(b.power||0)-(a.power||0),
+-    tm: (a,b)=>(a.tm||"").localeCompare(b.tm||""),
+-    type: (a,b)=>a.type.localeCompare(b.type),
+-    category: (a,b)=>a.category.localeCompare(b.category)
++async function fetchMoveDetail(entry) {
++  if (state.detailCache.has(entry.name_en)) return state.detailCache.get(entry.name_en);
++  const res = await fetch(entry.url);
++  const raw = await res.json();
++  const ptName = raw.names.find((n) => n.language.name === "pt-BR")?.name || normalizeMoveName(raw.name);
++  const ptFlavor = raw.flavor_text_entries.find((f) => f.language.name === "pt-BR")?.flavor_text
++    || raw.flavor_text_entries.find((f) => f.language.name === "en")?.flavor_text
++    || "Sem descrição disponível.";
++
++  const model = {
++    id: raw.id,
++    name_en: raw.name,
++    name_pt: ptName,
++    type: raw.type.name,
++    type_pt: raw.type.name,
++    category: raw.damage_class.name,
++    power: raw.power,
++    accuracy: raw.accuracy,
++    pp: raw.pp,
++    priority: raw.priority,
++    description_pt: ptFlavor.replace(/\s+/g, " "),
++    tm: raw.machines?.length ? `TM${String(raw.id).padStart(3, "0")}` : "—",
+   };
  
-   .dex-search input,
-   .dex-search button {
-     width: 100%;
-   }
- 
-   .side-menu {
-     width: min(240px, 48vw);
-     min-width: 190px;
-   }
- 
-   .modal-content {
-     width: 94%;
-     padding: 14px;
-     max-height: 86vh;
-   }
- 
-   .modal-sections {
-     gap: 10px;
-   }
- 
--  .modal-section {
--    min-width: 200px;
-+  .filter-types,
-+  .filter-gens,
-+  .filter-habitats {
-+    grid-template-columns: repeat(2, minmax(0, 1fr));
-   }
+-  filtered.sort(map[type]);
+-  render();
++  state.detailCache.set(entry.name_en, model);
++  return model;
  }
  
+-/* RENDERIZAÇÃO */
+-function render(reset = true) {
+-  const el = document.getElementById("moves");
++function queueFetch(entry) {
++  if (state.detailCache.has(entry.name_en) || state.queued.has(entry.name_en)) return;
++  state.queued.add(entry.name_en);
  
-+.catalog .pokemon-card .info {
-+  display: flex;
-+  flex-direction: column;
-+  align-items: center;
+-  if (reset) {
+-    el.innerHTML = "";
+-    currentIndex = 0;
+-  }
++  const execute = async () => {
++    while (state.activeRequests >= DETAIL_CONCURRENCY) {
++      await new Promise((r) => setTimeout(r, 30));
++    }
++    state.activeRequests += 1;
++    try {
++      await fetchMoveDetail(entry);
++      refreshMoveCard(entry.name_en);
++    } finally {
++      state.activeRequests -= 1;
++      state.queued.delete(entry.name_en);
++    }
++  };
+ 
+-  const slice = filtered.slice(currentIndex, currentIndex + PAGE_SIZE);
+-  currentIndex += PAGE_SIZE;
++  void execute();
++}
+ 
+-  slice.forEach(m => {
+-    el.insertAdjacentHTML("beforeend", createMoveCard(m));
++function applyFiltersAndSort() {
++  const query = state.query.trim().toLowerCase();
++  state.filtered = state.entries.filter((m) => {
++    const detail = state.detailCache.get(m.name_en);
++    const namePt = detail?.name_pt || "";
++    return m.name_en.includes(query) || namePt.toLowerCase().includes(query);
+   });
+ 
+-  if (currentIndex < filtered.length) {
+-    el.insertAdjacentHTML("beforeend", `
+-      <button class="load-more" onclick="render(false)">
+-        Carregar mais golpes
+-      </button>
+-    `);
+-  }
++  const sorter = {
++    alpha: (a, b) => a.name_en.localeCompare(b.name_en),
++    power: (a, b) => ((state.detailCache.get(b.name_en)?.power || 0) - (state.detailCache.get(a.name_en)?.power || 0)),
++    tm: (a, b) => (state.detailCache.get(a.name_en)?.tm || "ZZZ").localeCompare(state.detailCache.get(b.name_en)?.tm || "ZZZ"),
++    type: (a, b) => (state.detailCache.get(a.name_en)?.type || "zzz").localeCompare(state.detailCache.get(b.name_en)?.type || "zzz"),
++    category: (a, b) => (state.detailCache.get(a.name_en)?.category || "zzz").localeCompare(state.detailCache.get(b.name_en)?.category || "zzz"),
++  };
++  state.filtered.sort(sorter[state.sort]);
+ }
+ 
++function renderMoveDetails(m) {
++  const isStatus = m.category === "status";
++  return `
++    <div class="move-stats">
++      <span>⚔ ${isStatus ? "—" : powerToDamage(m.power)}</span>
++      <span>🎯 ${accuracyToRPG(m.accuracy || 0)}</span>
++      <span>⏳ ${ppToRPG(m.pp || 0)}</span>
++    </div>
++    <p class="desc">${m.description_pt}</p>
++  `;
++}
+ 
+-function createMoveCard(m) {
+-  const dmg = powerToDamage(m.power);
+-  const acc = accuracyToRPG(m.accuracy);
+-  const pp = ppToRPG(m.pp);
++function createMoveCard(entry) {
++  const detail = state.detailCache.get(entry.name_en);
++  const name = detail ? normalizeMoveName(detail.name_en) : normalizeMoveName(entry.name_en);
++  const type = detail?.type || "normal";
++  const color = typeColors[type] || "#a8a878";
+ 
+   return `
+-    <div class="move-card" onclick="toggleMove(this)">
+-
++    <button class="move-card" data-move-name="${entry.name_en}" type="button">
+       <div class="move-header">
+-        <span class="type-dot" style="background:${typeColors[m.type]}"></span>
+-
+-        <span class="move-name" style="color:${typeColors[m.type]}">
+-          ${m.tm || "—"} ${m.name_en} <small>[${m.name_pt}]</small>
+-        </span>
+-
+-        <img class="cat-icon" src="assets/icons/${m.category}.png">
++        <span class="type-dot" style="background:${color}"></span>
++        <span class="move-name" style="color:${color}">${detail?.tm || "—"} ${name} <small>[${detail?.name_pt || "Carregando"}]</small></span>
++        <img class="cat-icon" src="assets/icons/${detail?.category || "status"}.png" alt="categoria">
+       </div>
+-
+       <div class="move-info">
+-        <img src="assets/types/${m.type}.png" width="28">
+-        <span style="color:${typeColors[m.type]}">${m.type_pt}</span>
++        <img src="assets/types/${type}.png" width="28" alt="${type}">
++        <span style="color:${color}">${detail?.type_pt?.toUpperCase() || "CARREGANDO"}</span>
+       </div>
+-
+-      <div class="move-details" data-loaded="false"></div>
+-
+-    </div>
++      <div class="move-details">${detail ? renderMoveDetails(detail) : '<p class="desc">Carregando dados do golpe...</p>'}</div>
++    </button>
+   `;
+ }
+ 
+-
+-/* TEXTO COPIÁVEL */
+-function formatText(m,d,a,p) {
+-  return `■〖${m.tm || "—"}〗${m.name_en} [${m.name_pt}]
+-■〖${m.type_pt}〗
+-■〖${m.category}〗
+-
+-◆〖Dano〗-『${d}』
+-◆〖ACC〗-『${a}』
+-◆〖PP〗-『${p}』
+-
+-${m.description_pt}`;
+-}
+-
+-function copyMove(text) {
+-  navigator.clipboard.writeText(text);
++function refreshMoveCard(moveName) {
++  const card = document.querySelector(`[data-move-name="${moveName}"]`);
++  if (!card) return;
++  const entry = state.entries.find((item) => item.name_en === moveName);
++  if (!entry) return;
++  card.outerHTML = createMoveCard(entry);
+ }
+-function toggleMove(card) {
+-  const details = card.querySelector(".move-details");
+-
+-  if (!card.classList.contains("open")) {
+-    if (details.dataset.loaded === "false") {
+-      const name = card.querySelector(".move-name").innerText;
+-      const move = moves.find(m => name.includes(m.name_en));
+ 
+-      const dmg = powerToDamage(move.power);
+-      const acc = accuracyToRPG(move.accuracy);
+-      const pp = ppToRPG(move.pp);
++function render(reset = true) {
++  if (reset) {
++    movesEl.innerHTML = "";
++    state.index = 0;
++  }
+ 
+-      details.innerHTML = `
+-        <div class="move-stats">
+-          <span>⚔ ${dmg}</span>
+-          <span>🎯 ${acc}</span>
+-          <span>⏳ ${pp}</span>
+-        </div>
++  applyFiltersAndSort();
++  const nextSlice = state.filtered.slice(state.index, state.index + PAGE_SIZE);
++  state.index += PAGE_SIZE;
+ 
+-        <p class="desc">${move.description_pt}</p>
++  nextSlice.forEach((entry) => {
++    movesEl.insertAdjacentHTML("beforeend", createMoveCard(entry));
++    queueFetch(entry);
++  });
+ 
+-        <button onclick="event.stopPropagation(); copyMove(\`${formatText(move,dmg,acc,pp)}\`)">
+-          Copiar golpe
+-        </button>
+-      `;
++  const oldLoadMore = movesEl.querySelector(".load-more");
++  if (oldLoadMore) oldLoadMore.remove();
+ 
+-      details.dataset.loaded = "true";
+-    }
++  if (state.index < state.filtered.length) {
++    movesEl.insertAdjacentHTML("beforeend", '<button class="load-more" type="button">Carregar mais golpes</button>');
+   }
+-
+-  card.classList.toggle("open");
+ }
+ 
++function openMoveSheet(move) {
++  if (!moveSheetOverlay) return;
++  const type = move.type || "normal";
++  const isStatus = move.category === "status";
++
++  moveSheetTitle.textContent = `${move.tm || "—"} ${normalizeMoveName(move.name_en)}`;
++  moveSheetTypeIcon.src = `assets/types/${type}.png`;
++  moveSheetCategoryIcon.src = `assets/icons/${move.category}.png`;
++  moveSheetType.textContent = move.type_pt.toUpperCase();
++  moveSheetCategory.textContent = move.category.toUpperCase();
++  moveSheetPower.textContent = `${isStatus ? "Dados" : "Dano"}: ${isStatus ? "—" : powerToDamage(move.power)}`;
++  moveSheetPp.textContent = `PP: ${ppToRPG(move.pp || 0)}`;
++  moveSheetAcc.textContent = `ACC: ${accuracyToRPG(move.accuracy || 0)}`;
++  moveSheetDescription.textContent = move.description_pt;
++
++  moveSheetOverlay.hidden = false;
++  requestAnimationFrame(() => moveSheetOverlay.classList.add("open"));
++  document.body.classList.add("move-sheet-open");
++}
+ 
+-
++function closeMoveSheet() {
++  if (!moveSheetOverlay || moveSheetOverlay.hidden) return;
++  moveSheetOverlay.classList.remove("open");
++  document.body.classList.remove("move-sheet-open");
++  setTimeout(() => { moveSheetOverlay.hidden = true; }, 200);
++}
+ 
+ function setupSiteTitleAnimation() {
+   const homeLink = document.querySelector(".site-home-link");
+   if (!homeLink) return;
+ 
+   homeLink.addEventListener("click", (event) => {
+     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+-
+     event.preventDefault();
+     homeLink.classList.remove("expanding");
+     void homeLink.offsetWidth;
+     homeLink.classList.add("expanding");
+ 
+     setTimeout(() => {
+       window.location.href = homeLink.getAttribute("href") || "index.html";
+     }, 360);
+   });
+ }
+ 
+-setupSiteTitleAnimation();
++function setupSideMenu() {
++  const btn = document.getElementById("logoMenuBtn");
++  const menu = document.getElementById("sideMenu");
++  const backdrop = document.getElementById("sideMenuBackdrop");
++  if (!btn || !menu || !backdrop) return;
++
++  const close = () => {
++    menu.classList.remove("open");
++    backdrop.classList.add("hidden");
++    menu.setAttribute("aria-hidden", "true");
++  };
++
++  btn.addEventListener("click", () => {
++    menu.classList.add("open");
++    backdrop.classList.remove("hidden");
++    menu.setAttribute("aria-hidden", "false");
++  });
++
++  backdrop.addEventListener("click", close);
 +}
 +
-+.catalog .pokemon-card .dex-number {
-+  font-size: 11px;
++function setupEvents() {
++  searchInput.addEventListener("input", (e) => {
++    state.query = e.target.value;
++    render(true);
++  });
++
++  sortSelect.addEventListener("change", (e) => {
++    state.sort = e.target.value;
++    render(true);
++  });
++
++  movesEl.addEventListener("click", (event) => {
++    const loadBtn = event.target.closest(".load-more");
++    if (loadBtn) {
++      render(false);
++      return;
++    }
++
++    const card = event.target.closest(".move-card");
++    if (!card) return;
++    const move = state.detailCache.get(card.dataset.moveName);
++    if (!move) return;
++
++    if (window.matchMedia("(max-width: 768px)").matches) {
++      openMoveSheet(move);
++      return;
++    }
++
++    card.classList.toggle("open");
++  });
++
++  moveSheetOverlay?.addEventListener("click", (event) => {
++    if (event.target === moveSheetOverlay || event.target.hasAttribute("data-close-move-sheet")) {
++      closeMoveSheet();
++    }
++  });
 +}
 +
- .catalog .pokemon-card .name {
-   font-size: 14px;
- }
++async function init() {
++  setupSiteTitleAnimation();
++  setupSideMenu();
++  setupEvents();
++  await fetchMoveList();
++  render(true);
++}
++
++init();
+diff --git a/moves.html b/moves.html
+index 9cd93f2320601a1f582f8e21ada24164d1a3db96..5ad44b082244d69c12f1c53497f45e82fd2a22a2 100644
+--- a/moves.html
++++ b/moves.html
+@@ -1,40 +1,75 @@
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+ <meta charset="UTF-8">
++<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Golpes Pokémon RPG</title>
+-
++<link rel="stylesheet" href="css/pokemon.css">
+ <link rel="stylesheet" href="css/moves.css">
+-
+-<script src="js/utils.js" defer></script>
+-<script src="js/moves.js" defer></script>
+-
++<script type="module" src="js/moves.js"></script>
+ </head>
+-
+-
+ <body>
++<aside id="sideMenu" class="side-menu" aria-hidden="true">
++  <div class="side-menu-header">Menu</div>
++  <div class="side-menu-divider"></div>
++  <div class="side-menu-actions top">
++    <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
++    <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
++    <button class="side-menu-btn" type="button">Lista de habilidades</button>
++    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
++  </div>
++  <button class="side-menu-btn side-menu-login" type="button">Logar</button>
++</aside>
++<div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
++
+ <header>
+-    <img src="assets/logo.png" class="logo">
++  <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
++    <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
++  </button>
  
- .catalog .pokemon-card .official-art {
-   width: 96px;
-   height: 96px;
- }
+-    <div class="title-container">
+-        <h1 class="site-title"><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
+-        <h2 class="site-subtitle">Registro de Golpes</h2>
+-    </div>
++  <div class="title-container">
++    <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
++    <h2><a href="moves.html" class="section-home-link">Registro de Golpes</a></h2>
++  </div>
+ </header>
  
- .catalog .pokemon-card .type-pill {
-   font-size: 10px;
-   height: 26px;
-   padding: 0 8px;
- }
++<section class="moves-controls">
++  <input id="moveSearchInput" placeholder="Pesquisar golpe" type="text">
++  <select id="moveSortSelect">
++    <option value="alpha">A–Z</option>
++    <option value="power">Maior poder</option>
++    <option value="tm">TM</option>
++    <option value="type">Tipo</option>
++    <option value="category">Categoria</option>
++  </select>
++</section>
  
- .catalog .pokemon-card .type-icon {
-   width: 16px;
-   height: 16px;
- }
+-<input placeholder="Pesquisar golpe"
+- oninput="searchMoves(this.value)">
+-
+-<select onchange="sortMoves(this.value)">
+-  <option value="alpha">A–Z</option>
+-  <option value="power">Maior poder</option>
+-  <option value="tm">TM</option>
+-  <option value="type">Tipo</option>
+-  <option value="category">Categoria</option>
+-</select>
++<div id="moves" class="moves-grid"></div>
  
- .catalog .pokemon-card .types {
-   flex-wrap: wrap;
- }
-diff --git a/js/pokemon.js b/js/pokemon.js
-index 09241d8150ee7a4b8f3ed09e1f2ae1d7290b0cae..6f219c8e0017c5c8e38a12dd5f12dbd8400c4668 100644
---- a/js/pokemon.js
-+++ b/js/pokemon.js
-@@ -181,51 +181,52 @@ function toggleFavorite(dex, button) {
-   }
+-<div id="moves"></div>
++<div id="moveSheetOverlay" class="move-sheet-overlay" hidden>
++  <div id="moveSheet" class="move-sheet" role="dialog" aria-modal="true" aria-labelledby="moveSheetTitle">
++    <div class="move-sheet-header">
++      <h3 id="moveSheetTitle"></h3>
++      <button class="move-sheet-close" type="button" data-close-move-sheet>✕</button>
++    </div>
++    <div class="move-sheet-type-icons">
++      <div class="move-sheet-icon-item">
++        <img id="moveSheetTypeIcon" alt="Tipo do golpe">
++        <span id="moveSheetType"></span>
++      </div>
++      <div class="move-sheet-icon-item">
++        <img id="moveSheetCategoryIcon" alt="Categoria do golpe">
++        <span id="moveSheetCategory"></span>
++      </div>
++    </div>
++    <div class="move-sheet-stats">
++      <span id="moveSheetPower"></span>
++      <span id="moveSheetPp"></span>
++      <span id="moveSheetAcc"></span>
++    </div>
++    <p id="moveSheetDescription" class="move-sheet-description"></p>
++  </div>
++</div>
  
-   if (favoritesMode) {
-     filtered = filtered.filter((pokemon) => favorites.has(pokemon.dex));
-     render(true);
-   }
- }
+ </body>
+ </html>
+diff --git a/pokemon-view.html b/pokemon-view.html
+index 699140f38df663ebbf5255c2a017de9fd650d96d..cd431536a3a438cb3c44f0745d97909e9cd1e67c 100644
+--- a/pokemon-view.html
++++ b/pokemon-view.html
+@@ -1,66 +1,68 @@
  
- function applyResponsiveView() {
-   const list = document.getElementById("pokemon-list");
-   if (!list) return;
-   const isMobile = window.matchMedia("(max-width: 768px)").matches;
-   list.classList.toggle("list", isMobile);
-   list.classList.toggle("catalog", !isMobile);
- }
  
- function renderTypes(types) {
-   return types.map((t) => `
-     <span class="type-pill type-pill-${t}" style="--type-rgb:${TYPE_COLORS[t]?.[0] || "80,80,80"}">
-       <img class="type-icon" src="${getTypeIconPath(t)}" alt="${t}" loading="lazy">${t.toUpperCase()}
-     </span>`).join("");
- }
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Registro Pokémon</title>
  
- function createCard(p) {
-   const favoriteIcon = favorites.has(p.dex) ? "assets/favorit.png" : "assets/nofavorit.png";
--  return `<div class="pokemon-card"><button class="favorite-btn" aria-label="Favoritar ${p.name}" type="button"><img src="${favoriteIcon}" alt="Favorito"></button><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="name">#${String(p.dex).padStart(3, "0")} ${p.name}</div><div class="types"></div></div></div>`;
-+  const dexNumber = `#${String(p.dex).padStart(3, "0")}`;
-+  return `<div class="pokemon-card"><button class="favorite-btn" aria-label="Favoritar ${p.name}" type="button"><img src="${favoriteIcon}" alt="Favorito"></button><div class="image-box"><img class="official-art" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.dex}.png" loading="lazy" alt="${p.name}"></div><div class="info"><div class="dex-number">${dexNumber}</div><div class="name">${p.name}</div><div class="types"></div></div></div>`;
- }
+   <link rel="stylesheet" href="css/pokemon.css">
+   <link rel="stylesheet" href="css/pokemon-view.css">
+   <link rel="icon" href="assets/logo.png">
  
- function applyTypeColor(card, types) {
-   const primary = types[0];
-   if (!TYPE_COLORS[primary]) return;
-   const [rgb, background] = TYPE_COLORS[primary];
-   card.style.borderColor = `rgba(${rgb}, 0.55)`;
-   card.style.background = background;
-   card.style.setProperty("--type-border-soft", `rgba(${rgb}, 0.45)`);
- }
  
- function searchPokemon(text) {
-   const value = text.trim().toLowerCase();
-   const source = favoritesMode ? pokemons.filter((p) => favorites.has(p.dex)) : pokemons;
-   if (!value) {
-     filtered = [...source];
-     render(true);
-     return;
-   }
-   filtered = source.filter((p) => p.name.toLowerCase().includes(value) || String(p.dex).startsWith(value));
-   render(true);
- }
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script type="module" src="js/pokemon-view.js"></script>
+ </head>
  
- function goToPokemonBySearch() {
-   const nameValue = document.getElementById("searchInput").value.trim().toLowerCase();
+ <body>
+ <aside id="sideMenu" class="side-menu" aria-hidden="true">
+   <div class="side-menu-header">Menu</div>
++  <div class="side-menu-divider"></div>
+   <div class="side-menu-actions top">
+     <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
+     <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
+     <button class="side-menu-btn" type="button">Lista de habilidades</button>
++    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
+   </div>
+   <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+ </aside>
+ <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
+  <div class="nav-zone left" data-nav="prev"></div>
+  <button class="nav-btn left" data-nav="prev" type="button" aria-label="Pokémon anterior">
+   <span class="nav-btn-arrow">◀</span>
+   <span class="nav-btn-dex" id="desktop-prev-dex">#1025</span>
+  </button>
+ <header>
+   <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
+-    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
++    <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
+   </button>
+ 
+   <div class="title-container">
+-    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
++    <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
+     <h2><a href="pokemon.html" class="section-home-link">Registro Pokémon</a></h2>
+   </div>
+ </header>
+ 
+ <div class="dex-search">
+   <input
+     type="number"
+     id="dexNumberInput"
+     min="1"
+     placeholder="Nº Dex"
+   />
+ 
+   <input 
+     type="text" 
+     id="dexSearchInput" 
+     placeholder="Nome do Pokémon"
+   />
+ 
+   <button id="dexSearchBtn">Buscar</button>
+ </div>
+ <div id="search-preview" class="search-preview"></div>
+ 
+ <nav class="quick-nav" aria-label="Navegação rápida do Pokémon">
+   <button class="quick-nav-btn active" data-scroll-target=".image-panel" type="button">Visão Geral</button>
+   <button class="quick-nav-btn" data-scroll-target=".stats-panel" type="button">Status</button>
+diff --git a/pokemon.html b/pokemon.html
+index c2e5a8b25cd041342770d1610293e34ff38ae310..c39fcf6608eb3a3eb99e524130753078c26a6ec1 100644
+--- a/pokemon.html
++++ b/pokemon.html
+@@ -2,55 +2,55 @@
+ <html lang="pt-br">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Pokémon RPG</title>
+   <link rel="stylesheet" href="css/pokemon.css">
+   <script type="module" src="js/pokemon.js"></script>
+ </head>
+ <body>
+ 
+ <aside id="sideMenu" class="side-menu" aria-hidden="true">
+   <div class="side-menu-header">Menu</div>
+   <div class="side-menu-divider"></div>
+   <div class="side-menu-actions top">
+     <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
+     <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
+     <button class="side-menu-btn" type="button">Lista de habilidades</button>
+     <a class="side-menu-btn" href="favoritos.html">Favorito</a>
+   </div>
+   <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+ </aside>
+ <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
+ 
+ <header>
+   <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
+-    <img src="assets/logo.png" class="logo" alt="Instituto Serperior">
++    <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
+   </button>
+ 
+   <div class="title-container">
+-    <h1><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
++    <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
+     <h2><a href="pokemon.html" class="section-home-link">Registro Pokémon</a></h2>
+   </div>
+ </header>
+ 
+ <section class="controls">
+   <div class="dex-search">
+     <input id="dexInput" type="number" min="1" placeholder="Nº Dex">
+     <input type="text" id="searchInput" placeholder="Pesquisar Pokémon">
+     <button id="searchBtn" class="search-btn" type="button">Buscar</button>
+     <button class="filter-btn" id="openFiltersBtn" type="button">Filtros</button>
+   </div>
+   <div id="search-preview" class="search-preview"></div>
+ 
+   <div id="filter-modal" class="modal hidden">
+     <div class="modal-content">
+       <h4 class="filter-main-title">Filtrar Pokémon</h4>
+ 
+       <div class="modal-sections">
+         <div class="modal-section">
+           <h4>Tipos</h4>
+           <div class="filter-types" id="filter-types"></div>
+         </div>
+ 
+         <div class="modal-section">
+           <h4>Gerações</h4>

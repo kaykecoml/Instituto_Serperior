@@ -656,10 +656,13 @@ header h2 {
   }
 
   .favorite-btn {
-    right: 10px;
-    top: 10px;
-    width: 24px;
-    height: 24px;
+    right: 6px;
+    top: 6px;
+    width: 26px;
+    height: 26px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    padding: 2px;
   }
 
   header {

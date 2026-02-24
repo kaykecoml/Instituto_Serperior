@@ -2,39 +2,74 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Golpes Pokémon RPG</title>
-
+<link rel="stylesheet" href="css/pokemon.css">
 <link rel="stylesheet" href="css/moves.css">
-
-<script src="js/utils.js" defer></script>
-<script src="js/moves.js" defer></script>
-
+<script type="module" src="js/moves.js"></script>
 </head>
-
-
 <body>
-<header>
-    <img src="assets/logo.png" class="logo">
+<aside id="sideMenu" class="side-menu" aria-hidden="true">
+  <div class="side-menu-header">Menu</div>
+  <div class="side-menu-divider"></div>
+  <div class="side-menu-actions top">
+    <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
+    <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
+    <button class="side-menu-btn" type="button">Lista de habilidades</button>
+    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
+  </div>
+  <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+</aside>
+<div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
 
-    <div class="title-container">
-        <h1 class="site-title"><a href="index.html" class="site-home-link">Instituto Serperior</a></h1>
-        <h2 class="site-subtitle">Registro de Golpes</h2>
-    </div>
+<header>
+  <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
+    <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
+  </button>
+
+  <div class="title-container">
+    <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
+    <h2><a href="moves.html" class="section-home-link">Registro de Golpes</a></h2>
+  </div>
 </header>
 
+<section class="moves-controls">
+  <input id="moveSearchInput" placeholder="Pesquisar golpe" type="text">
+  <select id="moveSortSelect">
+    <option value="alpha">A–Z</option>
+    <option value="power">Maior poder</option>
+    <option value="tm">TM</option>
+    <option value="type">Tipo</option>
+    <option value="category">Categoria</option>
+  </select>
+</section>
 
-<input placeholder="Pesquisar golpe"
- oninput="searchMoves(this.value)">
+<div id="moves" class="moves-grid"></div>
 
-<select onchange="sortMoves(this.value)">
-  <option value="alpha">A–Z</option>
-  <option value="power">Maior poder</option>
-  <option value="tm">TM</option>
-  <option value="type">Tipo</option>
-  <option value="category">Categoria</option>
-</select>
-
-<div id="moves"></div>
+<div id="moveSheetOverlay" class="move-sheet-overlay" hidden>
+  <div id="moveSheet" class="move-sheet" role="dialog" aria-modal="true" aria-labelledby="moveSheetTitle">
+    <div class="move-sheet-header">
+      <h3 id="moveSheetTitle"></h3>
+      <button class="move-sheet-close" type="button" data-close-move-sheet>✕</button>
+    </div>
+    <div class="move-sheet-type-icons">
+      <div class="move-sheet-icon-item">
+        <img id="moveSheetTypeIcon" alt="Tipo do golpe">
+        <span id="moveSheetType"></span>
+      </div>
+      <div class="move-sheet-icon-item">
+        <img id="moveSheetCategoryIcon" alt="Categoria do golpe">
+        <span id="moveSheetCategory"></span>
+      </div>
+    </div>
+    <div class="move-sheet-stats">
+      <span id="moveSheetPower"></span>
+      <span id="moveSheetPp"></span>
+      <span id="moveSheetAcc"></span>
+    </div>
+    <p id="moveSheetDescription" class="move-sheet-description"></p>
+  </div>
+</div>
 
 </body>
 </html>
