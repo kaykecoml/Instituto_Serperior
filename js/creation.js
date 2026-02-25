@@ -1,420 +1,69 @@
 import { powerToDamage } from "./utils.js";
+import { abilitiesData } from "./abilities.js";
 
 const VERSION_PRIORITY = ["scarlet-violet", "sword-shield", "ultra-sun-ultra-moon", "sun-moon"];
-const NATURES = [
-  ["Hardy", null, null],["Lonely", "atk", "def"],["Brave", "atk", "spd"],["Adamant", "atk", "spatk"],["Naughty", "atk", "spdef"],
-  ["Bold", "def", "atk"],["Docile", null, null],["Relaxed", "def", "spd"],["Impish", "def", "spatk"],["Lax", "def", "spdef"],
-  ["Timid", "spd", "atk"],["Hasty", "spd", "def"],["Serious", null, null],["Jolly", "spd", "spatk"],["Naive", "spd", "spdef"],
-  ["Modest", "spatk", "atk"],["Mild", "spatk", "def"],["Quiet", "spatk", "spd"],["Bashful", null, null],["Rash", "spatk", "spdef"],
-  ["Calm", "spdef", "atk"],["Gentle", "spdef", "def"],["Sassy", "spdef", "spd"],["Careful", "spdef", "spatk"],["Quirky", null, null],
-].map(([name, plus, minus]) => ({ name, plus, minus }));
 const STAT_KEYS = ["hp", "atk", "def", "spatk", "spdef", "spd"];
-const STAT_LABELS = { hp: "Saúde", atk: "Ataque", def: "Defesa", spatk: "Ataque Esp.", spdef: "Defesa Esp.", spd: "Velocidade" };
-
-const state = {
-  mode: "wild",
-  pokemonIndex: [],
-  pokemon: null,
-  species: null,
-  levelMoves: [],
-  tmMoves: [],
-  selectedLevelMoves: [],
-  selectedTmMoves: [],
-  moveCache: new Map(),
-};
-
+const STAT_LABELS = { hp: "Saúde", atk: "Ataque", def: "Defesa", spatk: "sp.atk", spdef: "sp.def", spd: "Velocidade" };
+const state = { mode: "wild", pokemonIndex: [], pokemon: null, species: null, levelMoves: [], tmMoves: [], selectedLevelMoves: [], selectedTmMoves: [], moveCache: new Map(), statsChart: null, contestChart: null, abilitySlots: ["", ""] };
 const $ = (id) => document.getElementById(id);
+const NATURES = [["Hardy",null,null,"Estoica","Neutra"],["Lonely","atk","def","Desesperada","Gosta de Picante e não gosta de Azedo"],["Brave","atk","spd","Travessa","Gosta de Picante e não gosta de Doce"],["Adamant","atk","spatk","Solitária","Gosta de Picante e não gosta de Seco"],["Naughty","atk","spdef","Firme","Gosta de Picante e não gosta de Amargo"],["Bold","def","atk","Ousada","Gosta de Azedo e não gosta de Picante"],["Docile",null,null,"Dócil","Neutra"],["Relaxed","def","spd","Relaxada","Gosta de Azedo e não gosta de Doce"],["Impish","def","spatk","Orgulhosa","Gosta de Azedo e não gosta de Seco"],["Lax","def","spdef","Excêntrica","Gosta de Azedo e não gosta de Amargo"],["Timid","spd","atk","Medrosa","Gosta de Doce e não gosta de Picante"],["Hasty","spd","def","Apressada","Gosta de Doce e não gosta de Azedo"],["Serious",null,null,"Séria","Neutra"],["Jolly","spd","spatk","Alegre","Gosta de Doce e não gosta de Seco"],["Naive","spd","spdef","Ingênua","Gosta de Doce e não gosta de Amargo"],["Modest","spatk","atk","Tímida","Gosta de Seco e não gosta de Picante"],["Mild","spatk","def","Modesta","Gosta de Seco e não gosta de Azedo"],["Quiet","spatk","spd","Quieta","Gosta de Seco e não gosta de Doce"],["Bashful",null,null,"Comedida","Neutra"],["Rash","spatk","spdef","Amável","Gosta de Seco e não gosta de Amargo"],["Calm","spdef","atk","Enjoada","Gosta de Amargo e não gosta de Picante"],["Gentle","spdef","def","Calma","Gosta de Amargo e não gosta de Azedo"],["Sassy","spdef","spd","Atrevida","Gosta de Amargo e não gosta de Doce"],["Careful","spdef","spatk","Gentil","Gosta de Amargo e não gosta de Seco"],["Quirky",null,null,"Chata","Neutra"]].map(([name,plus,minus,pt,taste])=>({name,plus,minus,pt,taste}));
 
-function convertStat(value) {
-  const base = Math.floor(value / 10);
-  return value % 10 >= 9 ? base + 1 : base;
-}
-function formatName(name) {
-  return name.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join(" ");
-}
-function notify(msg) { alert(msg); }
+const convertStat = (v) => (v % 10 >= 9 ? Math.floor(v / 10) + 1 : Math.floor(v / 10));
+const formatName = (name) => name.split("-").map((p) => p[0].toUpperCase() + p.slice(1)).join(" ");
+const notify = (m) => alert(m);
+const capLabel = (v, t) => t[v] || t[Object.keys(t).length - 1];
 
-function setupMenu() {
-  const btn = $("logoMenuBtn");
-  const menu = $("sideMenu");
-  const backdrop = $("sideMenuBackdrop");
-  btn?.addEventListener("click", () => { menu?.classList.add("open"); backdrop?.classList.remove("hidden"); menu?.setAttribute("aria-hidden", "false"); });
-  backdrop?.addEventListener("click", () => { menu?.classList.remove("open"); backdrop?.classList.add("hidden"); menu?.setAttribute("aria-hidden", "true"); });
-}
+function setupMenu(){const btn=$("logoMenuBtn"),menu=$("sideMenu"),backdrop=$("sideMenuBackdrop");btn?.addEventListener("click",()=>{menu?.classList.add("open");backdrop?.classList.remove("hidden");});backdrop?.addEventListener("click",()=>{menu?.classList.remove("open");backdrop?.classList.add("hidden");});}
+async function fetchPokemonIndex(){const r=await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025").then(x=>x.json());state.pokemonIndex=r.results.map((p,i)=>({id:i+1,name:p.name}));}
+function setupModes(){document.querySelectorAll(".mode-btn").forEach((btn)=>btn.addEventListener("click",()=>{state.mode=btn.dataset.mode;document.querySelectorAll(".mode-btn").forEach((e)=>e.classList.toggle("active",e===btn));document.querySelectorAll(".mode-only").forEach((e)=>e.hidden=e.dataset.modeOnly!==state.mode);renderSheet();}));document.querySelector('.mode-btn[data-mode="wild"]').click();}
+function setupMobileTabs(){const tabs=[...document.querySelectorAll(".mobile-tab-btn")];tabs.forEach((b)=>b.addEventListener("click",()=>{tabs.forEach((x)=>x.classList.toggle("active",x===b));const target=b.dataset.mobileTabTarget;document.querySelectorAll("[data-mobile-tab]").forEach((s)=>s.classList.toggle("mobile-visible",s.dataset.mobileTab===target));if(["atributos","radars"].includes(target)) $("sheetContent")?.classList.add("mobile-visible");}));tabs[0]?.click();}
+function setupSearch(){const input=$("speciesSearch");input.addEventListener("input",updatePreview);$("speciesSearchBtn").addEventListener("click",()=>loadSpecies(input.value.trim().toLowerCase()));}
+function updatePreview(){const q=$("speciesSearch").value.trim().toLowerCase(),preview=$("speciesPreview");preview.innerHTML="";if(!q)return;state.pokemonIndex.filter((p)=>p.name.includes(q)||String(p.id).startsWith(q)).slice(0,12).forEach((p)=>{const btn=document.createElement("button");btn.type="button";btn.className="preview-item";btn.innerHTML=`<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" alt="${p.name}"><span>#${String(p.id).padStart(4,"0")} ${formatName(p.name)}</span>`;btn.addEventListener("click",()=>{ $("speciesSearch").value=p.name;preview.innerHTML="";loadSpecies(String(p.id));});preview.appendChild(btn);});}
+const pickVersion = (d) => [...d].sort((a,b)=>VERSION_PRIORITY.indexOf(a.version_group.name)-VERSION_PRIORITY.indexOf(b.version_group.name))[0];
+async function getMove(url){if(state.moveCache.has(url))return state.moveCache.get(url);const d=await fetch(url).then((r)=>r.json());state.moveCache.set(url,d);return d;}
 
-async function fetchPokemonIndex() {
-  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025").then((r) => r.json());
-  state.pokemonIndex = response.results.map((p, idx) => ({ id: idx + 1, name: p.name }));
-}
+async function loadSpecies(idOrName){if(!idOrName)return;const pokemon=await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`).then((r)=>r.json());const species=await fetch(pokemon.species.url).then((r)=>r.json());state.pokemon=pokemon;state.species=species;state.selectedLevelMoves=[];state.selectedTmMoves=[];$("sheetEmpty").hidden=true;$("sheetContent").hidden=false;$("basicControls").hidden=false;$("movesSection").hidden=false;fillBasics();await buildMovePools();renderMoveOptions();await renderSelectedMoves();await renderDamageRelations();renderSheet();}
 
-function setupModes() {
-  document.querySelectorAll(".mode-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      state.mode = btn.dataset.mode;
-      document.querySelectorAll(".mode-btn").forEach((el) => el.classList.toggle("active", el === btn));
-      document.querySelectorAll(".mode-only").forEach((el) => { el.hidden = el.dataset.modeOnly !== state.mode; });
-      renderSheet();
-    });
-  });
-  document.querySelector('.mode-btn[data-mode="wild"]').click();
-}
+function fillBasics(){renderGenderButtons();state.abilitySlots=[state.pokemon.abilities[0]?.ability.name||"",state.pokemon.abilities[1]?.ability.name||""];$("natureSelect").innerHTML=NATURES.map((n)=>`<option value="${n.name}">${n.pt} (${n.name})</option>`).join("");["levelInput","natureSelect","nicknameInput","loyaltyInput"].forEach((id)=>$(id)?.addEventListener("input",async()=>{enforceAbilityRule();renderMoveOptions();if(isAlpha()) applyAlphaMoveRule();await renderSelectedMoves();renderSheet();}));$("shinyToggle").addEventListener("click",()=>toggleIconButton("shinyToggle",renderSheet));$("alphaToggle").addEventListener("click",async()=>toggleIconButton("alphaToggle",async()=>{if(isAlpha())applyAlphaMoveRule();await renderSelectedMoves();renderSheet();}));$("openAbilitiesModalBtn").onclick=()=>openAbilitiesModal();enforceAbilityRule();renderAbilitySummary();}
+function toggleIconButton(id,cb){const b=$(id);b.classList.toggle("active");b.setAttribute("aria-pressed",String(b.classList.contains("active")));cb?.();}
+const isShiny=()=>$("shinyToggle").classList.contains("active");
+const isAlpha=()=>$("alphaToggle").classList.contains("active");
+function renderGenderButtons(){const c=$("genderButtons");c.innerHTML="";if(state.species.gender_rate===-1){c.innerHTML='<span>assexual</span>';return;}const make=(id,text,icon)=>{const b=document.createElement("button");b.type="button";b.id=id;b.className="icon-toggle";b.innerHTML=`<img src="${icon}" alt="${text}"><span>${text}</span>`;b.addEventListener("click",()=>{document.querySelectorAll("#genderButtons .icon-toggle").forEach((x)=>x.classList.remove("active"));b.classList.add("active");renderSheet();});return b;};c.append(make("genderMale","Masculino","assets/icons/male.png"),make("genderFemale","Feminino","assets/icons/female.png"));$("genderMale").classList.add("active");}
+function selectedGender(){if(state.species.gender_rate===-1)return "assexual";return $("genderFemale")?.classList.contains("active")?"feminino":"masculino";}
+function enforceAbilityRule(){const level=Number($("levelInput").value||1);state.abilitySlots[1]=level>=40?state.abilitySlots[1]:"";renderAbilitySummary();}
 
-function setupSearch() {
-  const input = $("speciesSearch");
-  input.addEventListener("input", updatePreview);
-  $("speciesSearchBtn").addEventListener("click", async () => {
-    const query = input.value.trim().toLowerCase();
-    if (!query) return;
-    await loadSpecies(query);
-  });
-}
+async function buildMovePools(){state.levelMoves=[];state.tmMoves=[];for(const mv of state.pokemon.moves){const version=pickVersion(mv.version_group_details);if(!version)continue;const entry={name:mv.move.name,url:mv.move.url,level:version.level_learned_at,method:version.move_learn_method.name};if(entry.method==="level-up")state.levelMoves.push(entry);if(["machine","tutor","egg"].includes(entry.method))state.tmMoves.push(entry);}state.levelMoves.sort((a,b)=>a.level-b.level);}
+function renderMoveOptions(){const level=Number($("levelInput").value||1);$("levelMoveSelect").innerHTML=state.levelMoves.filter((m)=>m.level<=level).map((m)=>`<option value="${m.name}">${m.level} • ${formatName(m.name)}</option>`).join("");$("tmMoveSelect").innerHTML=state.tmMoves.map((m)=>`<option value="${m.name}">${m.method.toUpperCase()} • ${formatName(m.name)}</option>`).join("");}
+function setupMoveActions(){$("addLevelMoveBtn").addEventListener("click",()=>addMove("level"));$("addTmMoveBtn").addEventListener("click",()=>addMove("tm"));}
+function addMove(type){const select=type==="level"?$("levelMoveSelect"):$("tmMoveSelect");const target=type==="level"?state.selectedLevelMoves:state.selectedTmMoves;if(!select.value||target.includes(select.value))return;if(target.length>=4)return notify("Limite de 4 golpes nesse grupo.");target.push(select.value);if(state.mode==="wild"&&isAlpha())applyAlphaMoveRule();renderSelectedMoves();}
+function applyAlphaMoveRule(){const alphaMove=state.levelMoves[state.levelMoves.length-1]?.name;if(!alphaMove)return;if(state.selectedLevelMoves.includes(alphaMove))return;if(state.selectedLevelMoves.length<4)state.selectedLevelMoves.push(alphaMove);else state.selectedLevelMoves[3]=alphaMove;}
+async function renderSelectedMoves(){const renderList=async(id,moves)=>{const ul=$(id);ul.innerHTML="";for(const name of moves){const entry=state.levelMoves.find((m)=>m.name===name)||state.tmMoves.find((m)=>m.name===name);const li=document.createElement("li");li.innerHTML=`<table class="move-table"><tr><td>${entry.method==='level-up'?entry.level:entry.method.toUpperCase()}</td><td>${formatName(name)}</td><td><img src="assets/types/${(await getMove(entry.url)).type.name}.png"></td><td>${(await getMove(entry.url)).damage_class.name}</td></tr></table>`;const rm=document.createElement("button");rm.type="button";rm.textContent="Remover";rm.onclick=()=>{const t=id==="levelMoveSlots"?state.selectedLevelMoves:state.selectedTmMoves;t.splice(t.indexOf(name),1);renderSelectedMoves();};li.appendChild(rm);ul.appendChild(li);}};await renderList("levelMoveSlots",state.selectedLevelMoves);await renderList("tmMoveSlots",state.selectedTmMoves);const output=$("selectedMovesOutput");output.innerHTML="";for(const moveName of [...state.selectedLevelMoves,...state.selectedTmMoves]){const li=document.createElement("li");li.textContent=formatName(moveName);li.onclick=()=>openMoveModal(moveName);output.appendChild(li);} }
 
-function updatePreview() {
-  const q = $("speciesSearch").value.trim().toLowerCase();
-  const preview = $("speciesPreview");
-  preview.innerHTML = "";
-  if (!q) return;
-  const list = state.pokemonIndex.filter((p) => p.name.includes(q) || String(p.id).startsWith(q)).slice(0, 8);
-  list.forEach((p) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "preview-item";
-    btn.innerHTML = `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" alt="${p.name}"><span>#${String(p.id).padStart(4, "0")} ${formatName(p.name)}</span>`;
-    btn.addEventListener("click", () => loadSpecies(String(p.id)));
-    preview.appendChild(btn);
-  });
-}
+const getNature=()=>NATURES.find((n)=>n.name===$("natureSelect").value)||NATURES[0];
+function getBaseStats(){const raw={};state.pokemon.stats.forEach((s)=>{if(s.stat.name==="special-attack")raw.spatk=convertStat(s.base_stat);else if(s.stat.name==="special-defense")raw.spdef=convertStat(s.base_stat);else if(s.stat.name==="speed")raw.spd=convertStat(s.base_stat);else if(s.stat.name==="attack")raw.atk=convertStat(s.base_stat);else if(s.stat.name==="defense")raw.def=convertStat(s.base_stat);else if(s.stat.name==="hp")raw.hp=convertStat(s.base_stat);});return raw;}
+function autoDistribute(base,points){const gains=Object.fromEntries(STAT_KEYS.map((k)=>[k,0]));const ranking=[...STAT_KEYS].sort((a,b)=>base[b]-base[a]||STAT_KEYS.indexOf(a)-STAT_KEYS.indexOf(b));for(let i=0;i<points;i++)gains[ranking[i%ranking.length]]+=1;return gains;}
+function getAllocatedStats(base){const points=Number($("levelInput").value||1),gains=Object.fromEntries(STAT_KEYS.map((k)=>[k,0]));if(state.mode==="wild"||state.mode==="quick")Object.assign(gains,autoDistribute(base,points));if(state.mode==="trained")STAT_KEYS.forEach((k)=>gains[k]=Number($(`alloc-${k}`)?.value||0));if(state.mode==="wild"&&isAlpha()){const top=[...STAT_KEYS].sort((a,b)=>base[b]-base[a]).slice(0,2);gains[top[0]]+=5;gains[top[1]]+=5;}return {gains,points};}
+function ensureTrainedInputs(points){const list=$("levelStatsList");if(state.mode!=="trained")return;if(list.querySelector("input"))return;list.innerHTML="";STAT_KEYS.forEach((k)=>{const li=document.createElement("li");li.innerHTML=`${STAT_LABELS[k]}: <input class="alloc-input" id="alloc-${k}" type="number" min="0" max="${points}" value="0">`;list.appendChild(li);});list.querySelectorAll("input").forEach((i)=>i.addEventListener("input",renderSheet));}
 
-function pickVersion(details) {
-  return [...details].sort((a, b) => VERSION_PRIORITY.indexOf(a.version_group.name) - VERSION_PRIORITY.indexOf(b.version_group.name))[0];
-}
+function renderSheet(){if(!state.pokemon)return;const base=getBaseStats();const {gains,points}=getAllocatedStats(base);ensureTrainedInputs(points);const nature=getNature();const finalStats=Object.fromEntries(STAT_KEYS.map((k)=>[k,base[k]+gains[k]]));if(nature.plus)finalStats[nature.plus]+=2;if(nature.minus)finalStats[nature.minus]-=2;const sprite = isShiny() ? (state.pokemon.sprites.other["official-artwork"].front_shiny||state.pokemon.sprites.front_shiny) : (state.pokemon.sprites.other["official-artwork"].front_default||state.pokemon.sprites.front_default);
+$("sheetSprite").src=sprite;$("sheetName").textContent=(state.mode==="trained"&&$("nicknameInput").value.trim())?`${$("nicknameInput").value.trim()} (${formatName(state.pokemon.name)})`:formatName(state.pokemon.name);$("sheetMeta").textContent=`Nv ${points} • ${selectedGender()} • Nature: ${nature.pt}`;$("sheetModeLabel").textContent=`Modo: ${state.mode}`;renderLoyalty();renderBasicsInfo();renderCapacities(finalStats, points);
+$("baseStatsList").innerHTML=STAT_KEYS.map((k)=>`<li>${STAT_LABELS[k]}: <strong>${base[k]}</strong></li>`).join("");if(state.mode!=="trained")$("levelStatsList").innerHTML=STAT_KEYS.map((k)=>`<li>${STAT_LABELS[k]}: +${gains[k]}</li>`).join("");$("finalStatsList").innerHTML=STAT_KEYS.map((k)=>`<li class="${nature.plus===k?"stat-positive":nature.minus===k?"stat-negative":""}">${STAT_LABELS[k]}: <strong>${finalStats[k]}</strong></li>`).join("");
+const hp1=(finalStats.hp+points)*4,hp2=points+finalStats.hp*3;$("hp1Text").textContent=`${hp1} / ${hp1}`;$("hp2Text").textContent=`${hp2} / ${hp2}`;$("natureTaste").innerHTML=`<strong>${nature.pt}</strong><br><span class="nature-pill">Gosta de:</span> ${nature.taste.includes("Neutra")?"Neutra":""}${nature.taste.includes("Gosta de")?nature.taste.split(" e não gosta de ")[0].replace("Gosta de ",""):""}<br><span class="nature-pill">Não gosta de:</span> ${nature.taste.includes("não gosta de")?nature.taste.split("não gosta de ")[1]:"Neutra"}`;renderRadars(finalStats);}
+function renderBasicsInfo(){const types=state.pokemon.types.map((t)=>t.type.name);$("sheetTypes").innerHTML=types.map((t)=>`<img src="assets/types/${t}.png" alt="${t}">`).join("");$("sheetSize").textContent=`${(state.pokemon.height/10).toFixed(1)} m • ${(state.pokemon.weight/10).toFixed(1)} kg`;$("sheetEggGroups").textContent=state.species.egg_groups.map((g)=>formatName(g.name)).join(" | ");}
+async function renderDamageRelations(){if(!state.pokemon)return;const types=state.pokemon.types.map((t)=>t.type.name);const rel={};const apply=(arr,m)=>arr.forEach((t)=>rel[t.name]=(rel[t.name]??1)*m);const t1=await fetch(`https://pokeapi.co/api/v2/type/${types[0]}`).then((r)=>r.json());apply(t1.damage_relations.double_damage_from,2);apply(t1.damage_relations.half_damage_from,.5);apply(t1.damage_relations.no_damage_from,0);if(types[1]){const t2=await fetch(`https://pokeapi.co/api/v2/type/${types[1]}`).then((r)=>r.json());apply(t2.damage_relations.double_damage_from,2);apply(t2.damage_relations.half_damage_from,.5);apply(t2.damage_relations.no_damage_from,0);}const weak=[],res=[],imm=[];Object.entries(rel).forEach(([t,v])=>{if(v===0)imm.push(t);else if(v>1)weak.push(t);else if(v<1)res.push(t);});$("weaknesses").innerHTML=weak.map((t)=>`<img src="assets/types/${t}.png" title="${t}">`).join("");$("resistances").innerHTML=res.map((t)=>`<img src="assets/types/${t}.png" title="${t}">`).join("");$("immunities").innerHTML=imm.map((t)=>`<img src="assets/types/${t}.png" title="${t}">`).join("");}
+function renderLoyalty(){const val=Math.max(0,Math.min(4,Number($("loyaltyInput")?.value||0)));const txt=["O pokemon não confia em você","O pokemon vê algo em você","O pokemon se preocupa com você","O pokemon gosta bastante de você","O pokemon ama você"][val];$("sheetLoyalty").innerHTML=state.mode==="trained"?`${txt} ${val>0?`<img src="assets/icons/lealdade${val}.png" alt="Lealdade ${val}" width="20">`:""}`:"";}
+function renderCapacities(finalStats, level){const int=Math.max(0,Math.floor((finalStats.spatk+finalStats.spdef)/6));const str=Math.max(0,Math.floor((finalStats.atk+finalStats.def)/6));const mov=Math.max(1,Math.floor((finalStats.spd+level)/6));$("cap-int").textContent=int;$("cap-str").textContent=str;$("cap-mov").textContent=mov;$("cap-int-label").textContent=capLabel(int,["Instintivo","Observador","Sagaz","Brilhante","Gênio"]);$("cap-str-label").textContent=capLabel(str,["Frágil","Subdesenvolvida","Treinada","Potente","Colossal"]);$("cap-mov-label").textContent=capLabel(mov,["Lento","Ágil","Veloz","Relâmpago","Supersônico"]);}
+function contestValue(v){if(v<=3)return 1;if(v<=6)return 2;if(v<=9)return 3;if(v<=12)return 4;return 5;}
+function renderRadars(finalStats){if(typeof Chart==="undefined")return;state.statsChart?.destroy();state.contestChart?.destroy();state.statsChart=new Chart($("statsRadar"),{type:"radar",data:{labels:["HP","ATK","DEF","Sp.ATK","Sp.DEF","SPD"],datasets:[{data:[finalStats.hp,finalStats.atk,finalStats.def,finalStats.spatk,finalStats.spdef,finalStats.spd],backgroundColor:"rgba(123,220,101,.2)",borderColor:"#7bdc65",pointRadius:0}]},options:{plugins:{legend:{display:false}},scales:{r:{ticks:{display:false}}}}});const contest=[contestValue(finalStats.spatk),contestValue(finalStats.spd),contestValue(finalStats.atk),contestValue(finalStats.spdef),contestValue(finalStats.def)];state.contestChart=new Chart($("contestRadar"),{type:"radar",data:{labels:["Beleza","Fofura","Estilo","Inteligência","Vigor"],datasets:[{data:contest,backgroundColor:"rgba(255,105,180,.25)",borderColor:"#ff69b4",pointRadius:0}]},options:{plugins:{legend:{display:false}},scales:{r:{ticks:{display:false}}}}});}
 
-async function getMove(url) {
-  if (state.moveCache.has(url)) return state.moveCache.get(url);
-  const data = await fetch(url).then((r) => r.json());
-  state.moveCache.set(url, data);
-  return data;
-}
+function openAbilitiesModal(){const modal=$("abilitiesModal"),body=$("abilitiesModalBody"),limit=Number($("levelInput").value||1)>=40?2:1;body.innerHTML="";state.pokemon.abilities.forEach((a)=>{const info=abilitiesData[a.ability.name]||{name:formatName(a.ability.name),ptName:formatName(a.ability.name),activation:"—",effect:"—"};const div=document.createElement("div");div.className="ability-option";div.innerHTML=`<strong>${info.name} = ${info.ptName}</strong><br>Ativação: ${info.activation}<br>Efeito: ${info.effect}`;const btns=document.createElement("div");btns.className="ability-buttons";btns.innerHTML=`<button type="button">Selecionar slot 1</button>${limit>1?'<button type="button">Selecionar slot 2</button>':''}`;btns.children[0].onclick=()=>{state.abilitySlots[0]=a.ability.name;renderAbilitySummary();};if(limit>1&&btns.children[1])btns.children[1].onclick=()=>{state.abilitySlots[1]=a.ability.name;renderAbilitySummary();};div.appendChild(btns);body.appendChild(div);});modal.showModal();}
+function renderAbilitySummary(){const limit=Number($("levelInput").value||1)>=40?2:1;$("abilitiesSummary").textContent=[state.abilitySlots[0],limit>1?state.abilitySlots[1]:null].filter(Boolean).map(formatName).join(" • ")||"Sem habilidade";}
+async function openMoveModal(moveName){const entry=state.levelMoves.find((m)=>m.name===moveName)||state.tmMoves.find((m)=>m.name===moveName);if(!entry)return;const m=await getMove(entry.url);const level=Number($("levelInput").value||1);const stab=state.pokemon.types.some((t)=>t.type.name===m.type.name)&&m.power?Math.floor(level/5):0;const dmg=m.power?`${powerToDamage(m.power)}${stab?` + ${stab}`:""}`:"—";$("moveModalTitle").textContent=formatName(moveName);$("moveDetailsBody").innerHTML=`<p><img src="assets/types/${m.type.name}.png" width="22"> ${formatName(m.type.name)} • ${formatName(m.damage_class.name)}</p><p>Dano RPG: <strong>${dmg}</strong></p><p>Acerto: ${m.accuracy ?? "—"} • PP: ${m.pp ?? "—"}</p><p>${m.effect_entries.find((e)=>e.language.name==='en')?.short_effect||'Sem descrição.'}</p>`;$("moveDetailsModal").showModal();}
 
-async function loadSpecies(idOrName) {
-  const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`).then((r) => r.json());
-  const species = await fetch(pokemon.species.url).then((r) => r.json());
-  state.pokemon = pokemon;
-  state.species = species;
-  state.selectedLevelMoves = [];
-  state.selectedTmMoves = [];
-  $("sheetEmpty").hidden = true;
-  $("sheetContent").hidden = false;
-  $("basicControls").hidden = false;
-  $("movesSection").hidden = false;
-  fillBasics();
-  await buildMovePools();
-  renderMoveOptions();
-  renderSelectedMoves();
-  renderSheet();
-}
+function setupQuickGeneration(){$("quickGenerateBtn").addEventListener("click",async()=>{if(!state.pokemonIndex.length)return;const random=state.pokemonIndex[Math.floor(Math.random()*state.pokemonIndex.length)];await loadSpecies(String(random.id));$("levelInput").value=Math.floor(Math.random()*100)+1;$("natureSelect").value=NATURES[Math.floor(Math.random()*NATURES.length)].name;renderMoveOptions();state.selectedLevelMoves=state.levelMoves.filter((m)=>m.level<=Number($("levelInput").value)).slice(-4).map((m)=>m.name);state.selectedTmMoves=state.tmMoves.slice(0,4).map((m)=>m.name);await renderSelectedMoves();renderSheet();});}
+function getSheetPayload(){const base=getBaseStats();const {gains,points}=getAllocatedStats(base);const nature=getNature();return {mode:state.mode,pokemon:state.pokemon.name,level:points,shiny:isShiny(),gender:selectedGender(),abilities:state.abilitySlots.filter(Boolean),nickname:$("nicknameInput")?.value||"",loyalty:Number($("loyaltyInput")?.value||0),alpha:isAlpha(),nature,base,gains,moves:{level:[...state.selectedLevelMoves],tm:[...state.selectedTmMoves]}};}
+function setupExport(){$("copySheetBtn").addEventListener("click",async()=>{const p=getSheetPayload();await navigator.clipboard.writeText(`[${formatName(p.pokemon)}] Nv.${p.level} (${p.mode})\nNature: ${p.nature.pt}\nHabilidades: ${p.abilities.map(formatName).join(", ")}`);notify("Ficha copiada!");});$("copyMovesBtn").addEventListener("click",async()=>{const p=getSheetPayload();await navigator.clipboard.writeText([...p.moves.level,...p.moves.tm].map((m)=>`- ${formatName(m)}`).join("\n"));notify("Golpes copiados!");});$("saveJsonBtn").addEventListener("click",()=>{const p=getSheetPayload();const blob=new Blob([JSON.stringify(p,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`${p.pokemon}-ficha.json`;a.click();URL.revokeObjectURL(url);});}
+function setupGeneralEvents(){document.querySelectorAll("[data-close-modal]").forEach((b)=>b.addEventListener("click",()=>$(b.dataset.closeModal).close()));$("addLevelMoveBtn").type="button";$("sheetCryBtn").addEventListener("click",()=>{const src=state.pokemon?.cries?.latest; if(!src)return; new Audio(src).play();});}
 
-function fillBasics() {
-  const gender = $("genderSelect");
-  gender.innerHTML = "";
-  if (state.species.gender_rate === -1) {
-    gender.innerHTML = '<option value="genderless">Sem gênero</option>';
-  } else {
-    gender.innerHTML = '<option value="male">Masculino</option><option value="female">Feminino</option>';
-  }
-  const abilities = state.pokemon.abilities.map((a) => formatName(a.ability.name));
-  $("ability1").innerHTML = abilities.map((a) => `<option>${a}</option>`).join("");
-  $("ability2").innerHTML = abilities.map((a) => `<option>${a}</option>`).join("");
-  const natures = NATURES.map((n) => `<option value="${n.name}">${n.name}</option>`).join("");
-  $("natureSelect").innerHTML = natures;
-  ["levelInput", "natureSelect", "ability1", "ability2", "genderSelect", "shinyToggle", "nicknameInput", "loyaltyInput"].forEach((id) => {
-    const el = $(id); if (!el) return; el.oninput = () => renderSheet(); el.onchange = () => renderSheet();
-  });
-  const alpha = $("alphaToggle");
-  if (alpha) {
-    alpha.onchange = async () => {
-      if (alpha.checked) applyAlphaMoveRule();
-      await renderSelectedMoves();
-      renderSheet();
-    };
-  }
-  enforceAbilityRule();
-  $("levelInput").addEventListener("input", async () => {
-    enforceAbilityRule();
-    renderMoveOptions();
-    if ($("alphaToggle")?.checked) applyAlphaMoveRule();
-    await renderSelectedMoves();
-    renderSheet();
-  });
-}
-
-function enforceAbilityRule() {
-  const level = Number($("levelInput").value || 1);
-  const wrap = $("ability2Wrap");
-  wrap.hidden = level < 40;
-}
-
-async function buildMovePools() {
-  state.levelMoves = [];
-  state.tmMoves = [];
-  for (const mv of state.pokemon.moves) {
-    const version = pickVersion(mv.version_group_details);
-    if (!version) continue;
-    const method = version.move_learn_method.name;
-    const entry = { name: mv.move.name, url: mv.move.url, level: version.level_learned_at, method };
-    if (method === "level-up") state.levelMoves.push(entry);
-    if (["machine", "tutor", "egg"].includes(method)) state.tmMoves.push(entry);
-  }
-  state.levelMoves.sort((a, b) => a.level - b.level);
-}
-
-function renderMoveOptions() {
-  const level = Number($("levelInput").value || 1);
-  const levelOptions = state.levelMoves.filter((m) => m.level <= level);
-  $("levelMoveSelect").innerHTML = levelOptions.map((m) => `<option value="${m.name}">${formatName(m.name)} (Nv ${m.level})</option>`).join("");
-  $("tmMoveSelect").innerHTML = state.tmMoves.map((m) => `<option value="${m.name}">${formatName(m.name)} (${m.method.toUpperCase()})</option>`).join("");
-}
-
-function setupMoveActions() {
-  $("addLevelMoveBtn").addEventListener("click", () => addMove("level"));
-  $("addTmMoveBtn").addEventListener("click", () => addMove("tm"));
-}
-
-function addMove(type) {
-  const select = type === "level" ? $("levelMoveSelect") : $("tmMoveSelect");
-  const target = type === "level" ? state.selectedLevelMoves : state.selectedTmMoves;
-  if (!select.value) return;
-  if (target.includes(select.value)) return;
-  if (target.length >= 4) return notify("Limite de 4 golpes nesse grupo.");
-  target.push(select.value);
-  if (state.mode === "wild" && $("alphaToggle").checked) applyAlphaMoveRule();
-  renderSelectedMoves();
-}
-
-function applyAlphaMoveRule() {
-  const level = Number($("levelInput").value || 1);
-  const available = state.levelMoves.filter((m) => m.level <= level);
-  if (!available.length) return;
-  const alphaMove = available[available.length - 1].name;
-  if (state.selectedLevelMoves.includes(alphaMove)) return;
-  if (state.selectedLevelMoves.length < 4) state.selectedLevelMoves.push(alphaMove);
-  else state.selectedLevelMoves[3] = alphaMove;
-}
-
-async function renderSelectedMoves() {
-  const all = [...state.selectedLevelMoves, ...state.selectedTmMoves];
-  const pokeTypes = state.pokemon?.types.map((t) => t.type.name) || [];
-  const level = Number($("levelInput").value || 1);
-  const stabBonus = Math.floor(level / 5);
-
-  const renderList = async (containerId, moves) => {
-    const ul = $(containerId);
-    ul.innerHTML = "";
-    for (const name of moves) {
-      const entry = state.levelMoves.find((m) => m.name === name) || state.tmMoves.find((m) => m.name === name);
-      const li = document.createElement("li");
-      const remove = document.createElement("button");
-      remove.textContent = "Remover";
-      remove.type = "button";
-      remove.addEventListener("click", () => {
-        const target = containerId === "levelMoveSlots" ? state.selectedLevelMoves : state.selectedTmMoves;
-        target.splice(target.indexOf(name), 1);
-        renderSelectedMoves();
-      });
-      const moveData = entry ? await getMove(entry.url) : null;
-      const isStatus = !moveData?.power;
-      const baseDamage = powerToDamage(moveData?.power);
-      const stab = moveData && pokeTypes.includes(moveData.type.name) && !isStatus;
-      const damageText = isStatus ? "—" : stab ? `${baseDamage} + ${stabBonus}` : baseDamage;
-      li.innerHTML = `<strong>${formatName(name)}</strong> • ${entry?.method || "level-up"} • Dano: ${damageText}`;
-      li.appendChild(remove);
-      ul.appendChild(li);
-    }
-  };
-
-  await renderList("levelMoveSlots", state.selectedLevelMoves);
-  await renderList("tmMoveSlots", state.selectedTmMoves);
-
-  const output = $("selectedMovesOutput");
-  output.innerHTML = "";
-  for (const moveName of all) {
-    const li = document.createElement("li");
-    li.textContent = formatName(moveName);
-    output.appendChild(li);
-  }
-}
-
-function getNature() {
-  const name = $("natureSelect").value;
-  return NATURES.find((n) => n.name === name) || NATURES[0];
-}
-
-function getBaseStats() {
-  const raw = {};
-  state.pokemon.stats.forEach((s) => {
-    if (s.stat.name === "special-attack") raw.spatk = convertStat(s.base_stat);
-    else if (s.stat.name === "special-defense") raw.spdef = convertStat(s.base_stat);
-    else if (s.stat.name === "speed") raw.spd = convertStat(s.base_stat);
-    else if (s.stat.name === "attack") raw.atk = convertStat(s.base_stat);
-    else if (s.stat.name === "defense") raw.def = convertStat(s.base_stat);
-    else if (s.stat.name === "hp") raw.hp = convertStat(s.base_stat);
-  });
-  return raw;
-}
-
-function autoDistribute(base, points) {
-  const gains = Object.fromEntries(STAT_KEYS.map((k) => [k, 0]));
-  const ranking = [...STAT_KEYS].sort((a, b) => base[b] - base[a] || STAT_KEYS.indexOf(a) - STAT_KEYS.indexOf(b));
-  for (let i = 0; i < points; i++) gains[ranking[i % ranking.length]] += 1;
-  return gains;
-}
-
-function getAllocatedStats(base) {
-  const points = Number($("levelInput").value || 1);
-  const gains = Object.fromEntries(STAT_KEYS.map((k) => [k, 0]));
-  if (state.mode === "wild" || state.mode === "quick") {
-    Object.assign(gains, autoDistribute(base, points));
-  }
-  if (state.mode === "trained") {
-    STAT_KEYS.forEach((k) => {
-      gains[k] = Number($(`alloc-${k}`)?.value || 0);
-    });
-  }
-  if (state.mode === "wild" && $("alphaToggle").checked) {
-    const top = [...STAT_KEYS].sort((a, b) => base[b] - base[a] || STAT_KEYS.indexOf(a) - STAT_KEYS.indexOf(b)).slice(0, 2);
-    gains[top[0]] += 5;
-    gains[top[1]] += 5;
-  }
-  return { gains, points };
-}
-
-function ensureTrainedInputs(base, points) {
-  const list = $("levelStatsList");
-  if (state.mode !== "trained") return;
-  if (list.querySelector("input")) return;
-  list.innerHTML = "";
-  STAT_KEYS.forEach((k) => {
-    const li = document.createElement("li");
-    li.innerHTML = `${STAT_LABELS[k]}: <input id="alloc-${k}" type="number" min="0" max="${points}" value="0">`;
-    list.appendChild(li);
-  });
-  list.querySelectorAll("input").forEach((inp) => inp.addEventListener("input", renderSheet));
-}
-
-function renderSheet() {
-  if (!state.pokemon) return;
-  const base = getBaseStats();
-  const points = Number($("levelInput").value || 1);
-  ensureTrainedInputs(base, points);
-  const { gains } = getAllocatedStats(base);
-  const nature = getNature();
-
-  const finalStats = Object.fromEntries(STAT_KEYS.map((k) => [k, base[k] + gains[k]]));
-  if (nature.plus) finalStats[nature.plus] += 2;
-  if (nature.minus) finalStats[nature.minus] -= 2;
-
-  $("sheetSprite").src = $("shinyToggle").checked
-    ? (state.pokemon.sprites.other["official-artwork"].front_shiny || state.pokemon.sprites.front_shiny)
-    : (state.pokemon.sprites.other["official-artwork"].front_default || state.pokemon.sprites.front_default);
-  $("sheetName").textContent = (state.mode === "trained" && $("nicknameInput").value.trim())
-    ? `${$("nicknameInput").value.trim()} (${formatName(state.pokemon.name)})`
-    : formatName(state.pokemon.name);
-  $("sheetMeta").textContent = `Nv ${points} • ${$("genderSelect").value} • Nature: ${nature.name}`;
-  $("sheetModeLabel").textContent = `Modo: ${state.mode === "wild" ? "Selvagem" : state.mode === "trained" ? "Adestrado" : "Geração Rápida"}`;
-
-  const baseList = $("baseStatsList");
-  const gainsList = $("levelStatsList");
-  const finalList = $("finalStatsList");
-
-  baseList.innerHTML = "";
-  if (state.mode !== "trained") gainsList.innerHTML = "";
-  finalList.innerHTML = "";
-
-  STAT_KEYS.forEach((k) => {
-    baseList.innerHTML += `<li>${STAT_LABELS[k]}: <strong>${base[k]}</strong></li>`;
-    if (state.mode !== "trained") gainsList.innerHTML += `<li>${STAT_LABELS[k]}: +${gains[k]}</li>`;
-    const natureClass = nature.plus === k ? "stat-positive" : nature.minus === k ? "stat-negative" : "";
-    finalList.innerHTML += `<li class="${natureClass}">${STAT_LABELS[k]}: <strong>${finalStats[k]}</strong></li>`;
-  });
-
-  const hpStat = finalStats.hp;
-  const hp1 = (hpStat + points) * 4;
-  const hp2 = points + hpStat * 3;
-  $("hp1Text").textContent = `${hp1} / ${hp1}`;
-  $("hp2Text").textContent = `${hp2} / ${hp2}`;
-}
-
-function setupQuickGeneration() {
-  $("quickGenerateBtn").addEventListener("click", async () => {
-    if (!state.pokemonIndex.length) return;
-    const random = state.pokemonIndex[Math.floor(Math.random() * state.pokemonIndex.length)];
-    await loadSpecies(String(random.id));
-    $("levelInput").value = Math.floor(Math.random() * 100) + 1;
-    $("natureSelect").value = NATURES[Math.floor(Math.random() * NATURES.length)].name;
-    renderMoveOptions();
-    state.selectedLevelMoves = state.levelMoves.filter((m) => m.level <= Number($("levelInput").value)).slice(-4).map((m) => m.name);
-    state.selectedTmMoves = state.tmMoves.slice(0, 4).map((m) => m.name);
-    await renderSelectedMoves();
-    renderSheet();
-  });
-}
-
-function getSheetPayload() {
-  const base = getBaseStats();
-  const { gains, points } = getAllocatedStats(base);
-  const unspent = state.mode === "trained" ? Math.max(points - Object.values(gains).reduce((a, b) => a + b, 0), 0) : 0;
-  if (unspent > 0) notify(`Ainda faltam ${unspent} pontos para distribuir.`);
-  const nature = getNature();
-  return {
-    mode: state.mode,
-    pokemon: state.pokemon.name,
-    level: points,
-    shiny: $("shinyToggle").checked,
-    gender: $("genderSelect").value,
-    abilities: [$("ability1").value, $("ability2Wrap").hidden ? null : $("ability2").value].filter(Boolean),
-    nickname: $("nicknameInput")?.value || "",
-    loyalty: Number($("loyaltyInput")?.value || 0),
-    alpha: $("alphaToggle")?.checked || false,
-    nature,
-    base,
-    gains,
-    moves: { level: [...state.selectedLevelMoves], tm: [...state.selectedTmMoves] },
-  };
-}
-
-function setupExport() {
-  $("copySheetBtn").addEventListener("click", async () => {
-    const payload = getSheetPayload();
-    const text = `[${formatName(payload.pokemon)}] Nv.${payload.level} (${payload.mode})\nNature: ${payload.nature.name}\nHabilidades: ${payload.abilities.join(", ")}\nLealdade: ${payload.loyalty}\nBase: ${JSON.stringify(payload.base)}\nGanhos: ${JSON.stringify(payload.gains)}`;
-    await navigator.clipboard.writeText(text);
-    notify("Ficha copiada!");
-  });
-  $("copyMovesBtn").addEventListener("click", async () => {
-    const payload = getSheetPayload();
-    const text = [...payload.moves.level, ...payload.moves.tm].map((m) => `- ${formatName(m)}`).join("\n");
-    await navigator.clipboard.writeText(text);
-    notify("Golpes copiados!");
-  });
-  $("saveJsonBtn").addEventListener("click", () => {
-    const payload = getSheetPayload();
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${payload.pokemon}-ficha.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-}
-
-async function init() {
-  setupMenu();
-  setupModes();
-  setupSearch();
-  setupMoveActions();
-  setupQuickGeneration();
-  setupExport();
-  await fetchPokemonIndex();
-}
-
+async function init(){setupMenu();setupModes();setupMobileTabs();setupSearch();setupMoveActions();setupQuickGeneration();setupExport();setupGeneralEvents();await fetchPokemonIndex();}
 init();

@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/pokemon.css">
   <link rel="stylesheet" href="css/creation.css">
   <link rel="icon" href="assets/logo.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="js/creation.js"></script>
 </head>
 <body>
@@ -33,6 +34,14 @@
     </div>
   </header>
 
+  <div class="mobile-tabs" role="tablist" aria-label="Seções mobile">
+    <button class="mobile-tab-btn active" type="button" data-mobile-tab-target="detalhes">Detalhes</button>
+    <button class="mobile-tab-btn" type="button" data-mobile-tab-target="golpes">Golpes</button>
+    <button class="mobile-tab-btn" type="button" data-mobile-tab-target="atributos">Atributos</button>
+    <button class="mobile-tab-btn" type="button" data-mobile-tab-target="ficha">Ficha</button>
+    <button class="mobile-tab-btn" type="button" data-mobile-tab-target="radars">Radars</button>
+  </div>
+
   <main class="creation-layout">
     <section class="builder-panel">
       <div class="mode-switch" role="tablist" aria-label="Modo de criação">
@@ -41,59 +50,69 @@
         <button class="mode-btn" data-mode="quick" type="button">Geração Rápida</button>
       </div>
 
-      <div class="builder-block search-block">
+      <div class="builder-block search-block" data-mobile-tab="detalhes">
         <h3>Espécie</h3>
         <div class="search-controls">
-          <input id="speciesSearch" type="text" placeholder="Nome ou ID do Pokémon">
+          <input id="speciesSearch" type="text" placeholder="Nome ou ID do Pokémon" autocomplete="off">
           <button id="speciesSearchBtn" type="button">Buscar</button>
         </div>
         <div id="speciesPreview" class="search-preview"></div>
       </div>
 
-      <div class="builder-block" id="basicControls" hidden>
-        <h3>Configuração básica</h3>
-        <label>Gênero
-          <select id="genderSelect"></select>
-        </label>
-        <label class="inline-toggle"><input id="shinyToggle" type="checkbox"> Shiny</label>
-        <label>Nível
-          <input id="levelInput" type="number" min="1" max="100" value="5">
-        </label>
-        <div class="ability-grid">
-          <label>Habilidade 1
-            <select id="ability1"></select>
+      <div id="trainedControls" class="builder-block mode-only" data-mode-only="trained" data-mobile-tab="detalhes" hidden>
+        <h3>Regras de Adestrado</h3>
+        <div class="compact-two-grid">
+          <label>Apelido (opcional)
+            <input id="nicknameInput" type="text" maxlength="30" placeholder="Ex.: Tempestade">
           </label>
-          <label id="ability2Wrap">Habilidade 2
-            <select id="ability2"></select>
+          <label>Lealdade (0 a 4)
+            <input id="loyaltyInput" type="number" min="0" max="4" value="0">
           </label>
         </div>
+      </div>
+
+      <div class="builder-block" id="basicControls" data-mobile-tab="detalhes" hidden>
+        <h3>Detalhes</h3>
+        <div class="details-header-row">
+          <label class="compact-level">Nível
+            <input id="levelInput" type="number" min="1" max="100" value="5">
+          </label>
+          <div class="abilities-launcher">
+            <span>Habilidades</span>
+            <button id="openAbilitiesModalBtn" type="button">Selecionar habilidades</button>
+            <small id="abilitiesSummary"></small>
+          </div>
+        </div>
+
+        <div id="genderButtons" class="icon-toggle-row" aria-label="Gênero"></div>
+
+        <div class="icon-toggle-row">
+          <button id="shinyToggle" class="icon-toggle" type="button" aria-pressed="false" title="Shiny">
+            <img src="assets/forms/shiny.png" alt="Shiny">
+            <span>Shiny</span>
+          </button>
+          <button id="alphaToggle" class="icon-toggle" type="button" aria-pressed="false" title="Alpha">
+            <img src="assets/icons/alpha.png" alt="Alpha">
+            <span>Alpha</span>
+          </button>
+        </div>
+
         <label>Natureza
           <select id="natureSelect"></select>
         </label>
       </div>
 
-      <div id="trainedControls" class="builder-block mode-only" data-mode-only="trained" hidden>
-        <h3>Regras de Adestrado</h3>
-        <label>Apelido (opcional)
-          <input id="nicknameInput" type="text" maxlength="30" placeholder="Ex.: Tempestade">
-        </label>
-        <label>Lealdade (0 a 4)
-          <input id="loyaltyInput" type="number" min="0" max="4" value="0">
-        </label>
-      </div>
-
-      <div id="wildControls" class="builder-block mode-only" data-mode-only="wild" hidden>
+      <div id="wildControls" class="builder-block mode-only" data-mode-only="wild" data-mobile-tab="detalhes" hidden>
         <h3>Regras de Selvagem</h3>
-        <label class="inline-toggle"><input id="alphaToggle" type="checkbox"> Alpha</label>
         <p class="helper-text">Distribuição automática por relação basal.</p>
       </div>
 
-      <div id="quickControls" class="builder-block mode-only" data-mode-only="quick" hidden>
+      <div id="quickControls" class="builder-block mode-only" data-mode-only="quick" data-mobile-tab="detalhes" hidden>
         <h3>Geração Rápida</h3>
         <button id="quickGenerateBtn" type="button">Gerar configuração aleatória</button>
       </div>
 
-      <div class="builder-block moves-selectors" id="movesSection" hidden>
+      <div class="builder-block moves-selectors" id="movesSection" data-mobile-tab="golpes" hidden>
         <h3>Golpes</h3>
         <div class="move-builder-grid">
           <div>
@@ -116,7 +135,7 @@
       </div>
     </section>
 
-    <section class="sheet-panel">
+    <section class="sheet-panel" data-mobile-tab="ficha">
       <h3>Ficha</h3>
       <div id="sheetEmpty">Selecione um Pokémon para começar.</div>
       <div id="sheetContent" hidden>
@@ -126,10 +145,30 @@
             <strong id="sheetName"></strong>
             <p id="sheetMeta"></p>
             <p id="sheetModeLabel"></p>
+            <p id="sheetLoyalty"></p>
           </div>
+          <button id="sheetCryBtn" class="cry-mini" type="button">Choro</button>
         </div>
 
-        <div class="stats-columns">
+        <div class="sheet-info-grid">
+          <div><strong>Tipos:</strong> <span id="sheetTypes"></span></div>
+          <div><strong>Proporções:</strong> <span id="sheetSize"></span></div>
+          <div><strong>Grupo reprodutor:</strong> <span id="sheetEggGroups"></span></div>
+        </div>
+
+        <div class="type-relations">
+          <div><h4>Fraquezas</h4><div id="weaknesses" class="icon-list"></div></div>
+          <div><h4>Resistências</h4><div id="resistances" class="icon-list"></div></div>
+          <div><h4>Imunidades</h4><div id="immunities" class="icon-list"></div></div>
+        </div>
+
+        <div class="capacities-wrapper">
+          <div class="capacity"><span class="capacity-title">INTELIGÊNCIA</span><span class="capacity-value" id="cap-int">0</span><span class="capacity-label" id="cap-int-label"></span></div>
+          <div class="capacity"><span class="capacity-title">FORÇA</span><span class="capacity-value" id="cap-str">0</span><span class="capacity-label" id="cap-str-label"></span></div>
+          <div class="capacity"><span class="capacity-title">DESLOCAMENTO</span><span class="capacity-value" id="cap-mov">0</span><span class="capacity-label" id="cap-mov-label"></span></div>
+        </div>
+
+        <div class="stats-columns" data-mobile-tab="atributos">
           <div>
             <h4>Atributos Basais</h4>
             <ul id="baseStatsList" class="stat-list"></ul>
@@ -144,14 +183,16 @@
           </div>
         </div>
 
+        <div id="natureTaste" class="builder-block mini"></div>
+
         <div class="health-bars">
           <div class="hp-item">
-            <span>HP1</span>
+            <span>[HP total]</span>
             <div class="hp-bar hp1"><span id="hp1Fill"></span></div>
             <small id="hp1Text"></small>
           </div>
           <div class="hp-item">
-            <span>HP2</span>
+            <span>[HP Rápido]</span>
             <div class="hp-bar hp2"><span id="hp2Fill"></span></div>
             <small id="hp2Text"></small>
           </div>
@@ -159,6 +200,11 @@
 
         <h4>Golpes selecionados</h4>
         <ul id="selectedMovesOutput" class="move-output"></ul>
+
+        <div class="radars-wrap" data-mobile-tab="radars">
+          <canvas id="statsRadar" width="220" height="220"></canvas>
+          <canvas id="contestRadar" width="220" height="220"></canvas>
+        </div>
 
         <div class="actions-row">
           <button id="copySheetBtn" type="button">Copiar ficha</button>
@@ -168,5 +214,15 @@
       </div>
     </section>
   </main>
+
+  <dialog id="abilitiesModal" class="sheet-modal">
+    <div class="modal-head"><h3>Selecionar habilidades</h3><button data-close-modal="abilitiesModal" type="button">✕</button></div>
+    <div id="abilitiesModalBody"></div>
+  </dialog>
+
+  <dialog id="moveDetailsModal" class="sheet-modal">
+    <div class="modal-head"><h3 id="moveModalTitle">Detalhes do golpe</h3><button data-close-modal="moveDetailsModal" type="button">✕</button></div>
+    <div id="moveDetailsBody"></div>
+  </dialog>
 </body>
 </html>
