@@ -1,0 +1,7 @@
+.created-wrap{padding:16px;max-width:1100px;margin:0 auto}
+.created-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.created-card{border:1px solid rgba(123,220,101,.5);background:#102117;border-radius:12px;padding:10px}
+.created-card img{width:96px;height:96px;object-fit:contain;background:#08110d;border-radius:8px}
+.card-row{display:flex;gap:8px}
+.card-actions{display:flex;gap:8px;margin-top:8px}
+.card-actions a,.card-actions button{font-family:Pixel;border:1px solid #7bdc65;background:#163321;color:#fff;border-radius:8px;padding:6px 8px;text-decoration:none}

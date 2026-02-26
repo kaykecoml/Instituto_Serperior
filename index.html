@@ -65,6 +65,7 @@
     <button class="side-menu-btn" type="button">Lista de habilidades</button>
     <a class="side-menu-btn" href="favoritos.html">Favorito</a>
     <a class="side-menu-btn" href="creation.html">Criação</a>
+    <a class="side-menu-btn" href="created-pokemons.html">Pokémons Criados</a>
   </div>
   <button class="side-menu-btn side-menu-login" type="button">Logar</button>
 </aside>
@@ -86,15 +87,17 @@
       <a class="home-action-btn" href="moves.html">Registro de Golpes</a>
       <a class="home-action-btn" href="creation.html">Criação</a>
       <span class="home-action-btn is-disabled">Registro de Habilidade</span>
-      <span class="home-action-btn is-disabled">Logar</span>
+      <a class="home-action-btn" href="created-pokemons.html">Pokémons Criados</a>
     </section>
   </main>
-  <script>
-    const btn = document.getElementById("logoMenuBtn");
-    const menu = document.getElementById("sideMenu");
-    const backdrop = document.getElementById("sideMenuBackdrop");
-    btn?.addEventListener("click", () => { menu?.classList.add("open"); backdrop?.classList.remove("hidden"); menu?.setAttribute("aria-hidden", "false"); });
-    backdrop?.addEventListener("click", () => { menu?.classList.remove("open"); backdrop?.classList.add("hidden"); menu?.setAttribute("aria-hidden", "true"); });
-  </script>
+  <script type="module">
+  import { initAuthUI } from "./js/auth.js";
+  const btn = document.getElementById("logoMenuBtn");
+  const menu = document.getElementById("sideMenu");
+  const backdrop = document.getElementById("sideMenuBackdrop");
+  btn?.addEventListener("click", () => { menu?.classList.add("open"); backdrop?.classList.remove("hidden"); menu?.setAttribute("aria-hidden", "false"); });
+  backdrop?.addEventListener("click", () => { menu?.classList.remove("open"); backdrop?.classList.add("hidden"); menu?.setAttribute("aria-hidden", "true"); });
+  initAuthUI();
+</script>
 </body>
 </html>

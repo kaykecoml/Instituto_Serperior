@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémons Criados</title>
+  <link rel="stylesheet" href="css/pokemon.css">
+  <link rel="stylesheet" href="css/created-pokemons.css">
+  <script type="module" src="js/created-pokemons.js"></script>
+</head>
+<body>
+  <aside id="sideMenu" class="side-menu" aria-hidden="true">
+    <div class="side-menu-header">Menu</div><div class="side-menu-divider"></div>
+    <div class="side-menu-actions top">
+      <a class="side-menu-btn" href="index.html">Início</a>
+      <a class="side-menu-btn" href="creation.html">Criar pokemons</a>
+      <a class="side-menu-btn" href="created-pokemons.html">Pokémons criados</a>
+    </div>
+    <button class="side-menu-btn side-menu-login" type="button">Logar</button>
+  </aside>
+  <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
+
+  <header>
+    <button id="logoMenuBtn" class="logo-button" type="button"><img src="assets/logo.png" class="logo" alt="Instituo Serperior"></button>
+    <div class="title-container"><h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1><h2>Pokémons Criados</h2></div>
+  </header>
+  <main class="created-wrap">
+    <div id="emptyState">Faça login e salve um Pokémon no builder para aparecer aqui.</div>
+    <div id="cards" class="created-grid"></div>
+  </main>
+</body>
+</html>

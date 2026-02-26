@@ -898,3 +898,11 @@ header h2 {
 .catalog .pokemon-card .types {
   flex-wrap: wrap;
 }
+
+.user-menu-holder{margin-top:8px;padding:0 10px;position:relative}
+.user-avatar{width:20px;height:20px;border-radius:50%;object-fit:cover}
+.user-menu-trigger{display:flex;align-items:center;gap:6px;width:100%}
+.user-menu-dropdown{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.rgb-owner{background:linear-gradient(90deg,#ff0000,#00ff00,#0000ff);background-size:300% 100%;animation:rgbOwner 3s linear infinite;color:#fff}
+@keyframes rgbOwner{0%{background-position:0 0}100%{background-position:300% 0}}
+.auth-body{padding:10px;display:flex;flex-direction:column;gap:8px}
