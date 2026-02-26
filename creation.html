@@ -7,32 +7,12 @@
   <link rel="stylesheet" href="css/pokemon.css">
   <link rel="stylesheet" href="css/creation.css">
   <link rel="icon" href="assets/logo.png">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="js/creation.js"></script>
 </head>
 <body>
-  <aside id="sideMenu" class="side-menu" aria-hidden="true">
-    <div class="side-menu-header">Menu</div>
-    <div class="side-menu-divider"></div>
-    <div class="side-menu-actions top">
-      <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
-      <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
-      <a class="side-menu-btn" href="creation.html">Criação</a>
-      <a class="side-menu-btn" href="created-pokemons.html">Pokémons Criados</a>
-      <a class="side-menu-btn" href="favoritos.html">Favorito</a>
-    </div>
-    <button class="side-menu-btn side-menu-login" type="button">Logar</button>
-  </aside>
-  <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
-
   <header>
-    <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
-      <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
-    </button>
-    <div class="title-container">
-      <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
-      <h2>Criação</h2>
-    </div>
+    <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral"><img src="assets/logo.png" class="logo" alt="Instituo Serperior"></button>
+    <div class="title-container"><h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1><h2>Criação</h2></div>
   </header>
 
   <main class="creation-layout">
@@ -40,10 +20,9 @@
       <div class="mode-switch" role="tablist" aria-label="Modo de criação">
         <button class="mode-btn active" data-mode="wild" type="button">Pokémon Selvagem</button>
         <button class="mode-btn" data-mode="trained" type="button">Pokémon Adestrado</button>
-        <button class="mode-btn" data-mode="generation" type="button">Geração</button>
       </div>
 
-      <div class="builder-block search-block">
+      <div class="builder-block">
         <h3>Espécie</h3>
         <div class="search-controls">
           <input id="speciesSearch" type="text" placeholder="Nome ou ID do Pokémon" autocomplete="off">
@@ -53,50 +32,27 @@
       </div>
 
       <div class="builder-block" id="basicControls" hidden>
-        <h3>DETALHES</h3>
+        <h3>Detalhes</h3>
         <div class="details-grid">
-          <label id="nicknameWrap">Apelido (Opcional)<input id="nicknameInput" type="text" maxlength="30"></label>
-          <label>Nv.<input id="levelInput" type="number" min="1" max="100" value="5"></label>
-          <div id="loyaltyWrap">
-            <span>Lealdade</span>
-            <div id="loyaltyBlocks" class="loyalty-blocks" aria-label="Lealdade"></div>
-          </div>
-          <div>
-            <span>Habilidades</span>
-            <button id="openAbilitiesModalBtn" type="button">Habilidades</button>
-          </div>
-          <div>
+          <label class="field">Nível <input id="levelInput" type="number" min="1" max="100" value="5"></label>
+          <label class="field" id="nicknameWrap">Apelido <input id="nicknameInput" type="text" maxlength="30"></label>
+          <div class="field">
             <span>Gênero</span>
-            <button id="genderDropdownBtn" type="button">Gênero: —</button>
-            <div id="genderMenu" class="inline-pop hidden"></div>
+            <button id="genderDropdownBtn" type="button" aria-expanded="false" aria-controls="genderMenu">Gênero: —</button>
+            <div id="genderMenu" class="inline-pop hidden" role="menu"></div>
           </div>
-          <div class="toggle-group">
-            <button id="shinyToggle" class="icon-toggle" type="button"><img src="assets/forms/shiny.png" alt="Shiny">Shiny</button>
-            <button id="alphaToggle" class="icon-toggle" type="button"><img src="assets/icons/alpha.png" alt="Alpha">Alpha</button>
-          </div>
-          <div id="ballWrap" class="ball-wrap" hidden>
-            <span>Pokebola capturada</span>
-            <div id="pokeballGrid" class="pokeball-grid"></div>
-          </div>
-          <div id="xpControls" hidden>
-            <span>XP (Adestrado)</span>
-            <div class="xp-inline"><input id="xpInput" type="number" min="0" value="0"><button id="addXpBtn" type="button">Adicionar XP</button></div>
-          </div>
+          <div class="field"><span>Habilidades</span><button id="openAbilitiesModalBtn" type="button">Selecionar habilidades</button></div>
+          <div class="field toggle-group"><button id="shinyToggle" class="icon-toggle" type="button"><img src="assets/forms/shiny.png" alt="Shiny">Shiny</button><button id="alphaToggle" class="icon-toggle" type="button"><img src="assets/icons/alpha.png" alt="Alpha">Alpha</button></div>
+          <div class="field" id="xpControls" hidden><span>XP (Adestrado)</span><div class="xp-inline"><input id="xpInput" type="number" min="0" value="0"><button id="addXpBtn" type="button">add xp</button></div></div>
+          <div class="field" id="ballWrap" hidden><span>Pokébola capturada</span><button id="openPokeballModalBtn" type="button">Escolher pokébola</button><small id="selectedBallText"></small></div>
+          <div class="field" id="loyaltyWrap" hidden><span>Lealdade</span><div id="loyaltyBlocks" class="loyalty-blocks"></div></div>
         </div>
       </div>
 
-      <div class="builder-block" id="natureBlock" hidden>
-        <h3>NATUREZA</h3>
-        <select id="natureSelect"></select>
-      </div>
+      <div class="builder-block" id="natureBlock" hidden><h3>Natureza</h3><select id="natureSelect"></select></div>
 
-      <div id="generationControls" class="builder-block" hidden>
-        <h3>Geração</h3>
-        <button id="quickGenerateBtn" type="button">Gerar configuração aleatória</button>
-      </div>
-
-      <div class="builder-block moves-selectors" id="movesSection" hidden>
-        <h3>Selecionar golpes</h3>
+      <div class="builder-block" id="movesSection" hidden>
+        <h3>Golpes</h3>
         <div class="move-builder-grid">
           <div>
             <h4>Level Moves</h4>
@@ -113,50 +69,40 @@
     </section>
 
     <section class="sheet-panel">
-      <h3>FICHA</h3>
+      <h3>Ficha</h3>
       <div id="sheetEmpty">Selecione um Pokémon para começar.</div>
       <div id="sheetContent" hidden>
         <div class="sheet-main">
           <div class="sheet-image-card">
             <button id="sheetImageButton" type="button" class="sheet-image-frame"><img id="sheetSprite" alt="Pokémon selecionado"><span id="sheetBallIcon"></span><span id="sheetBadges"></span></button>
             <div class="xp-bar"><span id="xpBarFill"></span></div><small id="xpBarText"></small>
-          </div>
-          <div class="sheet-head-content">
-            <p id="sheetModeLabel"></p>
             <div class="dex-line"><span id="sheetDex"></span><strong id="sheetName"></strong><span id="sheetLevel"></span></div>
-            <p id="sheetSpeciesSub"></p>
-            <div id="sheetTypes"></div>
           </div>
+          <div><p id="sheetSpeciesSub"></p><div id="sheetTypes"></div><div id="selectedAbilitiesView"></div></div>
         </div>
-        <hr>
-        <div class="type-relations">
-          <div><h4>Fraquezas</h4><div id="weaknesses" class="icon-list"></div></div>
-          <div><h4>Resistências</h4><div id="resistances" class="icon-list"></div></div>
-          <div><h4>Imunidades</h4><div id="immunities" class="icon-list"></div></div>
-        </div>
+
+        <div class="health-bars"><div><span>HP Total</span><div class="hp-bar hp1"><span id="hp1Fill"></span></div><small id="hp1Text"></small></div><div><span>HP Rápido</span><div class="hp-bar hp2"><span id="hp2Fill"></span></div><small id="hp2Text"></small></div></div>
+
+        <div class="stats-board" id="statsBoard"></div>
+
+        <div class="type-relations"><div><h4>Fraquezas</h4><div id="weaknesses" class="icon-list"></div></div><div><h4>Resistências</h4><div id="resistances" class="icon-list"></div></div><div><h4>Imunidades</h4><div id="immunities" class="icon-list"></div></div></div>
+
         <div class="capacities-wrapper">
           <div class="capacity"><span class="capacity-title">INTELIGÊNCIA</span><span class="capacity-value" id="cap-int">0</span><span class="capacity-label" id="cap-int-label"></span></div>
           <div class="capacity"><span class="capacity-title">FORÇA</span><span class="capacity-value" id="cap-str">0</span><span class="capacity-label" id="cap-str-label"></span></div>
           <div class="capacity"><span class="capacity-title">DESLOCAMENTO</span><span class="capacity-value" id="cap-mov">0</span><span class="capacity-label" id="cap-mov-label"></span></div>
         </div>
-        <div class="stats-compact" id="statsCompact"></div>
-        <div class="radar-buttons"><button id="openStatsRadar" type="button">Radar de atributos basais</button><button id="openContestRadar" type="button">Radar de concurso</button></div>
-        <div class="health-bars"><div><span>HP Total</span><div class="hp-bar hp1"><span id="hp1Fill"></span></div><small id="hp1Text"></small></div><div><span>HP Rápido</span><div class="hp-bar hp2"><span id="hp2Fill"></span></div><small id="hp2Text"></small></div></div>
-        <h4>Golpes selecionados</h4>
-        <ul id="selectedMovesOutput" class="move-output"></ul>
-        <div class="actions-row"><button id="copySheetBtn" type="button">Copiar ficha</button><button id="copyMovesBtn" type="button">Copiar golpes</button><button id="savePokemonBtn" type="button">Salvar</button></div>
+
+        <h4>Golpes selecionados</h4><ul id="selectedMovesOutput" class="move-output"></ul>
+        <div class="actions-row"><button id="savePokemonBtn" type="button">Salvar</button></div>
       </div>
     </section>
 
-    <aside class="info-tab" id="infoTab">
-      <h3>Aba de informações</h3>
-      <div id="infoContent"></div>
-    </aside>
+    <aside class="info-tab"><h3>Informações</h3><div id="infoContent"></div></aside>
   </main>
 
   <dialog id="abilitiesModal" class="sheet-modal"><div class="modal-head"><h3>Habilidades</h3><button data-close-modal="abilitiesModal" type="button">✕</button></div><div id="abilitiesModalBody"></div></dialog>
-  <dialog id="moveDetailsModal" class="sheet-modal"><div class="modal-head"><h3 id="moveModalTitle">Golpe</h3><button data-close-modal="moveDetailsModal" type="button">✕</button></div><div id="moveDetailsBody"></div></dialog>
-  <dialog id="radarModal" class="sheet-modal"><div class="modal-head"><h3 id="radarTitle">Radar</h3><button data-close-modal="radarModal" type="button">✕</button></div><div id="radarBody"></div></dialog>
+  <dialog id="pokeballModal" class="sheet-modal"><div class="modal-head"><h3>Pokébola capturada</h3><button data-close-modal="pokeballModal" type="button">✕</button></div><div id="pokeballModalBody"></div></dialog>
   <dialog id="imageCropModal" class="sheet-modal"><div class="modal-head"><h3>Imagem customizada</h3><button data-close-modal="imageCropModal" type="button">✕</button></div><div id="cropBody"></div></dialog>
 </body>
 </html>
