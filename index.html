@@ -6,95 +6,43 @@
   <title>Instituo Serperior</title>
   <link rel="stylesheet" href="css/pokemon.css">
   <style>
-    .home-actions {
-      min-height: calc(100vh - 160px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .home-actions-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(180px, 280px));
-      gap: 14px;
-      width: 100%;
-      max-width: 620px;
-    }
-
-    .home-action-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 64px;
-      padding: 12px;
-      text-decoration: none;
-      font-family: Pixel;
-      font-size: 14px;
-      background: linear-gradient(180deg, #2f6b44, #1f4d2b);
-      color: #fff;
-      border: 2px solid #7bdc65;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #000;
-    }
-
-    .home-action-btn:hover {
-      box-shadow: 0 0 12px #7bdc65;
-    }
-
-    .home-action-btn.is-disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 700px) {
-      .home-actions-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    .home-actions{min-height:calc(100vh - 160px);display:flex;align-items:center;justify-content:center;padding:24px}
+    .home-actions-grid{display:grid;grid-template-columns:repeat(2,minmax(180px,280px));gap:14px;width:100%;max-width:620px}
+    .home-action-btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:64px;padding:12px;text-decoration:none;font-family:Pixel;font-size:14px;background:linear-gradient(180deg,#2f6b44,#1f4d2b);color:#fff;border:2px solid #7bdc65;border-radius:10px;box-shadow:0 0 10px #000}
+    @media (max-width:700px){.home-actions-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <aside id="sideMenu" class="side-menu" aria-hidden="true">
-  <div class="side-menu-header">Menu</div>
-  <div class="side-menu-divider"></div>
+  <div class="side-menu-header">Menu</div><div class="side-menu-divider"></div>
   <div class="side-menu-actions top">
     <a class="side-menu-btn" href="pokemon.html">Pokedex</a>
     <a class="side-menu-btn" href="moves.html">Lista de golpes</a>
-    <button class="side-menu-btn" type="button">Lista de habilidades</button>
-    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
     <a class="side-menu-btn" href="creation.html">Criação</a>
+    <a class="side-menu-btn" href="created-pokemons.html">Pokémons Criados</a>
+    <a class="side-menu-btn" href="favoritos.html">Favorito</a>
   </div>
   <button class="side-menu-btn side-menu-login" type="button">Logar</button>
 </aside>
 <div id="sideMenuBackdrop" class="side-menu-backdrop hidden"></div>
-
-  <header>
-    <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral">
-      <img src="assets/logo.png" class="logo" alt="Instituo Serperior">
-    </button>
-    <div class="title-container">
-      <h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1>
-      <h2>Painel</h2>
-    </div>
-  </header>
-
-  <main class="home-actions">
-    <section class="home-actions-grid" aria-label="Menu principal">
-      <a class="home-action-btn" href="pokemon.html">Registro Pokémon</a>
-      <a class="home-action-btn" href="moves.html">Registro de Golpes</a>
-      <a class="home-action-btn" href="creation.html">Criação</a>
-      <span class="home-action-btn is-disabled">Registro de Habilidade</span>
-      <span class="home-action-btn is-disabled">Logar</span>
-    </section>
-  </main>
-  <script>
-    const btn = document.getElementById("logoMenuBtn");
-    const menu = document.getElementById("sideMenu");
-    const backdrop = document.getElementById("sideMenuBackdrop");
-    btn?.addEventListener("click", () => { menu?.classList.add("open"); backdrop?.classList.remove("hidden"); menu?.setAttribute("aria-hidden", "false"); });
-    backdrop?.addEventListener("click", () => { menu?.classList.remove("open"); backdrop?.classList.add("hidden"); menu?.setAttribute("aria-hidden", "true"); });
-  </script>
+<header>
+  <button id="logoMenuBtn" class="logo-button" type="button" aria-label="Abrir menu lateral"><img src="assets/logo.png" class="logo" alt="Instituo Serperior"></button>
+  <div class="title-container"><h1><a href="index.html" class="site-home-link">Instituo Serperior</a></h1><h2>Painel</h2></div>
+</header>
+<main class="home-actions">
+  <section class="home-actions-grid" aria-label="Menu principal">
+    <a class="home-action-btn" href="pokemon.html">Registro Pokémon</a>
+    <a class="home-action-btn" href="moves.html">Registro de Golpes</a>
+    <a class="home-action-btn" href="creation.html">Criar pokémon</a>
+    <a class="home-action-btn" href="created-pokemons.html">Pokémons criados</a>
+  </section>
+</main>
+<script type="module">
+  import { initAuthUI } from './js/auth.js';
+  const btn=document.getElementById('logoMenuBtn'),menu=document.getElementById('sideMenu'),backdrop=document.getElementById('sideMenuBackdrop');
+  btn?.addEventListener('click',()=>{menu?.classList.add('open');backdrop?.classList.remove('hidden');});
+  backdrop?.addEventListener('click',()=>{menu?.classList.remove('open');backdrop?.classList.add('hidden');});
+  initAuthUI({linksProvider:()=>({creation:'creation.html',created:'created-pokemons.html'})});
+</script>
 </body>
 </html>
