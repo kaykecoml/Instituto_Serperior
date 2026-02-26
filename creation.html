@@ -55,32 +55,32 @@
       <div class="builder-block" id="basicControls" hidden>
         <h3>DETALHES</h3>
         <div class="details-grid">
-          <label class="field" id="levelWrap">Nível<input id="levelInput" type="number" min="1" max="100" value="5"></label>
-          <label class="field" id="nicknameWrap">Apelido (Opcional)<input id="nicknameInput" type="text" maxlength="30"></label>
-
-          <div class="field" id="loyaltyWrap"><span>Lealdade</span><div id="loyaltyBlocks" class="loyalty-blocks" aria-label="Lealdade"></div></div>
-          <div class="field"><span>Habilidades</span><button id="openAbilitiesModalBtn" type="button">Abrir habilidades</button></div>
-
-          <div class="field">
-            <span>Gênero</span>
-            <button id="genderDropdownBtn" type="button" aria-expanded="false" aria-controls="genderMenu">Gênero: —</button>
-            <div id="genderMenu" class="inline-pop hidden" role="menu"></div>
+          <label id="nicknameWrap">Apelido (Opcional)<input id="nicknameInput" type="text" maxlength="30"></label>
+          <label>Nv.<input id="levelInput" type="number" min="1" max="100" value="5"></label>
+          <div id="loyaltyWrap">
+            <span>Lealdade</span>
+            <div id="loyaltyBlocks" class="loyalty-blocks" aria-label="Lealdade"></div>
           </div>
-
-          <div class="field toggle-group">
+          <div>
+            <span>Habilidades</span>
+            <button id="openAbilitiesModalBtn" type="button">Habilidades</button>
+          </div>
+          <div>
+            <span>Gênero</span>
+            <button id="genderDropdownBtn" type="button">Gênero: —</button>
+            <div id="genderMenu" class="inline-pop hidden"></div>
+          </div>
+          <div class="toggle-group">
             <button id="shinyToggle" class="icon-toggle" type="button"><img src="assets/forms/shiny.png" alt="Shiny">Shiny</button>
             <button id="alphaToggle" class="icon-toggle" type="button"><img src="assets/icons/alpha.png" alt="Alpha">Alpha</button>
           </div>
-
-          <div id="ballWrap" class="field" hidden>
-            <span>Pokébola capturada</span>
-            <button id="openPokeballModalBtn" type="button">Escolher pokébola</button>
-            <small id="selectedBallText"></small>
+          <div id="ballWrap" class="ball-wrap" hidden>
+            <span>Pokebola capturada</span>
+            <div id="pokeballGrid" class="pokeball-grid"></div>
           </div>
-
-          <div id="xpControls" class="field" hidden>
+          <div id="xpControls" hidden>
             <span>XP (Adestrado)</span>
-            <div class="xp-inline"><input id="xpInput" type="number" min="0" value="0"><button id="addXpBtn" type="button">add xp</button></div>
+            <div class="xp-inline"><input id="xpInput" type="number" min="0" value="0"><button id="addXpBtn" type="button">Adicionar XP</button></div>
           </div>
         </div>
       </div>
@@ -120,9 +120,10 @@
           <div class="sheet-image-card">
             <button id="sheetImageButton" type="button" class="sheet-image-frame"><img id="sheetSprite" alt="Pokémon selecionado"><span id="sheetBallIcon"></span><span id="sheetBadges"></span></button>
             <div class="xp-bar"><span id="xpBarFill"></span></div><small id="xpBarText"></small>
-            <div class="dex-line"><span id="sheetDex"></span><strong id="sheetName"></strong><span id="sheetLevel"></span></div>
           </div>
           <div class="sheet-head-content">
+            <p id="sheetModeLabel"></p>
+            <div class="dex-line"><span id="sheetDex"></span><strong id="sheetName"></strong><span id="sheetLevel"></span></div>
             <p id="sheetSpeciesSub"></p>
             <div id="sheetTypes"></div>
           </div>
@@ -139,6 +140,7 @@
           <div class="capacity"><span class="capacity-title">DESLOCAMENTO</span><span class="capacity-value" id="cap-mov">0</span><span class="capacity-label" id="cap-mov-label"></span></div>
         </div>
         <div class="stats-compact" id="statsCompact"></div>
+        <div class="radar-buttons"><button id="openStatsRadar" type="button">Radar de atributos basais</button><button id="openContestRadar" type="button">Radar de concurso</button></div>
         <div class="health-bars"><div><span>HP Total</span><div class="hp-bar hp1"><span id="hp1Fill"></span></div><small id="hp1Text"></small></div><div><span>HP Rápido</span><div class="hp-bar hp2"><span id="hp2Fill"></span></div><small id="hp2Text"></small></div></div>
         <h4>Golpes selecionados</h4>
         <ul id="selectedMovesOutput" class="move-output"></ul>
@@ -147,14 +149,14 @@
     </section>
 
     <aside class="info-tab" id="infoTab">
-      <h3>Informações</h3>
+      <h3>Aba de informações</h3>
       <div id="infoContent"></div>
     </aside>
   </main>
 
   <dialog id="abilitiesModal" class="sheet-modal"><div class="modal-head"><h3>Habilidades</h3><button data-close-modal="abilitiesModal" type="button">✕</button></div><div id="abilitiesModalBody"></div></dialog>
   <dialog id="moveDetailsModal" class="sheet-modal"><div class="modal-head"><h3 id="moveModalTitle">Golpe</h3><button data-close-modal="moveDetailsModal" type="button">✕</button></div><div id="moveDetailsBody"></div></dialog>
-  <dialog id="pokeballModal" class="sheet-modal"><div class="modal-head"><h3>Pokébola capturada</h3><button data-close-modal="pokeballModal" type="button">✕</button></div><div id="pokeballModalBody"></div></dialog>
+  <dialog id="radarModal" class="sheet-modal"><div class="modal-head"><h3 id="radarTitle">Radar</h3><button data-close-modal="radarModal" type="button">✕</button></div><div id="radarBody"></div></dialog>
   <dialog id="imageCropModal" class="sheet-modal"><div class="modal-head"><h3>Imagem customizada</h3><button data-close-modal="imageCropModal" type="button">✕</button></div><div id="cropBody"></div></dialog>
 </body>
 </html>
